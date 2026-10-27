@@ -655,18 +655,45 @@
     if (localStorage.getItem('mv_theme') === 'dark') setTheme('dark');
 
     // LOGIN
-    function handleLogin() {
+   function handleLogin() {
       const u = document.getElementById('loginUsername').value.trim().toLowerCase();
       const p = document.getElementById('loginPassword').value.trim();
 
-      let matched = users[u];
-      if (!matched) {
-        const c = contractors.find(item => item.username.toLowerCase() === u);
-        if (c) {
-          matched = { password: c.password, role: 'contractor', name: c.name, contractorName: c.name, phone: c.phone };
+      // Fresh fetch from localStorage
+      const storedUsers = JSON.parse(localStorage.getItem('mv_users')) || users;
+      const storedContractors = JSON.parse(localStorage.getItem('mv_contractors')) || contractors;
+
+      let matched = null;
+
+      // 1. Direct match in users dictionary
+      for (let key in storedUsers) {
+        if (key.trim().toLowerCase() === u) {
+          matched = storedUsers[key];
+          break;
         }
       }
 
+      // 2. Match by username OR contractor name in contractors list
+      if (!matched) {
+        const found = storedContractors.find(c => 
+          (c.username && c.username.trim().toLowerCase() === u) ||
+          (c.name && c.name.trim().toLowerCase() === u)
+        );
+        if (found) {
+          matched = { 
+            password: found.password, 
+            role: 'contractor', 
+            name: found.name, 
+            contractorName: found.name, 
+            phone: found.phone || '' 
+          };
+          // Auto register into users
+          storedUsers[u] = matched;
+          localStorage.setItem('mv_users', JSON.stringify(storedUsers));
+        }
+      }
+
+      // 3. Verify password
       if (matched && String(matched.password).trim() === p) {
         currentUser = { username: u, ...matched };
         document.getElementById('loginError').style.display = 'none';
