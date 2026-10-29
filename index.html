@@ -65,7 +65,6 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 0.5rem; margin-bottom: 2rem;
     }
-    .app-header-brand img { width: 80px; height: 80px; object-fit: contain; }
     .app-header-brand h1 { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: 0.5px; }
     
     .navbar {
@@ -74,7 +73,6 @@
       position: sticky; top: 0; z-index: 40;
     }
     .nav-brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.25rem; font-weight: 800; color: var(--primary); cursor: pointer; }
-    .nav-brand img { width: 34px; height: 34px; object-fit: contain; }
     .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
     
     .user-pill {
@@ -116,6 +114,7 @@
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
     th { background: var(--bg); padding: 0.75rem 1rem; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
     td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    tfoot td { background: var(--bg); font-weight: 800; border-top: 2px solid var(--border); }
     tr:hover { background-color: rgba(0, 0, 0, 0.02); }
     
     .badge { padding: 0.25rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; }
@@ -141,7 +140,7 @@
       padding: 2rem; display: flex; flex-direction: column; transform: translateX(100%);
       transition: transform 0.3s ease; overflow-y: auto;
     }
-    .drawer-overlay.open .drawer {{ transform: translateX(0); }}
+    .drawer-overlay.open .drawer { transform: translateX(0); }
     
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 60;
@@ -197,7 +196,7 @@
 
       <div class="form-group">
         <label class="form-label">Username</label>
-        <input type="text" id="loginUsername" class="form-input" placeholder="VIJAY, OFFICE, or contractor username">
+        <input type="text" id="loginUsername" class="form-input" placeholder="VIJAY, OFFICE, MANOJ, or contractor">
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
@@ -426,7 +425,6 @@
               <tbody id="statusReportTableBody">
                 <tr>
                   <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
-                    <i class="fa-solid fa-arrow-up" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
                     ડેટા જોવા માટે ઉપર <strong>"Apply Filter"</strong> બટન દબાવો.
                   </td>
                 </tr>
@@ -527,7 +525,7 @@
         </div>
       </div>
 
-      <!-- PAGE 4: CONTRACTOR FINE -->
+      <!-- PAGE 4: CONTRACTOR FINE (WITH MULTI-SELECT & BOTTOM TOTAL ROW) -->
       <div id="pageContractorFine" class="hidden">
         <div class="back-btn-row">
           <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
@@ -546,9 +544,14 @@
                 દંડની રકમ Pending અને Done (ચુકવાઈ ગયેલ) સ્ટેટસ મુજબ અલગ-અલગ ફિલ્ટર થશે.
               </p>
             </div>
-            <button id="mainFineAddBtn" class="btn btn-warning btn-sm" onclick="openAddFineModal()" style="display: none;">
-              <i class="fa-solid fa-plus"></i> Add Contractor Fine
-            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <button id="mainFineBulkDoneBtn" class="btn btn-success btn-sm" onclick="markSelectedFinesDone()" style="display: none;">
+                <i class="fa-solid fa-check-double"></i> Mark Selected as Done (એકસાથે Done કરો)
+              </button>
+              <button id="mainFineAddBtn" class="btn btn-warning btn-sm" onclick="openAddFineModal()" style="display: none;">
+                <i class="fa-solid fa-plus"></i> Add Contractor Fine
+              </button>
+            </div>
           </div>
 
           <div class="filter-panel">
@@ -587,10 +590,14 @@
             </button>
           </div>
 
+          <!-- Exact Table with Checkbox, Multi-Select & Total Amount Footer -->
           <div class="table-container">
             <table>
               <thead>
                 <tr>
+                  <th style="width: 40px; text-align: center;" id="fineSelectAllTh">
+                    <input type="checkbox" id="fineSelectAllChk" onchange="toggleSelectAllFines(this.checked)" title="Select All Fines">
+                  </th>
                   <th style="width: 70px;">Sr. No.</th>
                   <th>Contractor Name</th>
                   <th>EP Number</th>
@@ -604,11 +611,21 @@
               </thead>
               <tbody id="contractorFineTableBody">
                 <tr>
-                  <td colspan="9" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                  <td colspan="10" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
                     દંડનો ડેટા જોવા માટે ઉપર <strong>"Apply Filter"</strong> બટન દબાવો.
                   </td>
                 </tr>
               </tbody>
+              <tfoot id="contractorFineTableFoot" class="hidden">
+                <tr>
+                  <td colspan="5" style="text-align: right; font-size: 0.95rem; font-weight: 800; color: var(--primary);">
+                    Total Amount (કુલ રકમ):
+                  </td>
+                  <td colspan="5" id="fineTotalAmountTd" style="font-size: 1.05rem; font-weight: 800; color: var(--danger);">
+                    ₹0
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
@@ -876,14 +893,17 @@
   <script>
     const MASTER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwScehukVsU_yJXGODnA-b_MCyTBZDhsmfN0sUExXptMuYK1m_CWFgvXtlFQ5Hoo02/exec";
 
+    // INITIAL USERS INCLUDING MANOJ
     const INITIAL_USERS = {
       vijay: { password: '2008', role: 'admin', name: 'VIJAY BAMBHAVA', phone: '+91 9510039457', avatar: 'V' },
-      office: { password: '12345', role: 'office', name: 'OFFICE DESK', scope: 'ALL', canViewFine: 'YES' }
+      office: { password: '12345', role: 'office', name: 'OFFICE DESK', scope: 'ALL', canViewFine: 'YES' },
+      manoj: { password: '12345', role: 'office', name: 'MANOJ', scope: 'ALL', canViewFine: 'YES', canManageFine: true }
     };
 
     let users = JSON.parse(localStorage.getItem('mv_users')) || INITIAL_USERS;
     if (!users.vijay) users.vijay = INITIAL_USERS.vijay;
     if (!users.office) users.office = INITIAL_USERS.office;
+    if (!users.manoj) users.manoj = INITIAL_USERS.manoj;
 
     let officeAccess = JSON.parse(localStorage.getItem('mv_office_access')) || {
       password: users.office.password || '12345',
@@ -999,6 +1019,9 @@
       if (u === 'office' && p === (officeAccess.password || users.office.password)) {
         return { username: 'office', role: 'office', name: 'OFFICE DESK', scope: officeAccess.scope, canViewFine: officeAccess.canViewFine };
       }
+      if (u === 'manoj' && p === (users.manoj ? users.manoj.password : '12345')) {
+        return { username: 'manoj', role: 'office', name: 'MANOJ', scope: 'ALL', canViewFine: 'YES', canManageFine: true };
+      }
       const found = contractors.find(c => 
         ((c.username && c.username.toLowerCase() === u) || 
          (c.name && c.name.toLowerCase() === u)) && 
@@ -1029,10 +1052,11 @@
       const isAdmin = currentUser.role === 'admin';
       const isOffice = currentUser.role === 'office';
       const isContractor = currentUser.role === 'contractor';
+      const canManageFine = isAdmin || (currentUser.username === 'manoj' || currentUser.canManageFine === true);
 
       const displayName = currentUser.name || (isContractor ? currentUser.contractorName : (isOffice ? 'OFFICE' : 'VIJAY BAMBHAVA'));
       document.getElementById('navUserName').innerText = displayName;
-      document.getElementById('navUserRole').innerText = currentUser.role.toUpperCase();
+      document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : (currentUser.username === 'manoj' ? 'OFFICE (FINE ADMIN)' : currentUser.role.toUpperCase());
       
       const av = currentUser.avatar || displayName.charAt(0).toUpperCase();
       if (av.startsWith('http')) {
@@ -1053,10 +1077,14 @@
       document.getElementById('tabContractorMgmt').style.display = isAdmin ? 'inline-flex' : 'none';
       document.getElementById('menuTileEntry').style.display = isAdmin ? 'flex' : 'none';
       document.getElementById('menuTileContractors').style.display = isAdmin ? 'flex' : 'none';
-      document.getElementById('mainFineAddBtn').style.display = isAdmin ? 'inline-flex' : 'none';
-      document.getElementById('fineActionTh').style.display = isAdmin ? 'table-cell' : 'none';
 
-      if (isOffice && officeAccess.canViewFine === 'NO') {
+      // Fine controls for Admin & MANOJ
+      document.getElementById('mainFineAddBtn').style.display = canManageFine ? 'inline-flex' : 'none';
+      document.getElementById('mainFineBulkDoneBtn').style.display = canManageFine ? 'inline-flex' : 'none';
+      document.getElementById('fineActionTh').style.display = canManageFine ? 'table-cell' : 'none';
+      document.getElementById('fineSelectAllTh').style.display = canManageFine ? 'table-cell' : 'none';
+
+      if (isOffice && currentUser.username !== 'manoj' && officeAccess.canViewFine === 'NO') {
         document.getElementById('tabContractorFine').style.display = 'none';
         document.getElementById('menuTileFine').style.display = 'none';
       } else {
@@ -1146,7 +1174,7 @@
       if (currentUser.role === 'contractor') {
         targetContractor = currentUser.contractorName;
       } else if (currentUser.role === 'office') {
-        if (officeAccess.scope && officeAccess.scope !== 'ALL') {
+        if (currentUser.username !== 'manoj' && officeAccess.scope && officeAccess.scope !== 'ALL') {
           targetContractor = officeAccess.scope;
         } else {
           targetContractor = document.getElementById('reportContractorDropdown').value;
@@ -1212,6 +1240,7 @@
       XLSX.writeFile(wb, `${namePrefix}_Report_${getToday()}.xlsx`);
     }
 
+    // CONTRACTOR FINE: FILTER + SUM + MULTI-SELECT
     function applyFineFilter() {
       const statusFilter = document.getElementById('fineStatusFilter').value;
       const search = (document.getElementById('fineSearchKeyword').value || '').trim().toLowerCase();
@@ -1220,7 +1249,7 @@
       if (currentUser.role === 'contractor') {
         targetContractor = currentUser.contractorName;
       } else if (currentUser.role === 'office') {
-        if (officeAccess.scope && officeAccess.scope !== 'ALL') {
+        if (currentUser.username !== 'manoj' && officeAccess.scope && officeAccess.scope !== 'ALL') {
           targetContractor = officeAccess.scope;
         } else {
           targetContractor = document.getElementById('fineContractorDropdown').value;
@@ -1229,7 +1258,7 @@
         targetContractor = document.getElementById('fineContractorDropdown').value;
       }
 
-      const isAdmin = currentUser.role === 'admin';
+      const canManageFine = (currentUser.role === 'admin') || (currentUser.username === 'manoj' || currentUser.canManageFine === true);
 
       const filtered = fineList.filter(item => {
         const itemStatus = item.status || 'Pending';
@@ -1241,28 +1270,43 @@
 
       currentFilteredFines = filtered;
       const tbody = document.getElementById('contractorFineTableBody');
+      const tfoot = document.getElementById('contractorFineTableFoot');
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${isAdmin ? 9 : 8}" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">કોઈ દંડ (Fine) નો ડેટા મળ્યો નથી.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${canManageFine ? 10 : 8}" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">કોઈ દંડ (Fine) નો ડેટા મળ્યો નથી.</td></tr>`;
         document.getElementById('fineExcelExportRow').classList.add('hidden');
+        tfoot.classList.add('hidden');
         return;
       }
 
+      // Calculate Total Amount
+      let totalAmount = 0;
+
       tbody.innerHTML = filtered.map((row, idx) => {
         const isDone = (row.status === 'Done');
-        const actionBtn = isAdmin ? (
+        const numDebit = parseFloat(row.debit) || 0;
+        totalAmount += numDebit;
+
+        const actionBtn = canManageFine ? (
           isDone 
             ? `<button class="btn btn-secondary btn-sm" onclick="revertFineStatus('${row.id}')" title="Revert to Pending"><i class="fa-solid fa-rotate-left"></i> Revert</button>`
             : `<button class="btn btn-success btn-sm" onclick="markFineDone('${row.id}')" title="ચુકવણી થઈ ગઈ (Done કરો)"><i class="fa-solid fa-check-double"></i> Mark Done</button>`
         ) : '';
 
+        const chkCol = canManageFine ? `
+          <td style="text-align: center;">
+            <input type="checkbox" class="fine-select-chk" data-id="${row.id}">
+          </td>
+        ` : '';
+
         return `
           <tr>
+            ${chkCol}
             <td><strong>${idx + 1}</strong></td>
             <td><span class="badge badge-contractor">${row.contractor || '-'}</span></td>
             <td><strong>${row.epNo || '-'}</strong></td>
             <td>${row.epName || '-'}</td>
-            <td><strong style="color: var(--danger); font-size: 0.95rem;">₹${row.debit || '0'}</strong></td>
+            <td><strong style="color: var(--danger); font-size: 0.95rem;">₹${numDebit}</strong></td>
             <td><span class="badge badge-pending">${row.reason || '-'}</span></td>
             <td style="font-weight: 700; color: #1e3a8a;">${cleanDateString(row.date) || '-'}</td>
             <td>
@@ -1270,13 +1314,54 @@
                 ${isDone ? 'Done (ચુકવાઈ ગયેલ)' : 'Pending (બાકી)'}
               </span>
             </td>
-            ${isAdmin ? `<td>${actionBtn}</td>` : ''}
+            ${canManageFine ? `<td>${actionBtn}</td>` : ''}
           </tr>
         `;
       }).join('');
 
+      // Show Total Amount in Footer
+      document.getElementById('fineTotalAmountTd').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+      tfoot.classList.remove('hidden');
+
       document.getElementById('fineExcelExportRow').classList.remove('hidden');
       document.getElementById('fineRecordCountText').innerText = `Total Fine Records: ${filtered.length}`;
+      if (document.getElementById('fineSelectAllChk')) {
+        document.getElementById('fineSelectAllChk').checked = false;
+      }
+    }
+
+    // MULTI-SELECT FINES TOGGLE
+    function toggleSelectAllFines(isChecked) {
+      const checkboxes = document.querySelectorAll('.fine-select-chk');
+      checkboxes.forEach(cb => cb.checked = isChecked);
+    }
+
+    // BULK MARK AS DONE
+    async function markSelectedFinesDone() {
+      const selectedBoxes = Array.from(document.querySelectorAll('.fine-select-chk:checked'));
+      if (selectedBoxes.length === 0) {
+        alert('કૃપા કરીને Done કરવા માટે ઓછામાં ઓછો ૧ દંડ સિલેક્ટ કરો!');
+        return;
+      }
+
+      if (!confirm(`શું તમે સિલેક્ટ કરેલા તમામ ${selectedBoxes.length} દંડને એકસાથે Done (ચુકવાઈ ગયેલ) કરવા માંગો છો?`)) {
+        return;
+      }
+
+      const selectedIds = selectedBoxes.map(b => b.getAttribute('data-id'));
+      const todayDate = getToday();
+
+      fineList.forEach(item => {
+        if (selectedIds.includes(item.id)) {
+          item.status = 'Done';
+          item.doneDate = todayDate;
+        }
+      });
+
+      saveState();
+      applyFineFilter();
+      alert(`${selectedIds.length} દંડ સફળતાપૂર્વક Done થઈ ગયા છે! Sheet માં સેવ થઈ રહ્યું છે...`);
+      await syncWithGoogleSheet();
     }
 
     async function markFineDone(id) {
@@ -1488,8 +1573,10 @@
 
       if (currentUser.role === 'contractor') {
         cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === currentUser.contractorName.toLowerCase());
-      } else if (currentUser.role === 'office' && officeAccess.scope && officeAccess.scope !== 'ALL') {
-        cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === officeAccess.scope.toLowerCase());
+      } else if (currentUser.role === 'office') {
+        if (currentUser.username !== 'manoj' && officeAccess.scope && officeAccess.scope !== 'ALL') {
+          cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === officeAccess.scope.toLowerCase());
+        }
       }
 
       if (cancelled.length === 0) {
