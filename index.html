@@ -3,81 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>maximal-vijay</title>
+  <title>maximal-vijay | EP & Contractor Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     :root {
       --primary: #1e3a8a;
-      --primary-hover: #1e40af;
+      --primary-hover: #1d4ed8;
       --accent: #2563eb;
       --danger: #dc2626;
       --success: #16a34a;
       --warning: #d97706;
-      --bg: #f8fafc;
+      --bg: #f1f5f9;
       --card-bg: #ffffff;
       --text: #0f172a;
       --text-muted: #64748b;
-      --border: #e2e8f0;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --border: #cbd5e1;
+      --shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -4px rgba(0,0,0,0.05);
     }
     body.theme-dark {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
+      --bg: #0b1329;
+      --card-bg: #152238;
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --border: #334155;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      position: relative;
-    }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; }
     .hidden { display: none !important; }
+    
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
       padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 600; border-radius: 0.5rem;
       border: none; cursor: pointer; transition: all 0.2s ease;
     }
-    .btn-primary { background-color: var(--primary); color: white; }
-    .btn-primary:hover { background-color: var(--primary-hover); }
-    .btn-secondary { background-color: var(--card-bg); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { opacity: 0.85; }
-    .btn-danger { background-color: var(--danger); color: white; }
-    .btn-success { background-color: var(--success); color: white; }
-    .btn-warning { background-color: var(--warning); color: white; }
-    .btn-excel { background-color: #107c41; color: white; font-weight: 700; }
-    .btn-excel:hover { background-color: #0b592e; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: var(--card-bg); color: var(--text); border: 1.5px solid var(--border); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-warning { background: var(--warning); color: white; }
+    .btn-excel { background: #107c41; color: white; font-weight: 700; }
     .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.8rem; border-radius: 0.375rem; }
     
-    .login-container {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: 1.5rem; position: relative; z-index: 1;
-    }
+    .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
     .login-card {
       background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12); width: 100%; max-width: 440px; padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12); width: 100%; max-width: 420px; padding: 2.5rem;
     }
-    .app-header-brand {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.5rem; margin-bottom: 2rem;
-    }
-    .app-header-brand h1 { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: 0.5px; }
+    .app-header-brand { text-align: center; margin-bottom: 2rem; }
+    .app-header-brand h1 { font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
     
     .navbar {
       background: var(--card-bg); border-bottom: 1px solid var(--border);
-      padding: 0.875rem 2rem; display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; z-index: 40;
+      padding: 0.85rem 2rem; display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 40; backdrop-filter: blur(8px);
     }
-    .nav-brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.25rem; font-weight: 800; color: var(--primary); cursor: pointer; }
+    .nav-brand { font-size: 1.3rem; font-weight: 800; color: var(--primary); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
     .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
     
     .user-pill {
       display: flex; align-items: center; gap: 0.75rem; background: var(--bg);
-      border: 1px solid var(--border); padding: 0.35rem 0.75rem; border-radius: 9999px; cursor: pointer;
+      border: 1px solid var(--border); padding: 0.35rem 0.85rem; border-radius: 9999px; cursor: pointer;
     }
     .user-avatar {
       width: 32px; height: 32px; border-radius: 50%; background: var(--primary);
@@ -88,34 +77,34 @@
     
     .page-nav {
       background: var(--card-bg); border-bottom: 1px solid var(--border);
-      display: flex; gap: 0.5rem; padding: 0.75rem 2rem; overflow-x: auto; position: relative; z-index: 10;
+      display: flex; gap: 0.5rem; padding: 0.6rem 2rem; overflow-x: auto;
     }
     .page-tab-btn {
-      padding: 0.65rem 1.25rem; border-radius: 0.5rem; border: none; background: transparent;
-      color: var(--text-muted); font-weight: 600; font-size: 0.9rem; cursor: pointer;
-      display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; transition: all 0.2s;
+      padding: 0.6rem 1.15rem; border-radius: 0.5rem; border: none; background: transparent;
+      color: var(--text-muted); font-weight: 600; font-size: 0.88rem; cursor: pointer;
+      display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; transition: 0.2s;
     }
     .page-tab-btn.active { background: var(--primary); color: white; }
     
-    .container { max-width: 1380px; margin: 0 auto; padding: 1.75rem 1.5rem; position: relative; z-index: 1; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 1.75rem 1.5rem; }
     .card {
-      background: var(--card-bg); border-radius: 0.75rem; border: 1px solid var(--border);
+      background: var(--card-bg); border-radius: 0.85rem; border: 1px solid var(--border);
       box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.5rem;
     }
     .form-group { margin-bottom: 1.25rem; }
-    .form-label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
     .form-input {
-      width: 100%; padding: 0.65rem 0.875rem; border: 1.5px solid var(--border);
+      width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid var(--border);
       border-radius: 0.5rem; font-size: 0.9rem; background: var(--card-bg); color: var(--text);
     }
     .form-input:focus { outline: none; border-color: var(--accent); }
     
-    .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 0.5rem; }
+    .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 0.6rem; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
-    th { background: var(--bg); padding: 0.75rem 1rem; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
-    td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    th { background: var(--bg); padding: 0.8rem 1rem; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
     tfoot td { background: var(--bg); font-weight: 800; border-top: 2px solid var(--border); }
-    tr:hover { background-color: rgba(0, 0, 0, 0.02); }
+    tr:hover { background-color: rgba(30, 58, 138, 0.03); }
     
     .badge { padding: 0.25rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; }
     .badge-active { background: #dcfce7; color: #166534; }
@@ -124,76 +113,45 @@
     .badge-pending { background: #fef3c7; color: #92400e; }
     .badge-done { background: #dcfce7; color: #15803d; }
     .badge-office { background: #f3e8ff; color: #6b21a8; }
+    .badge-manoj { background: #ffedd5; color: #c2410c; }
     
     .filter-panel {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem;
-      padding: 1.25rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 0.6rem;
+      padding: 1.25rem; margin-bottom: 1.25rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;
     }
     
-    .drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); z-index: 50;
-      display: flex; justify-content: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 0.75rem;
+      padding: 1.2rem; display: flex; align-items: center; justify-content: space-between;
     }
-    .drawer-overlay.open { opacity: 1; pointer-events: auto; }
-    .drawer {
-      width: 100%; max-width: 440px; background: var(--card-bg); height: 100%;
-      padding: 2rem; display: flex; flex-direction: column; transform: translateX(100%);
-      transition: transform 0.3s ease; overflow-y: auto;
-    }
-    .drawer-overlay.open .drawer { transform: translateX(0); }
+    .stat-card .val { font-size: 1.5rem; font-weight: 800; margin-top: 0.2rem; }
     
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 60;
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .menu-tile {
+      background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 0.85rem;
+      padding: 1.5rem; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .menu-tile:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
+    .menu-icon-box { width: 48px; height: 48px; border-radius: 0.65rem; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1rem; color: white; }
+    
+    .modal-overlay, .drawer-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 60;
       display: flex; align-items: center; justify-content: center; padding: 1rem;
     }
-    .modal { background: var(--card-bg); border-radius: 0.75rem; width: 100%; max-width: 520px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; }
-
-    .menu-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem; margin-top: 1rem;
-    }
-    .menu-tile {
-      background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 1rem;
-      padding: 1.75rem; cursor: pointer; transition: all 0.25s ease;
-      display: flex; flex-direction: column; justify-content: space-between;
-      box-shadow: var(--shadow); position: relative; overflow: hidden;
-    }
-    .menu-tile:hover {
-      transform: translateY(-4px); border-color: var(--accent);
-      box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.15);
-    }
-    .menu-icon-box {
-      width: 52px; height: 52px; border-radius: 0.75rem; display: flex;
-      align-items: center; justify-content: center; font-size: 1.4rem;
-      margin-bottom: 1rem; color: white;
-    }
-    .menu-tile h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; }
-    .menu-tile p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
-    .back-btn-row {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;
-    }
-    .live-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
-      display: inline-block; margin-right: 4px; box-shadow: 0 0 8px #22c55e;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.3; }
-      100% { opacity: 1; }
-    }
+    .modal { background: var(--card-bg); border-radius: 0.85rem; width: 100%; max-width: 520px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 4px; box-shadow: 0 0 8px #22c55e; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN PAGE -->
+  <!-- LOGIN -->
   <div id="loginPage" class="login-container">
     <div class="login-card">
       <div class="app-header-brand">
         <h1>maximal-vijay</h1>
-        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 500;">Contractor & Pass Management System</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Contractor & Pass Management Portal</p>
       </div>
-
       <div class="form-group">
         <label class="form-label">Username</label>
         <input type="text" id="loginUsername" class="form-input" placeholder="VIJAY, OFFICE, MANOJ, or contractor">
@@ -211,224 +169,156 @@
     </div>
   </div>
 
-  <!-- MAIN APP INTERFACE -->
+  <!-- MAIN APP -->
   <div id="appContainer" class="hidden">
-    <!-- NAVBAR -->
     <nav class="navbar">
-      <div class="nav-brand" onclick="switchPage('menu')" title="મુખ્ય મેનૂ પર જાઓ">
+      <div class="nav-brand" onclick="switchPage('menu')">
+        <i class="fa-solid fa-layer-group"></i>
         <span>maximal-vijay</span>
       </div>
       <div class="nav-actions">
-        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; display: inline-flex; align-items: center;" title="Realtime Live Auto-sync Active">
+        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;" title="Realtime Live Sync Active">
           <span class="live-dot"></span> LIVE
         </span>
-        <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')" title="મુખ્ય મેનૂ">
-          <i class="fa-solid fa-house"></i> મેનૂ (Home)
-        </button>
-        <button id="adminPullSheetBtn" class="btn btn-success btn-sm" onclick="manualPullData()" title="Sheet માંથી તાજો ડેટા ખેંચો">
-          <i class="fa-solid fa-cloud-arrow-down"></i> Reload Data
-        </button>
-        <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet()" title="Save Master Data to Google Sheet">
-          <i class="fa-solid fa-cloud-arrow-up"></i> Save to Sheet
-        </button>
-        
-        <div class="user-pill" onclick="openProfileDrawer()" title="Profile & Settings">
+        <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')"><i class="fa-solid fa-house"></i> Home</button>
+        <button id="adminPullSheetBtn" class="btn btn-success btn-sm" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> Sync</button>
+        <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Save</button>
+        <div class="user-pill" onclick="switchPage('settings')">
           <div class="user-avatar" id="avatarDisplay">V</div>
           <div>
-            <div style="font-weight: 700; font-size: 0.85rem;" id="navUserName">VIJAY BAMBHAVA</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);" id="navUserRole">Admin</div>
+            <div style="font-weight: 700; font-size: 0.85rem;" id="navUserName">VIJAY</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);" id="navUserRole">Admin</div>
           </div>
         </div>
-        <button class="btn btn-danger btn-sm" onclick="handleLogout()" title="Logout">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
+        <button class="btn btn-danger btn-sm" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
       </div>
     </nav>
 
-    <!-- TOP NAVIGATION TABS -->
     <div class="page-nav">
-      <button class="page-tab-btn" id="tabHomeMenu" onclick="switchPage('menu')">
-        <i class="fa-solid fa-grip"></i> મુખ્ય મેનૂ
-      </button>
-      <button class="page-tab-btn" id="tabStatusReport" onclick="switchPage('report')">
-        <i class="fa-solid fa-table-list"></i> 1. EP Status Report
-      </button>
-      <button class="page-tab-btn" id="tabEpEntry" onclick="switchPage('entry')">
-        <i class="fa-solid fa-file-circle-plus"></i> 2. EP Entry (Admin)
-      </button>
-      <button class="page-tab-btn" id="tabEpCancel" onclick="switchPage('cancel')">
-        <i class="fa-solid fa-ban"></i> 3. EP Cancel Data
-      </button>
-      <button class="page-tab-btn" id="tabContractorFine" onclick="switchPage('fine')">
-        <i class="fa-solid fa-receipt"></i> 4. Contractor Fine
-      </button>
-      <button class="page-tab-btn" id="tabContractorMgmt" onclick="switchPage('contractors')">
-        <i class="fa-solid fa-users-gear"></i> 5. User Management
-      </button>
-      <button class="page-tab-btn" id="tabSettings" onclick="switchPage('settings')">
-        <i class="fa-solid fa-user-gear"></i> 6. Settings & Profile
-      </button>
+      <button class="page-tab-btn" id="tabHomeMenu" onclick="switchPage('menu')"><i class="fa-solid fa-grip"></i> મુખ્ય મેનૂ</button>
+      <button class="page-tab-btn" id="tabStatusReport" onclick="switchPage('report')"><i class="fa-solid fa-table-list"></i> 1. EP Status Report</button>
+      <button class="page-tab-btn" id="tabEpEntry" onclick="switchPage('entry')"><i class="fa-solid fa-file-circle-plus"></i> 2. EP Entry</button>
+      <button class="page-tab-btn" id="tabEpCancel" onclick="switchPage('cancel')"><i class="fa-solid fa-ban"></i> 3. EP Cancel Data</button>
+      <button class="page-tab-btn" id="tabContractorFine" onclick="switchPage('fine')"><i class="fa-solid fa-receipt"></i> 4. Contractor Fine</button>
+      <button class="page-tab-btn" id="tabContractorMgmt" onclick="switchPage('contractors')"><i class="fa-solid fa-users-gear"></i> 5. User Control</button>
+      <button class="page-tab-btn" id="tabSettings" onclick="switchPage('settings')"><i class="fa-solid fa-user-gear"></i> 6. Settings</button>
     </div>
 
-    <!-- MAIN BODY CONTAINER -->
     <div class="container">
-
-      <!-- PAGE 0: MAIN MENU DASHBOARD -->
-      <div id="pageMenuDashboard">
-        <div style="margin-bottom: 1.5rem;">
-          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--primary);" id="welcomeUserText">સ્વાગત છે!</h2>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">તમારે જે કામગીરી કરવી હોય તે ઓપ્શન પર ક્લિક કરો:</p>
+      <!-- DASHBOARD STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div><div style="font-size: 0.8rem; color: var(--text-muted);">Active Passes</div><div class="val" id="statActiveCount" style="color: var(--success);">0</div></div>
+          <i class="fa-solid fa-id-card" style="font-size: 2rem; opacity: 0.15; color: var(--success);"></i>
         </div>
+        <div class="stat-card">
+          <div><div style="font-size: 0.8rem; color: var(--text-muted);">Cancelled Passes</div><div class="val" id="statCancelCount" style="color: var(--danger);">0</div></div>
+          <i class="fa-solid fa-ban" style="font-size: 2rem; opacity: 0.15; color: var(--danger);"></i>
+        </div>
+        <div class="stat-card">
+          <div><div style="font-size: 0.8rem; color: var(--text-muted);">Pending Fines</div><div class="val" id="statPendingFineCount" style="color: var(--warning);">0</div></div>
+          <i class="fa-solid fa-hourglass-half" style="font-size: 2rem; opacity: 0.15; color: var(--warning);"></i>
+        </div>
+        <div class="stat-card">
+          <div><div style="font-size: 0.8rem; color: var(--text-muted);">Total Fine Amount</div><div class="val" id="statTotalFineAmt" style="color: var(--primary);">₹0</div></div>
+          <i class="fa-solid fa-indian-rupee-sign" style="font-size: 2rem; opacity: 0.15; color: var(--primary);"></i>
+        </div>
+      </div>
 
+      <!-- PAGE 0: DASHBOARD MENU -->
+      <div id="pageMenuDashboard">
         <div class="menu-grid">
           <div class="menu-tile" onclick="switchPage('report')">
             <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
-                <i class="fa-solid fa-table-list"></i>
-              </div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);"><i class="fa-solid fa-table-list"></i></div>
               <h3>1. EP Status Report</h3>
-              <p>Active અને Cancel પાસ ફિલ્ટર કરો અને Excel માં ડાઉનલોડ કરો.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Active & Cancel પાસ ફિલ્ટર કરો અને Excel એક્સપોર્ટ કરો.</p>
             </div>
-            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: var(--accent);">
-              ખોલો <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div style="font-weight: 700; color: var(--accent); margin-top: 1rem;">ખોલો <i class="fa-solid fa-arrow-right"></i></div>
           </div>
-
           <div class="menu-tile" id="menuTileEntry" onclick="switchPage('entry')">
             <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #059669, #10b981);">
-                <i class="fa-solid fa-file-circle-plus"></i>
-              </div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #059669, #10b981);"><i class="fa-solid fa-file-circle-plus"></i></div>
               <h3>2. EP Entry (Admin)</h3>
-              <p>નવો EP પાસ ઉમેરો અથવા એકસાથે એકથી વધુ પાસ સિલેક્ટ કરી કેન્સલ કરો.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">નવા પાસ ઉમેરો અને મલ્ટિપલ પાસ એકસાથે કેન્સલ કરો.</p>
             </div>
-            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #059669;">
-              ખોલો <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div style="font-weight: 700; color: #059669; margin-top: 1rem;">ખોલો <i class="fa-solid fa-arrow-right"></i></div>
           </div>
-
           <div class="menu-tile" onclick="switchPage('cancel')">
             <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #dc2626, #f87171);">
-                <i class="fa-solid fa-ban"></i>
-              </div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #dc2626, #f87171);"><i class="fa-solid fa-ban"></i></div>
               <h3>3. EP Cancel Data</h3>
-              <p>કેન્સલ થયેલા તમામ પાસની યાદી તેમની ચોક્કસ કેન્સલ તારીખ સાથે જુઓ.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">કેન્સલ થયેલા પાસની યાદી તેમની કેન્સલ તારીખ સાથે જુઓ.</p>
             </div>
-            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: var(--danger);">
-              ખોલો <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div style="font-weight: 700; color: var(--danger); margin-top: 1rem;">ખોલો <i class="fa-solid fa-arrow-right"></i></div>
           </div>
-
           <div class="menu-tile" id="menuTileFine" onclick="switchPage('fine')">
             <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #d97706, #f59e0b);">
-                <i class="fa-solid fa-receipt"></i>
-              </div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #d97706, #f59e0b);"><i class="fa-solid fa-receipt"></i></div>
               <h3>4. Contractor Fine (Pending / Done)</h3>
-              <p>દંડનો ડેટા મેનેજ કરો: Pending અને Done પેમેન્ટ સ્ટેટસ સાથે અલગ-અલગ ફિલ્ટર અને રિપોર્ટ.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Multiple Fine સિલેક્શન, Total Amount અને Realtime Status.</p>
             </div>
-            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: var(--warning);">
-              ખોલો <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div style="font-weight: 700; color: var(--warning); margin-top: 1rem;">ખોલો <i class="fa-solid fa-arrow-right"></i></div>
           </div>
-
           <div class="menu-tile" id="menuTileContractors" onclick="switchPage('contractors')">
             <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #7c3aed, #a855f7);">
-                <i class="fa-solid fa-users-gear"></i>
-              </div>
-              <h3>5. User Access Management</h3>
-              <p>કોન્ટ્રાક્ટર્સ અને OFFICE યુઝરના Password અને Access Selection કંટ્રોલ કરો.</p>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #7c3aed, #a855f7);"><i class="fa-solid fa-users-gear"></i></div>
+              <h3>5. User Access & Control</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">OFFICE, MANOJ અને તમામ Contractors ના Password & Access.</p>
             </div>
-            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #7c3aed;">
-              ખોલો <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div style="font-weight: 700; color: #7c3aed; margin-top: 1rem;">ખોલો <i class="fa-solid fa-arrow-right"></i></div>
           </div>
-
           <div class="menu-tile" onclick="switchPage('settings')">
             <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #0284c7, #38bdf8);">
-                <i class="fa-solid fa-user-gear"></i>
-              </div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #0284c7, #38bdf8);"><i class="fa-solid fa-user-gear"></i></div>
               <h3>6. Settings & Profile</h3>
-              <p>નામ, પ્રોફાઇલ પિક્ચર અને પાસવર્ડ બદલો તેમજ થીમ સેટ કરો.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">તમારું નામ, પ્રોફાઇલ પિક્ચર અને પાસવર્ડ કંટ્રોલ કરો.</p>
             </div>
-            <div style="margin-top: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #0284c7;">
-              ખોલો <i class="fa-solid fa-arrow-right"></i>
-            </div>
+            <div style="font-weight: 700; color: #0284c7; margin-top: 1rem;">ખોલો <i class="fa-solid fa-arrow-right"></i></div>
           </div>
         </div>
       </div>
 
-      <!-- PAGE 1: EP STATUS REPORT -->
+      <!-- PAGE 1: REPORT -->
       <div id="pageStatusReport" class="hidden">
-        <div class="back-btn-row">
-          <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
-            <i class="fa-solid fa-arrow-left"></i> મુખ્ય મેનૂ પર પાછા જાઓ
-          </button>
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">maximal-vijay / EP Status Report</span>
-        </div>
-
         <div class="card">
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-bottom: 1rem;">1. EP Status Report</h3>
-          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-weight: 800; color: var(--primary);">1. EP Status Report</h3>
+            <button class="btn btn-excel btn-sm" onclick="downloadReportExcel()"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+          </div>
           <div class="filter-panel">
-            <div style="min-width: 170px;">
-              <label class="form-label" style="font-size: 0.8rem;">Status Filter</label>
+            <div style="min-width: 160px;">
+              <label class="form-label">Status Filter</label>
               <select id="reportStatusFilter" class="form-input" onchange="applyStatusReportFilter()">
                 <option value="Active">Active Passes</option>
                 <option value="Cancel">Cancel Passes</option>
                 <option value="ALL">All Passes</option>
               </select>
             </div>
-
             <div style="flex: 1; min-width: 220px;" id="adminContractorFilterBox">
-              <label class="form-label" style="font-size: 0.8rem;">Select Contractor</label>
-              <select id="reportContractorDropdown" class="form-input" onchange="applyStatusReportFilter()">
-                <option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સ (All) --</option>
-              </select>
+              <label class="form-label">Select Contractor</label>
+              <select id="reportContractorDropdown" class="form-input" onchange="applyStatusReportFilter()"></select>
             </div>
-
             <div style="flex: 1; min-width: 200px;">
-              <label class="form-label" style="font-size: 0.8rem;">Search (EP No / Name / Plant)</label>
+              <label class="form-label">Search (EP No / Name / Plant)</label>
               <input type="text" id="reportSearchKeyword" class="form-input" placeholder="Search keyword..." oninput="applyStatusReportFilter()">
             </div>
-
-            <div>
-              <button class="btn btn-primary" onclick="applyStatusReportFilter()">
-                <i class="fa-solid fa-filter"></i> Apply Filter
-              </button>
-            </div>
+            <button class="btn btn-primary" onclick="applyStatusReportFilter()"><i class="fa-solid fa-filter"></i> Apply</button>
           </div>
-
-          <div id="excelExportActionRow" class="hidden" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;" id="recordCountText"></div>
-            <button class="btn btn-excel btn-sm" onclick="downloadReportExcel()">
-              <i class="fa-solid fa-file-excel"></i> Download Excel
-            </button>
-          </div>
-
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th style="width: 70px;">Sr. No.</th>
-                  <th>Contractor Name</th>
+                  <th style="width: 60px;">Sr.</th>
+                  <th>Contractor</th>
                   <th>EP Number</th>
                   <th>EP Name</th>
                   <th>Plant</th>
-                  <th>EP Entry Date</th>
+                  <th>Entry Date</th>
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody id="statusReportTableBody">
-                <tr>
-                  <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
-                    ડેટા જોવા માટે ઉપર <strong>"Apply Filter"</strong> બટન દબાવો.
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="statusReportTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -436,44 +326,25 @@
 
       <!-- PAGE 2: EP ENTRY -->
       <div id="pageEpEntry" class="hidden">
-        <div class="back-btn-row">
-          <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
-            <i class="fa-solid fa-arrow-left"></i> મુખ્ય મેનૂ પર પાછા જાઓ
-          </button>
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">maximal-vijay / EP Entry (Admin)</span>
-        </div>
-
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
-            <div>
-              <h3 style="font-size: 1.2rem; font-weight: 800; color: #059669;">2. EP Entry (Admin)</h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">
-                ચેકબોક્સ ટીક કરીને એકસાથે એકથી વધુ પાસ કેન્સલ કરી શકો છો.
-              </p>
-            </div>
-            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <button class="btn btn-danger btn-sm" id="multiCancelBtn" onclick="cancelSelectedPasses()">
-                <i class="fa-solid fa-trash-can"></i> Cancel Selected Passes
-              </button>
-              <button class="btn btn-primary btn-sm" onclick="addNewEpRow()">
-                <i class="fa-solid fa-plus"></i> Add New EP
-              </button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-weight: 800; color: #059669;">2. EP Entry (Admin)</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-danger btn-sm" onclick="cancelSelectedPasses()"><i class="fa-solid fa-ban"></i> Cancel Selected Passes</button>
+              <button class="btn btn-primary btn-sm" onclick="addNewEpRow()"><i class="fa-solid fa-plus"></i> Add New EP</button>
             </div>
           </div>
-
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th style="width: 40px; text-align: center;">
-                    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAllPasses(this.checked)" title="Select All">
-                  </th>
-                  <th>Sr.</th>
-                  <th>Contractor Name</th>
+                  <th style="width: 40px; text-align: center;"><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAllPasses(this.checked)"></th>
+                  <th style="width: 60px;">Sr.</th>
+                  <th>Contractor</th>
                   <th>EP Number</th>
                   <th>EP Name</th>
                   <th>Plant</th>
-                  <th>EP Entry Date</th>
+                  <th>Entry Date</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -483,38 +354,23 @@
         </div>
       </div>
 
-      <!-- PAGE 3: EP CANCEL DATA -->
+      <!-- PAGE 3: CANCEL DATA -->
       <div id="pageEpCancel" class="hidden">
-        <div class="back-btn-row">
-          <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
-            <i class="fa-solid fa-arrow-left"></i> મુખ્ય મેનૂ પર પાછા જાઓ
-          </button>
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">maximal-vijay / EP Cancel Data</span>
-        </div>
-
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
-            <div>
-              <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--danger);">3. EP Cancel Data</h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">
-                કેન્સલ કરેલા તમામ પાસ તેની કેન્સલ તારીખ સાથે અહીં જોવા મળશે.
-              </p>
-            </div>
-            <button class="btn btn-excel btn-sm" onclick="downloadCancelDataExcel()">
-              <i class="fa-solid fa-file-excel"></i> Export Cancel Data
-            </button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-weight: 800; color: var(--danger);">3. EP Cancel Data</h3>
+            <button class="btn btn-excel btn-sm" onclick="downloadCancelDataExcel()"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
           </div>
-
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Sr. No.</th>
-                  <th>Contractor Name</th>
+                  <th style="width: 60px;">Sr.</th>
+                  <th>Contractor</th>
                   <th>EP Number</th>
                   <th>EP Name</th>
                   <th>Plant</th>
-                  <th>EP Entry Date</th>
+                  <th>Entry Date</th>
                   <th>Cancel Date</th>
                   <th>Status</th>
                 </tr>
@@ -525,105 +381,57 @@
         </div>
       </div>
 
-      <!-- PAGE 4: CONTRACTOR FINE (WITH MULTI-SELECT & BOTTOM TOTAL ROW) -->
+      <!-- PAGE 4: CONTRACTOR FINE -->
       <div id="pageContractorFine" class="hidden">
-        <div class="back-btn-row">
-          <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
-            <i class="fa-solid fa-arrow-left"></i> મુખ્ય મેનૂ પર પાછા જાઓ
-          </button>
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">maximal-vijay / Contractor Fine</span>
-        </div>
-
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
-            <div>
-              <h3 style="font-size: 1.2rem; font-weight: 800; color: #d97706;">
-                <i class="fa-solid fa-receipt"></i> 4. Contractor Fine Management
-              </h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">
-                દંડની રકમ Pending અને Done (ચુકવાઈ ગયેલ) સ્ટેટસ મુજબ અલગ-અલગ ફિલ્ટર થશે.
-              </p>
-            </div>
-            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <button id="mainFineBulkDoneBtn" class="btn btn-success btn-sm" onclick="markSelectedFinesDone()" style="display: none;">
-                <i class="fa-solid fa-check-double"></i> Mark Selected as Done (એકસાથે Done કરો)
-              </button>
-              <button id="mainFineAddBtn" class="btn btn-warning btn-sm" onclick="openAddFineModal()" style="display: none;">
-                <i class="fa-solid fa-plus"></i> Add Contractor Fine
-              </button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-weight: 800; color: #d97706;"><i class="fa-solid fa-receipt"></i> 4. Contractor Fine Management</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="mainFineBulkDoneBtn" class="btn btn-success btn-sm" onclick="markSelectedFinesDone()"><i class="fa-solid fa-check-double"></i> Mark Selected as Done</button>
+              <button id="mainFineAddBtn" class="btn btn-warning btn-sm" onclick="openAddFineModal()"><i class="fa-solid fa-plus"></i> Add Fine</button>
+              <button class="btn btn-excel btn-sm" onclick="downloadFineExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
             </div>
           </div>
-
           <div class="filter-panel">
-            <div style="min-width: 170px;">
-              <label class="form-label" style="font-size: 0.8rem;">Payment Status</label>
+            <div style="min-width: 160px;">
+              <label class="form-label">Payment Status</label>
               <select id="fineStatusFilter" class="form-input" onchange="applyFineFilter()">
                 <option value="Pending">Pending Fines (બાકી)</option>
                 <option value="Done">Done Fines (ચુકવાઈ ગયેલ)</option>
-                <option value="ALL">All Fines (તમામ દંડ)</option>
+                <option value="ALL">All Fines (તમામ)</option>
               </select>
             </div>
-
             <div style="flex: 1; min-width: 220px;" id="fineContractorFilterBox">
-              <label class="form-label" style="font-size: 0.8rem;">Select Contractor</label>
-              <select id="fineContractorDropdown" class="form-input" onchange="applyFineFilter()">
-                <option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સ (All) --</option>
-              </select>
+              <label class="form-label">Select Contractor</label>
+              <select id="fineContractorDropdown" class="form-input" onchange="applyFineFilter()"></select>
             </div>
-
             <div style="flex: 1; min-width: 200px;">
-              <label class="form-label" style="font-size: 0.8rem;">Search (EP No / Name / Reason)</label>
+              <label class="form-label">Search (EP No / Name / Reason)</label>
               <input type="text" id="fineSearchKeyword" class="form-input" placeholder="Search fine keyword..." oninput="applyFineFilter()">
             </div>
-
-            <div>
-              <button class="btn btn-warning" onclick="applyFineFilter()">
-                <i class="fa-solid fa-filter"></i> Apply Filter
-              </button>
-            </div>
+            <button class="btn btn-warning" onclick="applyFineFilter()"><i class="fa-solid fa-filter"></i> Apply</button>
           </div>
-
-          <div id="fineExcelExportRow" class="hidden" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;" id="fineRecordCountText"></div>
-            <button class="btn btn-excel btn-sm" onclick="downloadFineExcel()">
-              <i class="fa-solid fa-file-excel"></i> Download Fine Excel
-            </button>
-          </div>
-
-          <!-- Exact Table with Checkbox, Multi-Select & Total Amount Footer -->
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th style="width: 40px; text-align: center;" id="fineSelectAllTh">
-                    <input type="checkbox" id="fineSelectAllChk" onchange="toggleSelectAllFines(this.checked)" title="Select All Fines">
-                  </th>
-                  <th style="width: 70px;">Sr. No.</th>
-                  <th>Contractor Name</th>
+                  <th style="width: 40px; text-align: center;" id="fineSelectAllTh"><input type="checkbox" id="fineSelectAllChk" onchange="toggleSelectAllFines(this.checked)"></th>
+                  <th style="width: 60px;">Sr.</th>
+                  <th>Contractor</th>
                   <th>EP Number</th>
                   <th>EP Name</th>
                   <th>Debit Payment</th>
-                  <th>Reason For Debit</th>
+                  <th>Reason</th>
                   <th>Date</th>
-                  <th>Payment Status</th>
+                  <th>Status</th>
                   <th id="fineActionTh">Action</th>
                 </tr>
               </thead>
-              <tbody id="contractorFineTableBody">
+              <tbody id="contractorFineTableBody"></tbody>
+              <tfoot id="contractorFineTableFoot">
                 <tr>
-                  <td colspan="10" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
-                    દંડનો ડેટા જોવા માટે ઉપર <strong>"Apply Filter"</strong> બટન દબાવો.
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot id="contractorFineTableFoot" class="hidden">
-                <tr>
-                  <td colspan="5" style="text-align: right; font-size: 0.95rem; font-weight: 800; color: var(--primary);">
-                    Total Amount (કુલ રકમ):
-                  </td>
-                  <td colspan="5" id="fineTotalAmountTd" style="font-size: 1.05rem; font-weight: 800; color: var(--danger);">
-                    ₹0
-                  </td>
+                  <td colspan="5" style="text-align: right; font-size: 0.95rem; font-weight: 800; color: var(--primary);">Filtered Total Amount:</td>
+                  <td colspan="5" id="fineTotalAmountTd" style="font-size: 1.05rem; font-weight: 800; color: var(--danger);">₹0</td>
                 </tr>
               </tfoot>
             </table>
@@ -631,72 +439,81 @@
         </div>
       </div>
 
-      <!-- PAGE 5: USER MANAGEMENT -->
+      <!-- PAGE 5: USER MANAGEMENT (ADMIN CONTROLS BOTH OFFICE & MANOJ) -->
       <div id="pageContractors" class="hidden">
-        <div class="back-btn-row">
-          <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
-            <i class="fa-solid fa-arrow-left"></i> મુખ્ય મેનૂ પર પાછા જાઓ
-          </button>
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">maximal-vijay / User Access Management</span>
+        <!-- MANOJ CONTROL CARD (ADMIN ONLY) -->
+        <div class="card" style="border: 2px solid #ea580c; background: #fff7ed; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h3 style="font-weight: 800; color: #c2410c;"><i class="fa-solid fa-user-shield"></i> MANOJ User Access & Fine Permission Control</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">આ યુઝર પાસે OFFICE જેવો કંટ્રોલ છે પરંતુ તે Contractor Fine માં Admin ની જેમ ડેટા એડ/ચેન્જ કરી શકે છે.</p>
+            </div>
+            <span class="badge badge-manoj" style="font-size: 0.8rem;">Role: Office + Fine Admin</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end;">
+            <div>
+              <label class="form-label">MANOJ Password</label>
+              <input type="text" id="manojUserPasswordInput" class="form-input" value="12345">
+            </div>
+            <div>
+              <label class="form-label">Allowed Contractor Data Scope</label>
+              <select id="manojAccessScopeSelect" class="form-input"></select>
+            </div>
+            <div>
+              <label class="form-label">Can Add/Edit/Change Fines?</label>
+              <select id="manojFineManageSelect" class="form-input">
+                <option value="YES">હા, Admin ની જેમ Fine બદલી શકે</option>
+                <option value="NO">ના, માત્ર જોઈ શકે (View Only)</option>
+              </select>
+            </div>
+            <div>
+              <button class="btn btn-warning" onclick="saveManojSettings()" style="width: 100%;"><i class="fa-solid fa-floppy-disk"></i> Save MANOJ Access</button>
+            </div>
+          </div>
         </div>
 
-        <div class="card" style="border: 2px solid #c084fc; background: #faf5ff;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+        <!-- OFFICE CONTROL CARD -->
+        <div class="card" style="border: 2px solid #9333ea; background: #faf5ff; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
-              <h3 style="font-size: 1.15rem; font-weight: 800; color: #6b21a8;">
-                <i class="fa-solid fa-building-user"></i> OFFICE User Access & Selection Control
-              </h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">
-                OFFICE યુઝર માત્ર ડેટા જોઈ અને ડાઉનલોડ કરી શકે છે. તેને કેટલો ડેટા આપવો તે તમે અહીં સિલેક્ટ કરી શકો છો.
-              </p>
+              <h3 style="font-weight: 800; color: #6b21a8;"><i class="fa-solid fa-building-user"></i> OFFICE User Access Control</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">OFFICE યુઝર માત્ર ડેટા જોઈ અને એક્સપોર્ટ કરી શકે છે.</p>
             </div>
             <span class="badge badge-office" style="font-size: 0.8rem;">Role: Viewer & Exporter</span>
           </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; align-items: flex-end;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end;">
             <div>
-              <label class="form-label" style="font-size: 0.8rem;">OFFICE Password</label>
+              <label class="form-label">OFFICE Password</label>
               <input type="text" id="officeUserPasswordInput" class="form-input" value="12345">
             </div>
             <div>
-              <label class="form-label" style="font-size: 0.8rem;">Allowed Contractor Data Access</label>
-              <select id="officeAccessScopeSelect" class="form-input">
-                <option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સનો ડેટા (Full View) --</option>
-              </select>
+              <label class="form-label">Allowed Contractor Access</label>
+              <select id="officeAccessScopeSelect" class="form-input"></select>
             </div>
             <div>
-              <label class="form-label" style="font-size: 0.8rem;">Can View Contractor Fines?</label>
+              <label class="form-label">Can View Contractor Fines?</label>
               <select id="officeFineAccessSelect" class="form-input">
-                <option value="YES">હા, દંડ (Fines) જોઈ શકે</option>
-                <option value="NO">ના, દંડ છુપાવો</option>
+                <option value="YES">હા, Fines જોઈ શકે</option>
+                <option value="NO">ના, Fines છુપાવો</option>
               </select>
             </div>
             <div>
-              <button class="btn btn-primary" onclick="saveOfficeSettings()" style="width: 100%; background: #7c3aed;">
-                <i class="fa-solid fa-floppy-disk"></i> Save OFFICE Access
-              </button>
+              <button class="btn btn-primary" onclick="saveOfficeSettings()" style="width: 100%; background: #7c3aed;"><i class="fa-solid fa-floppy-disk"></i> Save OFFICE Access</button>
             </div>
           </div>
         </div>
 
+        <!-- CONTRACTOR ACCOUNTS -->
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;">
-            <div>
-              <h3 style="font-size: 1.2rem; font-weight: 800; color: #7c3aed;">Contractor Accounts Management</h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">
-                કોન્ટ્રાક્ટરના Username અને Password બદલો અથવા નવો કોન્ટ્રાક્ટર ઉમેરો.
-              </p>
-            </div>
-            <button class="btn btn-primary btn-sm" onclick="openAddContractorModal()">
-              <i class="fa-solid fa-user-plus"></i> Add New Contractor
-            </button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-weight: 800; color: var(--primary);">Contractor Accounts</h3>
+            <button class="btn btn-primary btn-sm" onclick="openAddContractorModal()"><i class="fa-solid fa-user-plus"></i> Add Contractor</button>
           </div>
-
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Sr.</th>
+                  <th style="width: 50px;">Sr.</th>
                   <th>Contractor Name</th>
                   <th>Username</th>
                   <th>Password</th>
@@ -712,112 +529,63 @@
 
       <!-- PAGE 6: SETTINGS -->
       <div id="pageSettings" class="hidden">
-        <div class="back-btn-row">
-          <button class="btn btn-secondary btn-sm" onclick="switchPage('menu')">
-            <i class="fa-solid fa-arrow-left"></i> મુખ્ય મેનૂ પર પાછા જાઓ
-          </button>
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">maximal-vijay / Settings & Preferences</span>
-        </div>
-
         <div class="card" style="max-width: 600px; margin: 0 auto;">
-          <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--primary);">6. Settings & Profile</h3>
-          
+          <h3 style="font-weight: 800; color: var(--primary); margin-bottom: 1.5rem;">Settings & Preferences</h3>
           <div class="form-group">
-            <label class="form-label">Theme Mode (થીમ બદલો)</label>
-            <div style="display: flex; gap: 0.75rem;">
-              <button class="btn btn-secondary btn-sm" onclick="setTheme('light')"><i class="fa-solid fa-sun"></i> Light Mode</button>
-              <button class="btn btn-secondary btn-sm" onclick="setTheme('dark')"><i class="fa-solid fa-moon"></i> Dark Mode</button>
+            <label class="form-label">Theme Mode</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-secondary btn-sm" onclick="setTheme('light')"><i class="fa-solid fa-sun"></i> Light</button>
+              <button class="btn btn-secondary btn-sm" onclick="setTheme('dark')"><i class="fa-solid fa-moon"></i> Dark</button>
             </div>
           </div>
-
           <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border);">
-
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">Profile Details (નામ અને પ્રોફાઇલ ફોટો)</h4>
           <div class="form-group">
-            <label class="form-label">Display Name (તમારું નામ)</label>
-            <input type="text" id="prefDisplayNameInput" class="form-input" placeholder="e.g. VIJAY BAMBHAVA">
+            <label class="form-label">Display Name</label>
+            <input type="text" id="prefDisplayNameInput" class="form-input">
           </div>
           <div class="form-group">
-            <label class="form-label">Contact Number (સંપર્ક નંબર)</label>
+            <label class="form-label">Contact Number</label>
             <input type="text" id="prefContactInput" class="form-input">
           </div>
           <div class="form-group">
-            <label class="form-label">Profile Avatar Letter અથવા Profile Picture Photo URL</label>
-            <input type="text" id="prefAvatarInput" class="form-input" placeholder="અક્ષર અથવા લિંક (URL)">
+            <label class="form-label">Profile Avatar Letter / Image URL</label>
+            <input type="text" id="prefAvatarInput" class="form-input">
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="savePersonalPreferences()" style="margin-bottom: 1.5rem;">
-            <i class="fa-solid fa-floppy-disk"></i> Save Profile Details
-          </button>
-
+          <button class="btn btn-secondary btn-sm" onclick="savePersonalPreferences()"><i class="fa-solid fa-floppy-disk"></i> Save Profile Details</button>
           <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border);">
-
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">Change Password (પાસવર્ડ બદલો)</h4>
           <div class="form-group">
-            <label class="form-label">Current Password (હાલનો પાસવર્ડ)</label>
+            <label class="form-label">Current Password</label>
             <input type="password" id="curPassInput" class="form-input">
           </div>
           <div class="form-group">
-            <label class="form-label">New Password (નવો પાસવર્ડ)</label>
+            <label class="form-label">New Password</label>
             <input type="password" id="newPassInput" class="form-input">
           </div>
-          <div class="form-group">
-            <label class="form-label">Confirm New Password (નવો પાસવર્ડ ફરીથી લખો)</label>
-            <input type="password" id="confirmPassInput" class="form-input">
-          </div>
-          <button class="btn btn-primary" onclick="handlePasswordChange()">
-            <i class="fa-solid fa-check"></i> Update Password
-          </button>
+          <button class="btn btn-primary" onclick="handlePasswordChange()"><i class="fa-solid fa-key"></i> Update Password</button>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- BIO DATA DRAWER -->
-  <div id="profileDrawerOverlay" class="drawer-overlay" onclick="closeProfileDrawer()">
-    <div class="drawer" onclick="event.stopPropagation()">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h3 style="font-size: 1.1rem; font-weight: 700;">User Profile</h3>
-        <button class="btn btn-secondary btn-sm" onclick="closeProfileDrawer()"><i class="fa-solid fa-xmark"></i></button>
+  <!-- ADD FINE MODAL -->
+  <div id="fineModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-weight: 700; color: #92400e;"><i class="fa-solid fa-receipt"></i> Add Contractor Fine</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeAddFineModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
-
-      <div style="text-align: center; margin-bottom: 1.5rem;">
-        <div class="user-avatar" id="drawerAvatar" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 0.75rem;">V</div>
-        <h4 style="font-size: 1.2rem; font-weight: 700;" id="drawerName">VIJAY BAMBHAVA</h4>
-        <span class="badge badge-active" style="margin-top: 0.25rem;" id="drawerRoleBadge">ADMINISTRATOR</span>
+      <div class="form-group"><label class="form-label">Contractor</label><select id="fineContSelect" class="form-input"></select></div>
+      <div class="form-group"><label class="form-label">EP Number</label><input type="text" id="fineEpNoInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label">EP Name</label><input type="text" id="fineEpNameInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Debit Amount (₹)</label><input type="number" id="fineDebitInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Reason</label><input type="text" id="fineReasonInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Payment Status</label>
+        <select id="fineStatusSelect" class="form-input">
+          <option value="Pending">Pending (બાકી)</option>
+          <option value="Done">Done (ચુકવાઈ ગયેલ)</option>
+        </select>
       </div>
-
-      <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.25rem;">
-        <div>
-          <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Portal Name</span>
-          <strong>maximal-vijay</strong>
-        </div>
-        <div>
-          <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Administrator Name</span>
-          <strong id="drawerBioAdminName">VIJAY BAMBHAVA</strong>
-        </div>
-        <div>
-          <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Staff ID</span>
-          <strong>106266409</strong>
-        </div>
-        <div>
-          <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Shift</span>
-          <strong>09:30 TO 06:00</strong>
-        </div>
-        <div>
-          <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Contact Number</span>
-          <strong id="drawerBioPhone">+91 9510039457</strong>
-        </div>
-        <div>
-          <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Official Emails</span>
-          <strong style="word-break: break-all;">BAMBHAVAVIJAY8@GMAIL.COM</strong><br>
-          <strong style="word-break: break-all;">MAXIMALVENTURES1@GMAIL.COM</strong>
-        </div>
-        <div id="drawerContractorNotice" style="margin-top: 1rem; padding: 0.75rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; display: none;">
-          <span style="color: #166534; font-size: 0.75rem; display: block;">Logged in as:</span>
-          <strong id="drawerContractorName" style="color: #15803d;">-</strong>
-        </div>
-      </div>
+      <button class="btn btn-warning" style="width: 100%;" onclick="saveNewFineRecord()">Save Fine Record</button>
     </div>
   </div>
 
@@ -825,75 +593,20 @@
   <div id="contractorModal" class="modal-overlay hidden">
     <div class="modal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-weight: 700;">Add Contractor Account</h3>
+        <h3 style="font-weight: 700;">Add Contractor</h3>
         <button class="btn btn-secondary btn-sm" onclick="closeAddContractorModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="form-group">
-        <label class="form-label">Contractor Name (શીટ મુજબ નામ)</label>
-        <input type="text" id="newContName" class="form-input" placeholder="e.g. RAJNIBHAI, SADAMBHAI">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Login Username</label>
-        <input type="text" id="newContUser" class="form-input" placeholder="e.g. rajni, sadam">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" id="newContPass" class="form-input" placeholder="e.g. rajni123">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Contact Number</label>
-        <input type="text" id="newContPhone" class="form-input" placeholder="Phone number">
-      </div>
-      <button class="btn btn-primary" style="width: 100%;" onclick="saveNewContractor()">
-        Save Contractor
-      </button>
-    </div>
-  </div>
-
-  <!-- ADD CONTRACTOR FINE MODAL -->
-  <div id="fineModal" class="modal-overlay hidden">
-    <div class="modal">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-weight: 700; color: #92400e;"><i class="fa-solid fa-receipt"></i> Add Contractor Fine</h3>
-        <button class="btn btn-secondary btn-sm" onclick="closeAddFineModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Select Contractor Name</label>
-        <select id="fineContSelect" class="form-input"></select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">EP Number</label>
-        <input type="text" id="fineEpNoInput" class="form-input" placeholder="e.g. 106261814">
-      </div>
-      <div class="form-group">
-        <label class="form-label">EP Name (વ્યક્તિનું નામ)</label>
-        <input type="text" id="fineEpNameInput" class="form-input" placeholder="e.g. MD ABDULLAH SHEKH">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Debit Payment (દંડની રકમ ₹)</label>
-        <input type="number" id="fineDebitInput" class="form-input" placeholder="e.g. 500">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Reason For Debit (દંડનું કારણ)</label>
-        <input type="text" id="fineReasonInput" class="form-input" placeholder="e.g. Gate pass lost / Safety violation">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Initial Payment Status</label>
-        <select id="fineStatusSelect" class="form-input">
-          <option value="Pending">Pending (બાકી દંડ)</option>
-          <option value="Done">Done (ચુકવાઈ ગયેલ)</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" style="width: 100%; background: #92400e;" onclick="saveNewFineRecord()">
-        Save Fine Record
-      </button>
+      <div class="form-group"><label class="form-label">Contractor Name</label><input type="text" id="newContName" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Username</label><input type="text" id="newContUser" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="newContPass" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Contact Number</label><input type="text" id="newContPhone" class="form-input"></div>
+      <button class="btn btn-primary" style="width: 100%;" onclick="saveNewContractor()">Save Contractor</button>
     </div>
   </div>
 
   <script>
     const MASTER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwScehukVsU_yJXGODnA-b_MCyTBZDhsmfN0sUExXptMuYK1m_CWFgvXtlFQ5Hoo02/exec";
 
-    // INITIAL USERS INCLUDING MANOJ
     const INITIAL_USERS = {
       vijay: { password: '2008', role: 'admin', name: 'VIJAY BAMBHAVA', phone: '+91 9510039457', avatar: 'V' },
       office: { password: '12345', role: 'office', name: 'OFFICE DESK', scope: 'ALL', canViewFine: 'YES' },
@@ -908,8 +621,16 @@
     let officeAccess = JSON.parse(localStorage.getItem('mv_office_access')) || {
       password: users.office.password || '12345',
       scope: users.office.scope || 'ALL',
-      canViewFine: users.office.canViewFine || 'YES'
+      canViewFine: users.office.canViewFine || 'YES',
+      manoj: {
+        password: users.manoj.password || '12345',
+        scope: users.manoj.scope || 'ALL',
+        canManageFine: true
+      }
     };
+    if (!officeAccess.manoj) {
+      officeAccess.manoj = { password: '12345', scope: 'ALL', canManageFine: true };
+    }
 
     let contractors = JSON.parse(localStorage.getItem('mv_contractors')) || [
       { name: 'MAXIMAL', username: 'maximal', password: '123', phone: '+91 9510039457' },
@@ -935,10 +656,6 @@
       if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(str)) {
         const parts = str.split('/');
         return `${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}-${parts[2].split(' ')[0]}`;
-      }
-      if (/^\d{4}[-/]\d{1,2}[-/]\d{1,2}/.test(str)) {
-        const parts = str.split('T')[0].split(' ')[0].split(/[-/]/);
-        return `${parts[2].padStart(2, '0')}-${parts[1].padStart(2, '0')}-${parts[0]}`;
       }
       const d = new Date(str);
       if (!isNaN(d.getTime())) {
@@ -977,7 +694,7 @@
         if (!isFetchingLive && currentUser) {
           autoFetchMasterData(false, true);
         }
-      }, 12000);
+      }, 10000);
     });
 
     async function handleLogin() {
@@ -991,7 +708,6 @@
       }
 
       let matched = checkCredentials(u, p);
-
       if (!matched && u !== 'vijay') {
         const btn = document.getElementById('loginSubmitBtn');
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ચકાસી રહ્યા છીએ...';
@@ -1019,22 +735,22 @@
       if (u === 'office' && p === (officeAccess.password || users.office.password)) {
         return { username: 'office', role: 'office', name: 'OFFICE DESK', scope: officeAccess.scope, canViewFine: officeAccess.canViewFine };
       }
-      if (u === 'manoj' && p === (users.manoj ? users.manoj.password : '12345')) {
-        return { username: 'manoj', role: 'office', name: 'MANOJ', scope: 'ALL', canViewFine: 'YES', canManageFine: true };
+      if (u === 'manoj' && p === (officeAccess.manoj.password || users.manoj.password)) {
+        return { 
+          username: 'manoj', 
+          role: 'office', 
+          name: 'MANOJ', 
+          scope: officeAccess.manoj.scope || 'ALL', 
+          canViewFine: 'YES', 
+          canManageFine: officeAccess.manoj.canManageFine !== false 
+        };
       }
       const found = contractors.find(c => 
-        ((c.username && c.username.toLowerCase() === u) || 
-         (c.name && c.name.toLowerCase() === u)) && 
+        ((c.username && c.username.toLowerCase() === u) || (c.name && c.name.toLowerCase() === u)) && 
         String(c.password).trim() === p
       );
       if (found) {
-        const userObj = {
-          password: found.password,
-          role: 'contractor',
-          name: found.name,
-          contractorName: found.name,
-          phone: found.phone || ''
-        };
+        const userObj = { password: found.password, role: 'contractor', name: found.name, contractorName: found.name, phone: found.phone || '' };
         users[u] = userObj;
         saveState();
         return { username: u, ...userObj };
@@ -1052,25 +768,18 @@
       const isAdmin = currentUser.role === 'admin';
       const isOffice = currentUser.role === 'office';
       const isContractor = currentUser.role === 'contractor';
-      const canManageFine = isAdmin || (currentUser.username === 'manoj' || currentUser.canManageFine === true);
+      const canManageFine = isAdmin || (currentUser.username === 'manoj' && currentUser.canManageFine !== false);
 
-      const displayName = currentUser.name || (isContractor ? currentUser.contractorName : (isOffice ? 'OFFICE' : 'VIJAY BAMBHAVA'));
+      const displayName = currentUser.name || (isContractor ? currentUser.contractorName : (currentUser.username === 'manoj' ? 'MANOJ' : 'OFFICE'));
       document.getElementById('navUserName').innerText = displayName;
-      document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : (currentUser.username === 'manoj' ? 'OFFICE (FINE ADMIN)' : currentUser.role.toUpperCase());
-      
+      document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : (currentUser.username === 'manoj' ? 'OFFICE (FINE ACCESS)' : currentUser.role.toUpperCase());
+
       const av = currentUser.avatar || displayName.charAt(0).toUpperCase();
-      if (av.startsWith('http')) {
-        document.getElementById('avatarDisplay').innerHTML = `<img src="${av}">`;
-        document.getElementById('drawerAvatar').innerHTML = `<img src="${av}" style="width:100%;height:100%;object-fit:cover;">`;
-      } else {
-        document.getElementById('avatarDisplay').innerText = av.charAt(0).toUpperCase();
-        document.getElementById('drawerAvatar').innerText = av.charAt(0).toUpperCase();
-      }
+      document.getElementById('avatarDisplay').innerText = av.charAt(0).toUpperCase();
 
       document.getElementById('welcomeUserText').innerText = `સ્વાગત છે, ${displayName}!`;
-      document.getElementById('drawerBioAdminName').innerText = users.vijay.name || 'VIJAY BAMBHAVA';
-      document.getElementById('drawerBioPhone').innerText = users.vijay.phone || '+91 9510039457';
 
+      // Permissions
       document.getElementById('adminPullSheetBtn').style.display = (isAdmin || isOffice) ? 'inline-flex' : 'none';
       document.getElementById('adminSaveSheetBtn').style.display = isAdmin ? 'inline-flex' : 'none';
       document.getElementById('tabEpEntry').style.display = isAdmin ? 'inline-flex' : 'none';
@@ -1078,58 +787,74 @@
       document.getElementById('menuTileEntry').style.display = isAdmin ? 'flex' : 'none';
       document.getElementById('menuTileContractors').style.display = isAdmin ? 'flex' : 'none';
 
-      // Fine controls for Admin & MANOJ
       document.getElementById('mainFineAddBtn').style.display = canManageFine ? 'inline-flex' : 'none';
       document.getElementById('mainFineBulkDoneBtn').style.display = canManageFine ? 'inline-flex' : 'none';
       document.getElementById('fineActionTh').style.display = canManageFine ? 'table-cell' : 'none';
       document.getElementById('fineSelectAllTh').style.display = canManageFine ? 'table-cell' : 'none';
 
-      if (isOffice && currentUser.username !== 'manoj' && officeAccess.canViewFine === 'NO') {
-        document.getElementById('tabContractorFine').style.display = 'none';
-        document.getElementById('menuTileFine').style.display = 'none';
-      } else {
-        document.getElementById('tabContractorFine').style.display = 'inline-flex';
-        document.getElementById('menuTileFine').style.display = 'flex';
-      }
-
-      document.getElementById('adminContractorFilterBox').style.display = (isAdmin || isOffice) ? 'block' : 'none';
-      document.getElementById('fineContractorFilterBox').style.display = (isAdmin || isOffice) ? 'block' : 'none';
-
       populateContractorDropdown();
-      populateOfficeAccessScopeDropdown();
-
+      populateAccessScopeDropdowns();
+      updateDashboardStats();
       switchPage('menu');
     }
 
+    function updateDashboardStats() {
+      const activeCount = epList.filter(x => x.status === 'Active').length;
+      const cancelCount = epList.filter(x => x.status === 'Cancel').length;
+      const pendingFines = fineList.filter(x => x.status === 'Pending').length;
+      const totalFine = fineList.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
+
+      document.getElementById('statActiveCount').innerText = activeCount;
+      document.getElementById('statCancelCount').innerText = cancelCount;
+      document.getElementById('statPendingFineCount').innerText = pendingFines;
+      document.getElementById('statTotalFineAmt').innerText = `₹${totalFine.toLocaleString('en-IN')}`;
+    }
+
+    // SAFE POPULATE DROPDOWNS WITHOUT RESETTING USER FILTER
     function populateContractorDropdown() {
       const uniqueContractors = [...new Set(contractors.map(c => c.name))];
       
       const dd1 = document.getElementById('reportContractorDropdown');
+      const curVal1 = dd1.value || 'ALL';
       dd1.innerHTML = '<option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સ (All) --</option>';
-      uniqueContractors.forEach(cName => { dd1.innerHTML += `<option value="${cName}">${cName}</option>`; });
+      uniqueContractors.forEach(c => { dd1.innerHTML += `<option value="${c}">${c}</option>`; });
+      dd1.value = curVal1;
 
       const dd2 = document.getElementById('fineContractorDropdown');
+      const curVal2 = dd2.value || 'ALL';
       dd2.innerHTML = '<option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સ (All) --</option>';
-      uniqueContractors.forEach(cName => { dd2.innerHTML += `<option value="${cName}">${cName}</option>`; });
+      uniqueContractors.forEach(c => { dd2.innerHTML += `<option value="${c}">${c}</option>`; });
+      dd2.value = curVal2;
 
       const fineDD = document.getElementById('fineContSelect');
       if (fineDD) {
         fineDD.innerHTML = '';
-        uniqueContractors.forEach(cName => { fineDD.innerHTML += `<option value="${cName}">${cName}</option>`; });
+        uniqueContractors.forEach(c => { fineDD.innerHTML += `<option value="${c}">${c}</option>`; });
       }
     }
 
-    function populateOfficeAccessScopeDropdown() {
-      const sel = document.getElementById('officeAccessScopeSelect');
-      if (!sel) return;
-      sel.innerHTML = '<option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સનો ડેટા (Full View) --</option>';
+    function populateAccessScopeDropdowns() {
       const uniqueContractors = [...new Set(contractors.map(c => c.name))];
-      uniqueContractors.forEach(cName => {
-        sel.innerHTML += `<option value="${cName}">માત્ર ${cName} નો જ ડેટા</option>`;
-      });
-      sel.value = officeAccess.scope || 'ALL';
-      document.getElementById('officeUserPasswordInput').value = officeAccess.password || '12345';
-      document.getElementById('officeFineAccessSelect').value = officeAccess.canViewFine || 'YES';
+
+      // Office
+      const selOffice = document.getElementById('officeAccessScopeSelect');
+      if (selOffice) {
+        selOffice.innerHTML = '<option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સ (Full View) --</option>';
+        uniqueContractors.forEach(c => { selOffice.innerHTML += `<option value="${c}">માત્ર ${c} નો ડેટા</option>`; });
+        selOffice.value = officeAccess.scope || 'ALL';
+        document.getElementById('officeUserPasswordInput').value = officeAccess.password || '12345';
+        document.getElementById('officeFineAccessSelect').value = officeAccess.canViewFine || 'YES';
+      }
+
+      // Manoj
+      const selManoj = document.getElementById('manojAccessScopeSelect');
+      if (selManoj) {
+        selManoj.innerHTML = '<option value="ALL">-- તમામ કોન્ટ્રાક્ટર્સ (Full View) --</option>';
+        uniqueContractors.forEach(c => { selManoj.innerHTML += `<option value="${c}">માત્ર ${c} નો ડેટા</option>`; });
+        selManoj.value = (officeAccess.manoj && officeAccess.manoj.scope) ? officeAccess.manoj.scope : 'ALL';
+        document.getElementById('manojUserPasswordInput').value = (officeAccess.manoj && officeAccess.manoj.password) ? officeAccess.manoj.password : '12345';
+        document.getElementById('manojFineManageSelect').value = (officeAccess.manoj && officeAccess.manoj.canManageFine !== false) ? 'YES' : 'NO';
+      }
     }
 
     function switchPage(pageKey) {
@@ -1144,7 +869,7 @@
       };
 
       if ((pageKey === 'entry' || pageKey === 'contractors') && currentUser && currentUser.role !== 'admin') {
-        alert('આ પેજ માત્ર Administrator (VIJAY) માટે જ છે!');
+        alert('આ સેક્શન માત્ર Administrator (VIJAY) માટે જ છે!');
         return;
       }
 
@@ -1157,13 +882,11 @@
       });
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
       if (pageKey === 'report') applyStatusReportFilter();
       if (pageKey === 'fine') applyFineFilter();
       if (pageKey === 'entry') renderEpEntryTable();
       if (pageKey === 'cancel') renderEpCancelTable();
       if (pageKey === 'contractors') renderContractorsTable();
-      if (pageKey === 'settings') loadSettingsPageData();
     }
 
     function applyStatusReportFilter() {
@@ -1173,14 +896,12 @@
 
       if (currentUser.role === 'contractor') {
         targetContractor = currentUser.contractorName;
-      } else if (currentUser.role === 'office') {
-        if (currentUser.username !== 'manoj' && officeAccess.scope && officeAccess.scope !== 'ALL') {
-          targetContractor = officeAccess.scope;
-        } else {
-          targetContractor = document.getElementById('reportContractorDropdown').value;
-        }
+      } else if (currentUser.username === 'office' && officeAccess.scope && officeAccess.scope !== 'ALL') {
+        targetContractor = officeAccess.scope;
+      } else if (currentUser.username === 'manoj' && officeAccess.manoj && officeAccess.manoj.scope && officeAccess.manoj.scope !== 'ALL') {
+        targetContractor = officeAccess.manoj.scope;
       } else {
-        targetContractor = document.getElementById('reportContractorDropdown').value;
+        targetContractor = document.getElementById('reportContractorDropdown').value || 'ALL';
       }
 
       const filtered = epList.filter(item => {
@@ -1192,10 +913,8 @@
 
       currentFilteredRecords = filtered;
       const tbody = document.getElementById('statusReportTableBody');
-
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">કોઈ ડેટા મળ્યો નથી.</td></tr>`;
-        document.getElementById('excelExportActionRow').classList.add('hidden');
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ ડેટા મળ્યો નથી.</td></tr>`;
         return;
       }
 
@@ -1207,40 +926,12 @@
           <td>${row.epName || '-'}</td>
           <td>${row.plant || '-'}</td>
           <td style="font-weight: 700; color: #1e3a8a;">${cleanDateString(row.entryDate) || '-'}</td>
-          <td>
-            <span class="badge ${row.status === 'Active' ? 'badge-active' : 'badge-cancel'}">
-              ${row.status}
-            </span>
-          </td>
+          <td><span class="badge ${row.status === 'Active' ? 'badge-active' : 'badge-cancel'}">${row.status}</span></td>
         </tr>
       `).join('');
-
-      document.getElementById('excelExportActionRow').classList.remove('hidden');
-      document.getElementById('recordCountText').innerText = `Total Records: ${filtered.length}`;
     }
 
-    function downloadReportExcel() {
-      if (!currentFilteredRecords || currentFilteredRecords.length === 0) {
-        alert('ડાઉનલોડ કરવા માટે કોઈ ડેટા ઉપલબ્ધ નથી!');
-        return;
-      }
-      const excelRows = currentFilteredRecords.map((r, idx) => ({
-        "Sr. No.": idx + 1,
-        "Contractor Name": r.contractor || '-',
-        "EP Number": r.epNo || '-',
-        "EP Name": r.epName || '-',
-        "Plant": r.plant || '-',
-        "EP Entry Date": cleanDateString(r.entryDate) || '-',
-        "Status": r.status || '-'
-      }));
-      const ws = XLSX.utils.json_to_sheet(excelRows);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "EP_Report");
-      const namePrefix = currentUser.role === 'contractor' ? currentUser.contractorName : 'maximal-vijay';
-      XLSX.writeFile(wb, `${namePrefix}_Report_${getToday()}.xlsx`);
-    }
-
-    // CONTRACTOR FINE: FILTER + SUM + MULTI-SELECT
+    // CONTRACTOR FINE MANAGEMENT (FILTER & TOTAL AMOUNT)
     function applyFineFilter() {
       const statusFilter = document.getElementById('fineStatusFilter').value;
       const search = (document.getElementById('fineSearchKeyword').value || '').trim().toLowerCase();
@@ -1248,17 +939,15 @@
 
       if (currentUser.role === 'contractor') {
         targetContractor = currentUser.contractorName;
-      } else if (currentUser.role === 'office') {
-        if (currentUser.username !== 'manoj' && officeAccess.scope && officeAccess.scope !== 'ALL') {
-          targetContractor = officeAccess.scope;
-        } else {
-          targetContractor = document.getElementById('fineContractorDropdown').value;
-        }
+      } else if (currentUser.username === 'office' && officeAccess.scope && officeAccess.scope !== 'ALL') {
+        targetContractor = officeAccess.scope;
+      } else if (currentUser.username === 'manoj' && officeAccess.manoj && officeAccess.manoj.scope && officeAccess.manoj.scope !== 'ALL') {
+        targetContractor = officeAccess.manoj.scope;
       } else {
-        targetContractor = document.getElementById('fineContractorDropdown').value;
+        targetContractor = document.getElementById('fineContractorDropdown').value || 'ALL';
       }
 
-      const canManageFine = (currentUser.role === 'admin') || (currentUser.username === 'manoj' || currentUser.canManageFine === true);
+      const canManageFine = (currentUser.role === 'admin') || (currentUser.username === 'manoj' && currentUser.canManageFine !== false);
 
       const filtered = fineList.filter(item => {
         const itemStatus = item.status || 'Pending';
@@ -1273,30 +962,25 @@
       const tfoot = document.getElementById('contractorFineTableFoot');
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${canManageFine ? 10 : 8}" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">કોઈ દંડ (Fine) નો ડેટા મળ્યો નથી.</td></tr>`;
-        document.getElementById('fineExcelExportRow').classList.add('hidden');
-        tfoot.classList.add('hidden');
+        tbody.innerHTML = `<tr><td colspan="${canManageFine ? 10 : 8}" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ દંડ (Fine) નો ડેટા મળ્યો નથી.</td></tr>`;
+        document.getElementById('fineTotalAmountTd').innerText = '₹0';
         return;
       }
 
-      // Calculate Total Amount
-      let totalAmount = 0;
-
+      let totalFilteredAmt = 0;
       tbody.innerHTML = filtered.map((row, idx) => {
         const isDone = (row.status === 'Done');
         const numDebit = parseFloat(row.debit) || 0;
-        totalAmount += numDebit;
+        totalFilteredAmt += numDebit;
 
         const actionBtn = canManageFine ? (
           isDone 
-            ? `<button class="btn btn-secondary btn-sm" onclick="revertFineStatus('${row.id}')" title="Revert to Pending"><i class="fa-solid fa-rotate-left"></i> Revert</button>`
-            : `<button class="btn btn-success btn-sm" onclick="markFineDone('${row.id}')" title="ચુકવણી થઈ ગઈ (Done કરો)"><i class="fa-solid fa-check-double"></i> Mark Done</button>`
+            ? `<button class="btn btn-secondary btn-sm" onclick="revertFineStatus('${row.id}')"><i class="fa-solid fa-rotate-left"></i> Revert</button>`
+            : `<button class="btn btn-success btn-sm" onclick="markFineDone('${row.id}')"><i class="fa-solid fa-check-double"></i> Done</button>`
         ) : '';
 
         const chkCol = canManageFine ? `
-          <td style="text-align: center;">
-            <input type="checkbox" class="fine-select-chk" data-id="${row.id}">
-          </td>
+          <td style="text-align: center;"><input type="checkbox" class="fine-select-chk" data-id="${row.id}"></td>
         ` : '';
 
         return `
@@ -1309,72 +993,54 @@
             <td><strong style="color: var(--danger); font-size: 0.95rem;">₹${numDebit}</strong></td>
             <td><span class="badge badge-pending">${row.reason || '-'}</span></td>
             <td style="font-weight: 700; color: #1e3a8a;">${cleanDateString(row.date) || '-'}</td>
-            <td>
-              <span class="badge ${isDone ? 'badge-done' : 'badge-pending'}">
-                ${isDone ? 'Done (ચુકવાઈ ગયેલ)' : 'Pending (બાકી)'}
-              </span>
-            </td>
+            <td><span class="badge ${isDone ? 'badge-done' : 'badge-pending'}">${isDone ? 'Done (ચુકવાઈ ગયેલ)' : 'Pending (બાકી)'}</span></td>
             ${canManageFine ? `<td>${actionBtn}</td>` : ''}
           </tr>
         `;
       }).join('');
 
-      // Show Total Amount in Footer
-      document.getElementById('fineTotalAmountTd').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
-      tfoot.classList.remove('hidden');
-
-      document.getElementById('fineExcelExportRow').classList.remove('hidden');
-      document.getElementById('fineRecordCountText').innerText = `Total Fine Records: ${filtered.length}`;
-      if (document.getElementById('fineSelectAllChk')) {
-        document.getElementById('fineSelectAllChk').checked = false;
-      }
+      document.getElementById('fineTotalAmountTd').innerText = `₹${totalFilteredAmt.toLocaleString('en-IN')}`;
     }
 
-    // MULTI-SELECT FINES TOGGLE
     function toggleSelectAllFines(isChecked) {
-      const checkboxes = document.querySelectorAll('.fine-select-chk');
-      checkboxes.forEach(cb => cb.checked = isChecked);
+      document.querySelectorAll('.fine-select-chk').forEach(cb => cb.checked = isChecked);
     }
 
-    // BULK MARK AS DONE
     async function markSelectedFinesDone() {
       const selectedBoxes = Array.from(document.querySelectorAll('.fine-select-chk:checked'));
       if (selectedBoxes.length === 0) {
-        alert('કૃપા કરીને Done કરવા માટે ઓછામાં ઓછો ૧ દંડ સિલેક્ટ કરો!');
+        alert('કૃપા કરીને Done કરવા માટે ઓછામાં ઓછો ૧ દંડ પસંદ કરો!');
         return;
       }
 
-      if (!confirm(`શું તમે સિલેક્ટ કરેલા તમામ ${selectedBoxes.length} દંડને એકસાથે Done (ચુકવાઈ ગયેલ) કરવા માંગો છો?`)) {
-        return;
-      }
+      if (!confirm(`શું તમે સિલેક્ટ કરેલા તમામ ${selectedBoxes.length} દંડને એકસાથે Done (ચુકવાઈ ગયેલ) કરવા માંગો છો?`)) return;
 
-      const selectedIds = selectedBoxes.map(b => b.getAttribute('data-id'));
-      const todayDate = getToday();
+      const ids = selectedBoxes.map(b => b.getAttribute('data-id'));
+      const today = getToday();
 
       fineList.forEach(item => {
-        if (selectedIds.includes(item.id)) {
+        if (ids.includes(item.id)) {
           item.status = 'Done';
-          item.doneDate = todayDate;
+          item.doneDate = today;
         }
       });
 
       saveState();
       applyFineFilter();
-      alert(`${selectedIds.length} દંડ સફળતાપૂર્વક Done થઈ ગયા છે! Sheet માં સેવ થઈ રહ્યું છે...`);
+      updateDashboardStats();
       await syncWithGoogleSheet();
+      alert(`${ids.length} દંડ સફળતાપૂર્વક Done થઈ ગયા!`);
     }
 
     async function markFineDone(id) {
       const target = fineList.find(f => f.id === id);
-      if (target) {
-        if (confirm(`શું Contractor "${target.contractor}" નો ₹${target.debit} દંડ ચુકવાઈ ગયો છે (Done કરવો છે)?`)) {
-          target.status = 'Done';
-          target.doneDate = getToday();
-          saveState();
-          applyFineFilter();
-          alert('દંડ સફળતાપૂર્વક Done (ચુકવાઈ ગયેલ) તરીકે અપડેટ થઈ ગયો!');
-          await syncWithGoogleSheet();
-        }
+      if (target && confirm(`શું Contractor "${target.contractor}" નો ₹${target.debit} દંડ Done કરવો છે?`)) {
+        target.status = 'Done';
+        target.doneDate = getToday();
+        saveState();
+        applyFineFilter();
+        updateDashboardStats();
+        await syncWithGoogleSheet();
       }
     }
 
@@ -1385,31 +1051,9 @@
         target.doneDate = '';
         saveState();
         applyFineFilter();
+        updateDashboardStats();
         await syncWithGoogleSheet();
       }
-    }
-
-    function downloadFineExcel() {
-      if (!currentFilteredFines || currentFilteredFines.length === 0) {
-        alert('ડાઉનલોડ કરવા માટે કોઈ ડેટા નથી!');
-        return;
-      }
-      const excelRows = currentFilteredFines.map((r, idx) => ({
-        "Sr. No.": idx + 1,
-        "Contractor Name": r.contractor || '-',
-        "EP Number": r.epNo || '-',
-        "EP Name": r.epName || '-',
-        "Debit Payment": r.debit || '0',
-        "Reason For Debit": r.reason || '-',
-        "Fine Date": cleanDateString(r.date) || '-',
-        "Payment Status": r.status || 'Pending',
-        "Payment Done Date": cleanDateString(r.doneDate) || '-'
-      }));
-      const ws = XLSX.utils.json_to_sheet(excelRows);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Contractor_Fines");
-      const namePrefix = currentUser.role === 'contractor' ? currentUser.contractorName : 'maximal-vijay';
-      XLSX.writeFile(wb, `${namePrefix}_Contractor_Fines_${getToday()}.xlsx`);
     }
 
     function openAddFineModal() {
@@ -1418,12 +1062,9 @@
       document.getElementById('fineEpNameInput').value = '';
       document.getElementById('fineDebitInput').value = '';
       document.getElementById('fineReasonInput').value = '';
-      document.getElementById('fineStatusSelect').value = 'Pending';
       document.getElementById('fineModal').classList.remove('hidden');
     }
-    function closeAddFineModal() {
-      document.getElementById('fineModal').classList.add('hidden');
-    }
+    function closeAddFineModal() { document.getElementById('fineModal').classList.add('hidden'); }
 
     async function saveNewFineRecord() {
       const cont = document.getElementById('fineContSelect').value;
@@ -1434,282 +1075,40 @@
       const status = document.getElementById('fineStatusSelect').value;
 
       if (!cont || !epNo || !debit || !reason) {
-        alert('બધી વિગતો (Contractor, EP No, Debit, Reason) ભરવી જરૂરી છે!');
+        alert('બધી વિગતો ભરવી જરૂરી છે!');
         return;
       }
 
-      const fineItem = {
+      fineList.unshift({
         id: 'f_' + Date.now(),
         contractor: cont,
-        epNo: epNo,
-        epName: epName || '-',
-        debit: debit,
-        reason: reason,
-        date: getToday(),
-        status: status,
-        doneDate: (status === 'Done') ? getToday() : ''
-      };
-
-      fineList.unshift(fineItem);
-      saveState();
-      closeAddFineModal();
-      alert(`Contractor Fine સફળતાપૂર્વક ઉમેરાઈ ગયો! Google Sheet માં સેવ થઈ રહ્યો છે...`);
-      applyFineFilter();
-      await syncWithGoogleSheet();
-    }
-
-    function renderEpEntryTable() {
-      const tbody = document.getElementById('epEntryTableBody');
-      const activeOnly = epList.filter(item => item.status === 'Active');
-
-      if (activeOnly.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ એક્ટિવ પાસ નથી.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = activeOnly.map((row, idx) => `
-        <tr>
-          <td style="text-align: center;">
-            <input type="checkbox" class="pass-select-chk" data-id="${row.id}">
-          </td>
-          <td>${idx + 1}</td>
-          <td>
-            <input type="text" class="form-input" style="padding: 4px; min-width: 140px;" value="${row.contractor || ''}" onchange="updateEpItem('${row.id}', 'contractor', this.value)">
-          </td>
-          <td>
-            <input type="text" class="form-input" style="padding: 4px; width: 110px;" value="${row.epNo || ''}" onchange="updateEpItem('${row.id}', 'epNo', this.value)">
-          </td>
-          <td>
-            <input type="text" class="form-input" style="padding: 4px;" value="${row.epName || ''}" onchange="updateEpItem('${row.id}', 'epName', this.value)">
-          </td>
-          <td>
-            <input type="text" class="form-input" style="padding: 4px; width: 110px;" value="${row.plant || ''}" onchange="updateEpItem('${row.id}', 'plant', this.value)">
-          </td>
-          <td style="white-space: nowrap; font-weight: 700; color: #1e3a8a;">${cleanDateString(row.entryDate)}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" onclick="cancelSinglePassAction('${row.id}')" title="Cancel Pass">
-              <i class="fa-solid fa-ban"></i> Cancel
-            </button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function toggleSelectAllPasses(isChecked) {
-      const checkboxes = document.querySelectorAll('.pass-select-chk');
-      checkboxes.forEach(cb => cb.checked = isChecked);
-    }
-
-    async function cancelSelectedPasses() {
-      const selectedBoxes = Array.from(document.querySelectorAll('.pass-select-chk:checked'));
-      if (selectedBoxes.length === 0) {
-        alert('કૃપા કરીને કેન્સલ કરવા માટે ઓછામાં ઓછો એક પાસ સિલેક્ટ કરો!');
-        return;
-      }
-
-      if (!confirm(`શું તમે સિલેક્ટ કરેલા તમામ ${selectedBoxes.length} પાસ એકસાથે Cancel કરવા માંગો છો?`)) {
-        return;
-      }
-
-      const selectedIds = selectedBoxes.map(b => b.getAttribute('data-id'));
-      const todayDate = getToday();
-
-      epList.forEach(item => {
-        if (selectedIds.includes(item.id)) {
-          item.status = 'Cancel';
-          item.cancelDate = todayDate;
-        }
+        epNo, epName: epName || '-',
+        debit, reason, date: getToday(),
+        status, doneDate: status === 'Done' ? getToday() : ''
       });
 
       saveState();
-      renderEpEntryTable();
-      document.getElementById('selectAllCheckbox').checked = false;
-      alert(`${selectedIds.length} પાસ સફળતાપૂર્વક કેન્સલ થઈ ગયા છે!`);
+      closeAddFineModal();
+      applyFineFilter();
+      updateDashboardStats();
       await syncWithGoogleSheet();
+      alert('નવો દંડ સફળતાપૂર્વક ઉમેરાઈ ગયો!');
     }
 
-    function cancelSinglePassAction(id) {
-      const target = epList.find(x => x.id === id);
-      if (target) {
-        if (confirm(`શું તમે પાસ ${target.epNo} કેન્સલ કરવા માંગો છો?`)) {
-          target.status = 'Cancel';
-          target.cancelDate = getToday();
-          saveState();
-          renderEpEntryTable();
-          syncWithGoogleSheet();
-        }
-      }
-    }
+    // MANOJ USER CONTROL (ADMIN SETTINGS)
+    async function saveManojSettings() {
+      const newPass = document.getElementById('manojUserPasswordInput').value.trim();
+      const newScope = document.getElementById('manojAccessScopeSelect').value;
+      const canManage = document.getElementById('manojFineManageSelect').value === 'YES';
 
-    function addNewEpRow() {
-      const defaultCont = contractors.length > 0 ? contractors[0].name : 'MAXIMAL';
-      const newPass = {
-        id: String(Date.now()),
-        contractor: defaultCont,
-        epNo: `106${Math.floor(100000 + Math.random() * 900000)}`,
-        epName: 'નવું નામ',
-        plant: 'CHO (A) KC2',
-        entryDate: getToday(),
-        status: 'Active',
-        cancelDate: ''
-      };
-      epList.unshift(newPass);
+      if (!newPass) { alert('Password ખાલી ન હોઈ શકે!'); return; }
+
+      officeAccess.manoj = { password: newPass, scope: newScope, canManageFine: canManage };
+      users.manoj = { password: newPass, role: 'office', name: 'MANOJ', scope: newScope, canViewFine: 'YES', canManageFine: canManage };
+
       saveState();
-      renderEpEntryTable();
-      populateContractorDropdown();
-    }
-
-    function updateEpItem(id, field, value) {
-      const target = epList.find(x => x.id === id);
-      if (target) {
-        target[field] = value;
-        saveState();
-      }
-    }
-
-    function renderEpCancelTable() {
-      const tbody = document.getElementById('cancelTableBody');
-      let cancelled = epList.filter(item => item.status === 'Cancel');
-
-      if (currentUser.role === 'contractor') {
-        cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === currentUser.contractorName.toLowerCase());
-      } else if (currentUser.role === 'office') {
-        if (currentUser.username !== 'manoj' && officeAccess.scope && officeAccess.scope !== 'ALL') {
-          cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === officeAccess.scope.toLowerCase());
-        }
-      }
-
-      if (cancelled.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ કેન્સલ કરેલ પાસ નથી.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = cancelled.map((row, idx) => `
-        <tr>
-          <td>${idx + 1}</td>
-          <td><span class="badge badge-contractor">${row.contractor || '-'}</span></td>
-          <td><strong>${row.epNo || '-'}</strong></td>
-          <td>${row.epName || '-'}</td>
-          <td>${row.plant || '-'}</td>
-          <td>${cleanDateString(row.entryDate)}</td>
-          <td><strong style="color: var(--danger); font-weight: 700;">${cleanDateString(row.cancelDate) || getToday()}</strong></td>
-          <td><span class="badge badge-cancel">Cancel</span></td>
-        </tr>
-      `).join('');
-    }
-
-    function downloadCancelDataExcel() {
-      let cancelled = epList.filter(item => item.status === 'Cancel');
-      if (currentUser.role === 'contractor') {
-        cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === currentUser.contractorName.toLowerCase());
-      } else if (currentUser.role === 'office' && officeAccess.scope && officeAccess.scope !== 'ALL') {
-        cancelled = cancelled.filter(x => (x.contractor || '').toLowerCase() === officeAccess.scope.toLowerCase());
-      }
-      if (cancelled.length === 0) {
-        alert('કોઈ કેન્સલ ડેટા નથી!');
-        return;
-      }
-
-      const data = cancelled.map((r, idx) => ({
-        "Sr. No.": idx + 1,
-        "Contractor Name": r.contractor || '-',
-        "EP Number": r.epNo || '-',
-        "EP Name": r.epName || '-',
-        "Plant": r.plant || '-',
-        "EP Entry Date": cleanDateString(r.entryDate),
-        "Cancel Date": cleanDateString(r.cancelDate) || getToday(),
-        "Status": "Cancel"
-      }));
-
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Cancel_Report");
-      XLSX.writeFile(wb, `maximal-vijay_Cancel_${getToday()}.xlsx`);
-    }
-
-    function renderContractorsTable() {
-      const tbody = document.getElementById('contractorTableBody');
-      tbody.innerHTML = contractors.map((c, idx) => `
-        <tr>
-          <td>${idx + 1}</td>
-          <td><input type="text" class="form-input" style="padding: 4px;" value="${c.name}" onchange="updateContractorField(${idx}, 'name', this.value)"></td>
-          <td><input type="text" class="form-input" style="padding: 4px; font-weight: 700;" value="${c.username}" onchange="updateContractorField(${idx}, 'username', this.value)"></td>
-          <td><input type="text" class="form-input" style="padding: 4px;" value="${c.password}" onchange="updateContractorField(${idx}, 'password', this.value)"></td>
-          <td><input type="text" class="form-input" style="padding: 4px;" value="${c.phone || ''}" onchange="updateContractorField(${idx}, 'phone', this.value)"></td>
-          <td>
-            <button class="btn btn-danger btn-sm" onclick="deleteContractor(${idx})"><i class="fa-solid fa-trash"></i> Delete</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function openAddContractorModal() {
-      document.getElementById('newContName').value = '';
-      document.getElementById('newContUser').value = '';
-      document.getElementById('newContPass').value = '';
-      document.getElementById('newContPhone').value = '';
-      document.getElementById('contractorModal').classList.remove('hidden');
-    }
-    function closeAddContractorModal() {
-      document.getElementById('contractorModal').classList.add('hidden');
-    }
-
-    async function saveNewContractor() {
-      const name = document.getElementById('newContName').value.trim();
-      const u = document.getElementById('newContUser').value.trim().toLowerCase();
-      const p = document.getElementById('newContPass').value.trim();
-      const phone = document.getElementById('newContPhone').value.trim();
-
-      if (!name || !u || !p) {
-        alert('Contractor Name, Username અને Password જરૂરી છે!');
-        return;
-      }
-
-      if (contractors.some(c => c.username.toLowerCase() === u)) {
-        alert('આ Username પહેલેથી જ અસ્તિત્વમાં છે!');
-        return;
-      }
-
-      contractors.push({ name, username: u, password: p, phone });
-      users[u] = { password: p, role: 'contractor', name: name, contractorName: name, phone: phone };
-      saveState();
-      closeAddContractorModal();
-      renderContractorsTable();
-      populateContractorDropdown();
-      populateOfficeAccessScopeDropdown();
-      alert(`Contractor "${name}" ઉમેરાઈ ગયો!`);
+      alert('MANOJ User ના કંટ્રોલ સેટિંગ્સ સફળતાપૂર્વક સાચવી લીધા!');
       await syncWithGoogleSheet();
-    }
-
-    function updateContractorField(idx, field, value) {
-      const oldUsername = contractors[idx].username;
-      contractors[idx][field] = value;
-      if (field === 'username' || field === 'password' || field === 'name') {
-        delete users[oldUsername];
-        users[contractors[idx].username.toLowerCase()] = {
-          password: contractors[idx].password,
-          role: 'contractor',
-          name: contractors[idx].name,
-          contractorName: contractors[idx].name,
-          phone: contractors[idx].phone
-        };
-      }
-      saveState();
-      populateContractorDropdown();
-      populateOfficeAccessScopeDropdown();
-    }
-
-    function deleteContractor(idx) {
-      if (confirm(`શું તમે આ કોન્ટ્રાક્ટર ID ડિલીટ કરવા માંગો છો?`)) {
-        const u = contractors[idx].username.toLowerCase();
-        delete users[u];
-        contractors.splice(idx, 1);
-        saveState();
-        renderContractorsTable();
-        populateContractorDropdown();
-        populateOfficeAccessScopeDropdown();
-        syncWithGoogleSheet();
-      }
     }
 
     async function saveOfficeSettings() {
@@ -1717,160 +1116,35 @@
       const newScope = document.getElementById('officeAccessScopeSelect').value;
       const canFine = document.getElementById('officeFineAccessSelect').value;
 
-      if (!newPass) {
-        alert('OFFICE Password ખાલી ન હોઈ શકે!');
-        return;
-      }
+      if (!newPass) { alert('Password ખાલી ન હોઈ શકે!'); return; }
 
       officeAccess.password = newPass;
       officeAccess.scope = newScope;
       officeAccess.canViewFine = canFine;
-
       users.office.password = newPass;
       users.office.scope = newScope;
       users.office.canViewFine = canFine;
 
       saveState();
-      alert('OFFICE User ના સેટિંગ્સ સફળતાપૂર્વક અપડેટ થઈ ગયા!');
+      alert('OFFICE User ના સેટિંગ્સ સફળતાપૂર્વક સાચવી લીધા!');
       await syncWithGoogleSheet();
     }
 
-    function loadSettingsPageData() {
-      document.getElementById('prefDisplayNameInput').value = currentUser.name || '';
-      document.getElementById('prefContactInput').value = currentUser.phone || '';
-      document.getElementById('prefAvatarInput').value = currentUser.avatar || '';
-    }
-
-    async function savePersonalPreferences() {
-      const dName = document.getElementById('prefDisplayNameInput').value.trim();
-      const phone = document.getElementById('prefContactInput').value.trim();
-      const avatar = document.getElementById('prefAvatarInput').value.trim();
-
-      if (dName) currentUser.name = dName;
-      currentUser.phone = phone;
-      currentUser.avatar = avatar;
-
-      if (currentUser.username === 'vijay') {
-        users.vijay.name = dName || 'VIJAY BAMBHAVA';
-        users.vijay.phone = phone;
-        users.vijay.avatar = avatar;
-        document.getElementById('drawerBioAdminName').innerText = users.vijay.name;
-        document.getElementById('drawerBioPhone').innerText = phone;
-      } else if (currentUser.role === 'contractor') {
-        const c = contractors.find(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
-        if (c) c.phone = phone;
-      }
-
-      if (users[currentUser.username]) {
-        users[currentUser.username].name = currentUser.name;
-        users[currentUser.username].phone = phone;
-        users[currentUser.username].avatar = avatar;
-      }
-
-      document.getElementById('navUserName').innerText = currentUser.name;
-      const av = avatar || currentUser.name.charAt(0).toUpperCase();
-      if (av.startsWith('http')) {
-        document.getElementById('avatarDisplay').innerHTML = `<img src="${av}">`;
-        document.getElementById('drawerAvatar').innerHTML = `<img src="${av}" style="width:100%;height:100%;object-fit:cover;">`;
-      } else {
-        document.getElementById('avatarDisplay').innerText = av.charAt(0).toUpperCase();
-        document.getElementById('drawerAvatar').innerText = av.charAt(0).toUpperCase();
-      }
-
-      saveState();
-      alert('પ્રોફાઇલ વિગતો સફળતાપૂર્વક સાચવી લેવામાં આવી!');
-      await syncWithGoogleSheet();
-    }
-
-    async function handlePasswordChange() {
-      const cur = document.getElementById('curPassInput').value.trim();
-      const nxt = document.getElementById('newPassInput').value.trim();
-      const cnf = document.getElementById('confirmPassInput').value.trim();
-
-      if (cur !== currentUser.password) {
-        alert('હાલનો પાસવર્ડ ખોટો છે!');
-        return;
-      }
-      if (!nxt || nxt.length < 4) {
-        alert('નવો પાસવર્ડ ઓછામાં ઓછો 4 અક્ષરનો હોવો જોઈએ!');
-        return;
-      }
-      if (nxt !== cnf) {
-        alert('બંને પાસવર્ડ સરખા નથી!');
-        return;
-      }
-
-      currentUser.password = nxt;
-      if (users[currentUser.username]) users[currentUser.username].password = nxt;
-      if (currentUser.role === 'contractor') {
-        const c = contractors.find(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
-        if (c) c.password = nxt;
-      }
-      saveState();
-      alert('પાસવર્ડ સફળતાપૂર્વક બદલાઈ ગયો છે! ક્લાઉડમાં અપડેટ થઈ રહ્યો છે...');
-      await syncWithGoogleSheet();
-      document.getElementById('curPassInput').value = '';
-      document.getElementById('newPassInput').value = '';
-      document.getElementById('confirmPassInput').value = '';
-    }
-
-    function openProfileDrawer() {
-      document.getElementById('drawerName').innerText = currentUser.name || 'VIJAY BAMBHAVA';
-      document.getElementById('drawerRoleBadge').innerText = currentUser.role.toUpperCase();
-
-      const av = currentUser.avatar || currentUser.name.charAt(0).toUpperCase();
-      if (av.startsWith('http')) {
-        document.getElementById('drawerAvatar').innerHTML = `<img src="${av}" style="width:100%;height:100%;object-fit:cover;">`;
-      } else {
-        document.getElementById('drawerAvatar').innerText = av.charAt(0).toUpperCase();
-      }
-
-      if (currentUser.role === 'contractor' || currentUser.role === 'office') {
-        document.getElementById('drawerContractorNotice').style.display = 'block';
-        document.getElementById('drawerContractorName').innerText = currentUser.name;
-      } else {
-        document.getElementById('drawerContractorNotice').style.display = 'none';
-      }
-      document.getElementById('profileDrawerOverlay').classList.add('open');
-    }
-    function closeProfileDrawer() {
-      document.getElementById('profileDrawerOverlay').classList.remove('open');
-    }
-
+    // REALTIME LIVE AUTO FETCH & SYNC
     async function syncWithGoogleSheet() {
       const btn = document.getElementById('adminSaveSheetBtn');
-      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
       try {
         await fetch(MASTER_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            epList, 
-            contractors, 
-            fineList, 
-            officeAccess, 
-            adminProfile: users.vijay 
-          })
+          body: JSON.stringify({ epList, contractors, fineList, officeAccess, adminProfile: users.vijay })
         });
-        if (btn) alert('તમામ ડેટા તમારી Master Google Sheet માં લાઈવ સેવ થઈ ગયો છે!');
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
       } finally {
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save to Sheet';
-      }
-    }
-
-    async function manualPullData() {
-      const btn = document.getElementById('adminPullSheetBtn');
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
-      const success = await autoFetchMasterData(true);
-      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Reload Data';
-      if (success) {
-        alert('Google Sheet માંથી લાઈવ ડેટા સફળતાપૂર્વક લોડ થઈ ગયો છે!');
-        applyStatusReportFilter();
-        applyFineFilter();
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save';
       }
     }
 
@@ -1882,8 +1156,6 @@
         const res = await fetch(MASTER_SCRIPT_URL);
         const data = await res.json();
         if (data && data.success) {
-          let hasChanged = false;
-
           if (Array.isArray(data.epList) && data.epList.length > 0) {
             epList = data.epList.map(item => ({
               id: item.id || String(Date.now() + Math.random()),
@@ -1895,7 +1167,6 @@
               status: item.status || 'Active',
               cancelDate: cleanDateString(item.cancelDate)
             }));
-            hasChanged = true;
           }
 
           if (Array.isArray(data.fineList) && data.fineList.length > 0) {
@@ -1910,64 +1181,231 @@
               status: item.status || 'Pending',
               doneDate: cleanDateString(item.doneDate)
             }));
-            hasChanged = true;
-          }
-
-          if (Array.isArray(data.contractors) && data.contractors.length > 0) {
-            data.contractors.forEach(c => {
-              const existingIdx = contractors.findIndex(x => x.username.toLowerCase() === c.username.toLowerCase());
-              if (existingIdx >= 0) {
-                contractors[existingIdx] = c;
-              } else {
-                contractors.push(c);
-              }
-              users[c.username.toLowerCase()] = {
-                password: c.password,
-                role: 'contractor',
-                name: c.name,
-                contractorName: c.name,
-                phone: c.phone || ''
-              };
-            });
-            hasChanged = true;
           }
 
           if (data.officeAccess) {
             officeAccess = data.officeAccess;
+            if (!officeAccess.manoj) officeAccess.manoj = { password: '12345', scope: 'ALL', canManageFine: true };
             users.office.password = officeAccess.password || '12345';
-            users.office.scope = officeAccess.scope || 'ALL';
-            users.office.canViewFine = officeAccess.canViewFine || 'YES';
-          }
-
-          if (data.adminProfile) {
-            users.vijay.name = data.adminProfile.name || users.vijay.name;
-            users.vijay.password = data.adminProfile.password || users.vijay.password;
-            users.vijay.phone = data.adminProfile.phone || users.vijay.phone;
-            users.vijay.avatar = data.adminProfile.avatar || users.vijay.avatar;
+            users.manoj.password = officeAccess.manoj.password || '12345';
           }
 
           saveState();
+          updateDashboardStats();
 
-          if (isPolling && hasChanged) {
-            const currentTab = document.querySelector('.page-tab-btn.active');
-            if (currentTab && currentTab.id === 'tabStatusReport') {
-              applyStatusReportFilter();
-            } else if (currentTab && currentTab.id === 'tabContractorFine') {
-              applyFineFilter();
-            } else if (currentTab && currentTab.id === 'tabEpCancel') {
-              renderEpCancelTable();
-            }
+          // Refresh current visible tab WITHOUT resetting user's dropdown filter
+          const curTab = document.querySelector('.page-tab-btn.active');
+          if (curTab) {
+            if (curTab.id === 'tabStatusReport') applyStatusReportFilter();
+            else if (curTab.id === 'tabContractorFine') applyFineFilter();
+            else if (curTab.id === 'tabEpCancel') renderEpCancelTable();
           }
-
-          populateContractorDropdown();
           return true;
         }
-      } catch (e) {
-        if (showError) alert('Google Sheet સાથે કનેક્ટ કરવામાં ભૂલ આવી.');
+      } catch (err) {
+        if (showError) alert('Sync Error!');
       } finally {
         isFetchingLive = false;
       }
       return false;
+    }
+
+    async function manualPullData() {
+      const btn = document.getElementById('adminPullSheetBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      await autoFetchMasterData(true);
+      btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Sync';
+      alert('Master Sheet માંથી તાજો ડેટા સફળતાપૂર્વક લોડ થઈ ગયો!');
+    }
+
+    // OTHER APP UTILITIES
+    function renderEpEntryTable() {
+      const tbody = document.getElementById('epEntryTableBody');
+      const activeOnly = epList.filter(item => item.status === 'Active');
+      if (activeOnly.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">કોઈ એક્ટિવ પાસ નથી.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = activeOnly.map((row, idx) => `
+        <tr>
+          <td style="text-align: center;"><input type="checkbox" class="pass-select-chk" data-id="${row.id}"></td>
+          <td>${idx + 1}</td>
+          <td>${row.contractor}</td>
+          <td><strong>${row.epNo}</strong></td>
+          <td>${row.epName}</td>
+          <td>${row.plant}</td>
+          <td>${cleanDateString(row.entryDate)}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="cancelSinglePassAction('${row.id}')"><i class="fa-solid fa-ban"></i> Cancel</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function toggleSelectAllPasses(chk) {
+      document.querySelectorAll('.pass-select-chk').forEach(c => c.checked = chk);
+    }
+
+    async function cancelSelectedPasses() {
+      const selected = Array.from(document.querySelectorAll('.pass-select-chk:checked')).map(x => x.getAttribute('data-id'));
+      if (selected.length === 0) { alert('પાસ સિલેક્ટ કરો!'); return; }
+      if (!confirm(`${selected.length} પાસ એકસાથે Cancel કરવા છે?`)) return;
+
+      const today = getToday();
+      epList.forEach(item => { if (selected.includes(item.id)) { item.status = 'Cancel'; item.cancelDate = today; } });
+      saveState();
+      renderEpEntryTable();
+      updateDashboardStats();
+      await syncWithGoogleSheet();
+      alert('પાસ સફળતાપૂર્વક Cancel થઈ ગયા!');
+    }
+
+    function cancelSinglePassAction(id) {
+      const item = epList.find(x => x.id === id);
+      if (item && confirm(`શું પાસ ${item.epNo} કેન્સલ કરવો છે?`)) {
+        item.status = 'Cancel';
+        item.cancelDate = getToday();
+        saveState();
+        renderEpEntryTable();
+        updateDashboardStats();
+        syncWithGoogleSheet();
+      }
+    }
+
+    function addNewEpRow() {
+      epList.unshift({
+        id: String(Date.now()),
+        contractor: contractors[0] ? contractors[0].name : 'MAXIMAL',
+        epNo: `106${Math.floor(100000 + Math.random() * 900000)}`,
+        epName: 'નવું નામ',
+        plant: 'CHO (A) KC2',
+        entryDate: getToday(),
+        status: 'Active',
+        cancelDate: ''
+      });
+      saveState();
+      renderEpEntryTable();
+      updateDashboardStats();
+    }
+
+    function renderEpCancelTable() {
+      const tbody = document.getElementById('cancelTableBody');
+      const cancelled = epList.filter(item => item.status === 'Cancel');
+      if (cancelled.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">કોઈ કેન્સલ પાસ નથી.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = cancelled.map((r, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td><span class="badge badge-contractor">${r.contractor}</span></td>
+          <td><strong>${r.epNo}</strong></td>
+          <td>${r.epName}</td>
+          <td>${r.plant}</td>
+          <td>${cleanDateString(r.entryDate)}</td>
+          <td><strong style="color: var(--danger);">${cleanDateString(r.cancelDate) || getToday()}</strong></td>
+          <td><span class="badge badge-cancel">Cancel</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderContractorsTable() {
+      const tbody = document.getElementById('contractorTableBody');
+      tbody.innerHTML = contractors.map((c, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td><strong>${c.name}</strong></td>
+          <td>${c.username}</td>
+          <td>${c.password}</td>
+          <td>${c.phone || '-'}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteContractor(${idx})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `).join('');
+    }
+
+    function openAddContractorModal() { document.getElementById('contractorModal').classList.remove('hidden'); }
+    function closeAddContractorModal() { document.getElementById('contractorModal').classList.add('hidden'); }
+
+    async function saveNewContractor() {
+      const name = document.getElementById('newContName').value.trim();
+      const username = document.getElementById('newContUser').value.trim().toLowerCase();
+      const password = document.getElementById('newContPass').value.trim();
+      const phone = document.getElementById('newContPhone').value.trim();
+      if (!name || !username || !password) { alert('બધી વિગતો ભરો!'); return; }
+
+      contractors.push({ name, username, password, phone });
+      users[username] = { password, role: 'contractor', name, contractorName: name, phone };
+      saveState();
+      closeAddContractorModal();
+      renderContractorsTable();
+      populateContractorDropdown();
+      populateAccessScopeDropdowns();
+      await syncWithGoogleSheet();
+      alert('Contractor ઉમેરાઈ ગયો!');
+    }
+
+    function deleteContractor(idx) {
+      if (confirm('Contractor Delete કરવો છે?')) {
+        const u = contractors[idx].username.toLowerCase();
+        delete users[u];
+        contractors.splice(idx, 1);
+        saveState();
+        renderContractorsTable();
+        populateContractorDropdown();
+        populateAccessScopeDropdowns();
+        syncWithGoogleSheet();
+      }
+    }
+
+    function downloadReportExcel() {
+      if (!currentFilteredRecords.length) return;
+      const ws = XLSX.utils.json_to_sheet(currentFilteredRecords);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Report");
+      XLSX.writeFile(wb, `EP_Report_${getToday()}.xlsx`);
+    }
+
+    function downloadFineExcel() {
+      if (!currentFilteredFines.length) return;
+      const ws = XLSX.utils.json_to_sheet(currentFilteredFines);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Fines");
+      XLSX.writeFile(wb, `Contractor_Fines_${getToday()}.xlsx`);
+    }
+
+    function downloadCancelDataExcel() {
+      const cancelled = epList.filter(x => x.status === 'Cancel');
+      const ws = XLSX.utils.json_to_sheet(cancelled);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Cancel_Passes");
+      XLSX.writeFile(wb, `Cancelled_Passes_${getToday()}.xlsx`);
+    }
+
+    function savePersonalPreferences() {
+      const dName = document.getElementById('prefDisplayNameInput').value.trim();
+      const phone = document.getElementById('prefContactInput').value.trim();
+      const avatar = document.getElementById('prefAvatarInput').value.trim();
+      if (dName) currentUser.name = dName;
+      currentUser.phone = phone;
+      currentUser.avatar = avatar;
+      if (currentUser.username === 'vijay') {
+        users.vijay.name = dName;
+        users.vijay.phone = phone;
+        users.vijay.avatar = avatar;
+      }
+      saveState();
+      alert('પ્રોફાઇલ સાચવી લેવામાં આવી!');
+      syncWithGoogleSheet();
+    }
+
+    function handlePasswordChange() {
+      const cur = document.getElementById('curPassInput').value.trim();
+      const nxt = document.getElementById('newPassInput').value.trim();
+      if (cur !== currentUser.password) { alert('હાલનો પાસવર્ડ ખોટો છે!'); return; }
+      if (!nxt || nxt.length < 4) { alert('પાસવર્ડ 4 અક્ષરથી મોટો રાખો!'); return; }
+      currentUser.password = nxt;
+      if (users[currentUser.username]) users[currentUser.username].password = nxt;
+      saveState();
+      alert('પાસવર્ડ બદલાઈ ગયો!');
+      syncWithGoogleSheet();
     }
   </script>
 </body>
