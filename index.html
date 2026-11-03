@@ -351,7 +351,7 @@
         </div>
         <div class="stat-card glass-card">
           <div>
-            <div class="label" data-lang="stat_total">Total Fine Amount</div>
+            <div class="label" data-lang="stat_total">pending Fine Amount</div>
             <div class="val" id="statTotalFineAmt" style="color: #38bdf8;">₹0</div>
             <div class="scope-pill" id="statScopeAmount">All</div>
           </div>
@@ -1273,8 +1273,8 @@
       const activeCount = scopedPasses.filter(x => normStr(x.status) === 'active').length;
       const cancelCount = scopedPasses.filter(x => normStr(x.status) === 'cancel').length;
       const pendingFines = scopedFines.filter(x => normStr(x.status || 'pending') === 'pending').length;
-      const totalFine = scopedFines.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
-
+      const pendingFinesList = scopedFines.filter(x => normStr(x.status || 'pending') === 'pending');
+      const totalFine = pendingFinesList.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
       document.getElementById('statActiveCount').innerText = activeCount;
       document.getElementById('statCancelCount').innerText = cancelCount;
       document.getElementById('statPendingFineCount').innerText = pendingFines;
