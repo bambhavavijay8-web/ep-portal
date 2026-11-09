@@ -1,4 +1,4 @@
- a complete HTML file
+
 <!DOCTYPE html>
 <html lang="gu">
 <head>
@@ -16,6 +16,7 @@
       --danger: #ef4444;
       --success: #10b981;
       --warning: #f59e0b;
+      
       --bg-color: #0f172a;
       --glass-bg: rgba(15, 23, 42, 0.75);
       --glass-bg-card: rgba(30, 41, 59, 0.7);
@@ -26,80 +27,225 @@
       --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
       --blur: blur(20px);
     }
+    
     body.theme-light {
       --bg-color: #f1f5f9;
       --glass-bg: rgba(255, 255, 255, 0.85);
       --glass-bg-card: rgba(255, 255, 255, 0.75);
       --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-border-hover: rgba(37, 99, 235, 0.4);
       --text-main: #0f172a;
       --text-muted: #475569;
+      --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+    
+    body {
+      background-color: var(--bg-color);
+      background-size: 350px;
+      background-repeat: repeat;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    
     body::before {
-      content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--glass-bg); backdrop-filter: blur(15px); z-index: -1;
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: -1;
     }
+
     .hidden { display: none !important; }
+
     .glass-card {
-      background: var(--glass-bg-card); backdrop-filter: var(--blur);
-      border: 1px solid var(--glass-border); border-radius: 1rem; box-shadow: var(--shadow-glass);
+      background: var(--glass-bg-card);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-glass);
+      transition: all 0.3s ease;
     }
+    .glass-card:hover { border-color: var(--glass-border-hover); }
+
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
       padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 600; border-radius: 0.65rem;
-      border: 1px solid transparent; cursor: pointer; transition: 0.2s;
+      border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease;
+      user-select: none;
     }
-    .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border-color: rgba(255,255,255,0.2); }
     .btn-secondary { background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--glass-border); }
     .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
     .btn-success { background: linear-gradient(135deg, #10b981, #059669); color: white; }
     .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
     .btn-excel { background: linear-gradient(135deg, #107c41, #0b592e); color: white; font-weight: 700; }
     .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: 0.5rem; }
+
+    /* LOGIN PAGE */
     .login-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
-    .login-split-card { display: flex; width: 100%; max-width: 860px; min-height: 480px; border-radius: 1.25rem; overflow: hidden; border: 1px solid var(--glass-border); background: var(--glass-bg-card); }
-    .login-left-brand { flex: 1; background: linear-gradient(135deg, rgba(30, 58, 138, 0.4), rgba(15, 23, 42, 0.8)); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem; text-align: center; }
-    .login-left-brand img { width: 120px; height: 120px; object-fit: contain; border-radius: 1rem; margin-bottom: 1.25rem; background: white; padding: 5px; }
+    .login-split-card {
+      display: flex; width: 100%; max-width: 860px; min-height: 480px;
+      border-radius: 1.25rem; overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+      background: var(--glass-bg-card);
+      backdrop-filter: var(--blur);
+    }
+    .login-left-brand {
+      flex: 1;
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.4), rgba(15, 23, 42, 0.8));
+      border-right: 1px solid var(--glass-border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 2.5rem; text-align: center;
+    }
+    .login-left-brand img {
+      width: 120px; height: 120px; object-fit: contain; border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35); margin-bottom: 1.25rem;
+      border: 2px solid rgba(255,255,255,0.25); background: white; padding: 5px;
+    }
+    .login-left-brand h2 { font-size: 1.7rem; font-weight: 800; color: #38bdf8; letter-spacing: -0.5px; }
+    .login-left-brand p {
+      font-size: 0.85rem; color: #e2e8f0; font-weight: 500;
+      margin-top: 0.6rem; max-width: 280px; line-height: 1.5;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }
     .login-right-form { flex: 1; padding: 3rem 2.5rem; display: flex; flex-direction: column; justify-content: center; }
-    .navbar { background: var(--glass-bg); backdrop-filter: blur(25px); border-bottom: 1px solid var(--glass-border); padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    
+    @media (max-width: 768px) {
+      .login-split-card { flex-direction: column; max-width: 440px; }
+      .login-left-brand { padding: 2rem 1.5rem 1.5rem; border-right: none; border-bottom: 1px solid var(--glass-border); }
+      .login-right-form { padding: 2rem 1.5rem; }
+    }
+
+    /* STICKY NAVBAR & TABS */
+    .navbar {
+      background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--glass-border); padding: 0.75rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+    }
     .nav-brand { font-size: 1.2rem; font-weight: 800; color: #38bdf8; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; }
     .nav-brand img { width: 32px; height: 32px; object-fit: contain; border-radius: 6px; background: white; padding: 2px; }
     .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
-    .admin-contact-badge { display: flex; align-items: center; gap: 0.5rem; background: rgba(37,99,235,0.2); border: 1px solid rgba(56,189,248,0.4); padding: 0.3rem 0.8rem; border-radius: 9999px; cursor: pointer; }
-    .admin-contact-badge img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
-    .user-pill { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); padding: 0.3rem 0.75rem; border-radius: 9999px; cursor: pointer; }
-    .user-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #2563eb); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; overflow: hidden; }
-    .page-nav { background: rgba(15, 23, 42, 0.85); border-bottom: 1px solid var(--glass-border); display: flex; gap: 0.5rem; padding: 0.5rem 1.5rem; overflow-x: auto; position: sticky; top: 57px; z-index: 90; }
-    .page-tab-btn { padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid transparent; background: transparent; color: var(--text-muted); font-weight: 600; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; }
-    .page-tab-btn.active { background: linear-gradient(135deg, #2563eb, #0284c7); color: white; border-color: rgba(255,255,255,0.25); }
+    
+    .admin-contact-badge {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(56,189,248,0.2));
+      border: 1px solid rgba(56,189,248,0.4);
+      padding: 0.3rem 0.8rem; border-radius: 9999px; cursor: pointer; transition: 0.2s;
+    }
+    .admin-contact-badge:hover { background: rgba(56,189,248,0.3); }
+    .admin-contact-badge img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #38bdf8; background: white; }
+    .admin-contact-badge span { font-size: 0.75rem; font-weight: 700; color: var(--text-main); white-space: nowrap; }
+    
+    @media (max-width: 800px) {
+      .admin-contact-badge span { display: none; }
+      .nav-brand span { display: none; }
+      .desktop-only { display: none !important; }
+    }
+
+    .user-pill {
+      display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1);
+      border: 1px solid var(--glass-border); padding: 0.3rem 0.75rem; border-radius: 9999px; cursor: pointer;
+    }
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #2563eb);
+      color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; overflow: hidden;
+    }
+
+    .page-nav {
+      background: rgba(15, 23, 42, 0.85); backdrop-filter: var(--blur);
+      border-bottom: 1px solid var(--glass-border); display: flex; gap: 0.5rem; padding: 0.5rem 1.5rem; overflow-x: auto;
+      position: sticky; top: 57px; z-index: 90;
+    }
+    body.theme-light .page-nav { background: rgba(255, 255, 255, 0.85); }
+    
+    .page-tab-btn {
+      padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid transparent;
+      background: transparent; color: var(--text-muted); font-weight: 600; font-size: 0.8rem;
+      cursor: pointer; display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; transition: 0.2s;
+    }
+    .page-tab-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
+    .page-tab-btn.active {
+      background: linear-gradient(135deg, #2563eb, #0284c7); color: white;
+      border-color: rgba(255,255,255,0.25); box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+
     .container { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+
+    /* VERY COMPACT STATS CARDS */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
-    .stat-card { padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .stat-card { padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
     .stat-card .label { font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
     .stat-card .val { font-size: 1.1rem; font-weight: 800; margin-top: 0.1rem; }
+    .stat-card .scope-pill { font-size: 0.6rem; padding: 1px 5px; border-radius: 9999px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); display: inline-block; margin-top: 0.15rem; color: var(--accent); }
+    .stat-card i { font-size: 1.4rem; opacity: 0.2; }
+
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
     .menu-tile { padding: 1.4rem; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
-    .menu-icon-box { width: 44px; height: 44px; border-radius: 0.6rem; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 0.8rem; color: white; }
+    .menu-tile:hover { transform: translateY(-3px); }
+    .menu-icon-box { width: 44px; height: 44px; border-radius: 0.6rem; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 0.8rem; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
     .filter-panel { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; }
     .form-group { margin-bottom: 1rem; }
     .form-label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--text-muted); }
-    .form-input { width: 100%; padding: 0.6rem 0.8rem; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--glass-border); border-radius: 0.5rem; font-size: 0.85rem; color: var(--text-main); }
-    .table-container { overflow-x: auto; border: 1px solid var(--glass-border); border-radius: 0.75rem; background: var(--glass-bg); }
+    .form-input {
+      width: 100%; padding: 0.6rem 0.8rem; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--glass-border);
+      border-radius: 0.5rem; font-size: 0.85rem; color: var(--text-main); backdrop-filter: blur(8px); transition: 0.2s;
+    }
+    body.theme-light .form-input { background: rgba(255, 255, 255, 0.6); }
+    .form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 8px rgba(56,189,248,0.3); }
+
+    .table-container { overflow-x: auto; border: 1px solid var(--glass-border); border-radius: 0.75rem; background: var(--glass-bg); -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; }
     th { background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); white-space: nowrap; }
     td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+    tfoot td { background: rgba(255,255,255,0.06); font-weight: 800; border-top: 2px solid var(--glass-border); }
     tr:hover { background: rgba(255,255,255,0.04); }
-    .chk-lg { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+
+    .chk-lg { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); vertical-align: middle; }
+
     .badge { padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; display: inline-flex; align-items: center; white-space: nowrap; }
-    .badge-active { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .badge-cancel { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-    .badge-contractor { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
-    .badge-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-    .badge-done { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-    .modal { background: rgba(15, 23, 42, 0.95); border: 1px solid var(--glass-border); border-radius: 0.85rem; width: 100%; max-width: 500px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; }
-    .admin-drawer { background: var(--bg-color); border-radius: 1rem; width: 100%; max-width: 380px; padding: 2rem; text-align: center; border: 1px solid var(--glass-border); position: relative; }
+    .badge-active { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-cancel { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-contractor { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-done { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+    .modal { background: rgba(15, 23, 42, 0.95); border: 1px solid var(--glass-border); border-radius: 0.85rem; width: 100%; max-width: 500px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-glass); }
+    body.theme-light .modal { background: rgba(255, 255, 255, 0.95); }
+    
+    .admin-drawer {
+      background: var(--bg-color); border-radius: 1rem; width: 100%; max-width: 380px; padding: 2rem;
+      text-align: center; border: 1px solid var(--glass-border); position: relative;
+    }
+    .admin-drawer img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #38bdf8; margin-bottom: 1rem; background: white; }
+    
+    .multi-select-box { height: 120px; overflow-y: auto; background: rgba(15,23,42,0.4); border: 1px solid var(--glass-border); border-radius: 0.5rem; padding: 0.5rem; }
+    body.theme-light .multi-select-box { background: rgba(255,255,255,0.6); }
+    .multi-select-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem; font-size: 0.85rem; cursor: pointer; }
+    .multi-select-item:hover { background: rgba(255,255,255,0.1); }
+
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 4px; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    .edit-mode-banner {
+      background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24;
+      padding: 0.6rem 1rem; border-radius: 0.6rem; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
   </style>
 </head>
 <body>
@@ -107,18 +253,30 @@
   <!-- LOGIN PAGE -->
   <div id="loginPage" class="login-wrapper">
     <div class="login-split-card glass-card">
-      <div class="login-left-brand" onclick="openCompanyDetailsModal()" style="cursor:pointer;">
+      <div class="login-left-brand" style="cursor:pointer;" onclick="openCompanyDetailsModal()">
         <img id="loginBrandImg" src="WhatsApp Image 2026-10-28 at 3.02.03 AM.jpeg" onerror="this.src='https://placehold.co/120x120/1e293b/38bdf8?text=MV'">
         <h2>MAXIMAL VENTURES</h2>
         <p>Made by VIJAY BAMBHAVA for contractor pass and debit note.</p>
       </div>
+
       <div class="login-right-form">
         <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.2rem; color: #38bdf8;">Login Account</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">પોતાના Username અને Password થી લૉગિન કરો:</p>
-        <div class="form-group"><label class="form-label">Username</label><input type="text" id="loginUsername" class="form-input" placeholder="Username"></div>
-        <div class="form-group"><label class="form-label">Password</label><input type="password" id="loginPassword" class="form-input" placeholder="Password"></div>
-        <div id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-bottom: 1rem; display: none; font-weight: 600;"><i class="fa-solid fa-circle-exclamation"></i> અમાન્ય યુઝરનેમ અથવા પાસવર્ડ!</div>
-        <button class="btn btn-primary" id="loginSubmitBtn" style="width: 100%; padding: 0.75rem;" onclick="handleLogin()"><i class="fa-solid fa-arrow-right-to-bracket"></i> લૉગિન કરો (Login)</button>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;" data-lang="login_desc">પોતાના Username અને Password થી લૉગિન કરો:</p>
+
+        <div class="form-group">
+          <label class="form-label" data-lang="username_label">Username</label>
+          <input type="text" id="loginUsername" class="form-input" placeholder="Username">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-lang="password_label">Password</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="Password">
+        </div>
+        <div id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-bottom: 1rem; display: none; font-weight: 600;">
+          <i class="fa-solid fa-circle-exclamation"></i> અમાન્ય યુઝરનેમ અથવા પાસવર્ડ!
+        </div>
+        <button class="btn btn-primary" id="loginSubmitBtn" style="width: 100%; padding: 0.75rem;" onclick="handleLogin()">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> <span data-lang="login_btn">લૉગિન કરો (Login)</span>
+        </button>
       </div>
     </div>
   </div>
@@ -128,18 +286,27 @@
     <nav class="navbar">
       <div class="nav-brand" onclick="openCompanyDetailsModal()">
         <img id="navBrandImg" src="WhatsApp Image 2026-10-28 at 3.02.03 AM.jpeg" onerror="this.src='https://placehold.co/32x32/1e293b/38bdf8?text=MV'">
-        <span>MAXIMAL VENTURES</span>
+        <span class="desktop-only">MAXIMAL VENTURES</span>
       </div>
+      
+      <!-- Central Admin Profile Badge -->
       <div class="admin-contact-badge" onclick="openAdminContactModal()">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==" alt="Admin">
+        <img id="adminNavAvatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==" alt="Admin">
         <span>Admin - VIJAY BAMBHAVA</span>
       </div>
+
       <div class="nav-actions">
-        <button id="adminPullSheetBtn" class="btn btn-success btn-sm" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> Sync</button>
-        <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> Save</button>
+        <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;" class="desktop-only">
+          <span class="live-dot"></span> LIVE
+        </span>
+        <button id="adminPullSheetBtn" class="btn btn-success btn-sm" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> <span class="desktop-only">Sync</span></button>
+        <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only">Save</span></button>
         <div class="user-pill" onclick="switchPage('settings')">
           <div class="user-avatar" id="avatarDisplay">V</div>
-          <div><div style="font-weight: 700; font-size: 0.75rem;" id="navUserName">USER</div><div style="font-size: 0.65rem; color: var(--text-muted);" id="navUserRole">Role</div></div>
+          <div class="desktop-only">
+            <div style="font-weight: 700; font-size: 0.75rem;" id="navUserName">USER</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);" id="navUserRole">Role</div>
+          </div>
         </div>
         <button class="btn btn-danger btn-sm" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
       </div>
@@ -147,33 +314,104 @@
 
     <div class="page-nav">
       <button class="page-tab-btn" id="tabHomeMenu" onclick="switchPage('menu')"><i class="fa-solid fa-grip"></i></button>
-      <button class="page-tab-btn" id="tabStatusReport" onclick="switchPage('report')"><i class="fa-solid fa-table-list"></i> <span>1. EP Status Report</span></button>
-      <button class="page-tab-btn" id="tabEpEntry" onclick="switchPage('entry')"><i class="fa-solid fa-file-circle-plus"></i> <span>2. EP Entry</span></button>
-      <button class="page-tab-btn" id="tabEpCancel" onclick="switchPage('cancel')"><i class="fa-solid fa-ban"></i> <span>3. EP Cancel Data</span></button>
-      <button class="page-tab-btn" id="tabContractorFine" onclick="switchPage('fine')"><i class="fa-solid fa-receipt"></i> <span>4. Contractor Fine</span></button>
-      <button class="page-tab-btn" id="tabContractorOverview" onclick="switchPage('overview')"><i class="fa-solid fa-chart-pie"></i> <span>5. Overview</span></button>
-      <button class="page-tab-btn" id="tabContractorMgmt" onclick="switchPage('contractors')"><i class="fa-solid fa-users-gear"></i> <span>6. Users</span></button>
-      <button class="page-tab-btn" id="tabSettings" onclick="switchPage('settings')"><i class="fa-solid fa-user-gear"></i> <span>7. Settings</span></button>
+      <button class="page-tab-btn" id="tabStatusReport" onclick="switchPage('report')"><i class="fa-solid fa-table-list"></i> <span id="tabTitleReport">1. EP Status Report</span></button>
+      <button class="page-tab-btn" id="tabEpEntry" onclick="switchPage('entry')"><i class="fa-solid fa-file-circle-plus"></i> <span id="tabTitleEntry">2. EP Entry</span></button>
+      <button class="page-tab-btn" id="tabEpCancel" onclick="switchPage('cancel')"><i class="fa-solid fa-ban"></i> <span id="tabTitleCancel">3. EP Cancel Data</span></button>
+      <button class="page-tab-btn" id="tabContractorFine" onclick="switchPage('fine')"><i class="fa-solid fa-receipt"></i> <span id="tabTitleFine">4. Contractor Fine</span></button>
+      <button class="page-tab-btn" id="tabContractorOverview" onclick="switchPage('overview')"><i class="fa-solid fa-chart-pie"></i> <span id="tabTitleOverview">5. Contractor Overview</span></button>
+      <button class="page-tab-btn" id="tabContractorMgmt" onclick="switchPage('contractors')"><i class="fa-solid fa-users-gear"></i> <span id="tabTitleUsers">6. User Control</span></button>
+      <button class="page-tab-btn" id="tabSettings" onclick="switchPage('settings')"><i class="fa-solid fa-user-gear"></i> <span id="tabTitleSettings">7. Settings</span></button>
     </div>
 
     <div class="container">
+      <!-- COMPACT STATS CARDS -->
       <div class="stats-grid">
-        <div class="stat-card glass-card"><div><div class="label">Active Passes</div><div class="val" id="statActiveCount" style="color: #34d399;">0</div></div><i class="fa-solid fa-id-card" style="color: #34d399; opacity: 0.2; font-size: 1.4rem;"></i></div>
-        <div class="stat-card glass-card"><div><div class="label">Cancelled Passes</div><div class="val" id="statCancelCount" style="color: #f87171;">0</div></div><i class="fa-solid fa-ban" style="color: #f87171; opacity: 0.2; font-size: 1.4rem;"></i></div>
-        <div class="stat-card glass-card"><div><div class="label">Pending Fines</div><div class="val" id="statPendingFineCount" style="color: #fbbf24;">0</div></div><i class="fa-solid fa-hourglass-half" style="color: #fbbf24; opacity: 0.2; font-size: 1.4rem;"></i></div>
-        <div class="stat-card glass-card"><div><div class="label">Pending Fine Amount</div><div class="val" id="statTotalFineAmt" style="color: #38bdf8;">₹0</div></div><i class="fa-solid fa-indian-rupee-sign" style="color: #38bdf8; opacity: 0.2; font-size: 1.4rem;"></i></div>
+        <div class="stat-card glass-card">
+          <div>
+            <div class="label" data-lang="stat_active">Active Passes</div>
+            <div class="val" id="statActiveCount" style="color: #34d399;">0</div>
+            <div class="scope-pill" id="statScopePasses">All</div>
+          </div>
+          <i class="fa-solid fa-id-card" style="color: #34d399;"></i>
+        </div>
+        <div class="stat-card glass-card">
+          <div>
+            <div class="label" data-lang="stat_cancel">Cancelled Passes</div>
+            <div class="val" id="statCancelCount" style="color: #f87171;">0</div>
+            <div class="scope-pill" id="statScopeCancel">All</div>
+          </div>
+          <i class="fa-solid fa-ban" style="color: #f87171;"></i>
+        </div>
+        <div class="stat-card glass-card">
+          <div>
+            <div class="label" data-lang="stat_pending">Pending Fines</div>
+            <div class="val" id="statPendingFineCount" style="color: #fbbf24;">0</div>
+            <div class="scope-pill" id="statScopePending">All</div>
+          </div>
+          <i class="fa-solid fa-hourglass-half" style="color: #fbbf24;"></i>
+        </div>
+        <div class="stat-card glass-card">
+          <div>
+            <div class="label" data-lang="stat_total">pending Fine Amount</div>
+            <div class="val" id="statTotalFineAmt" style="color: #38bdf8;">₹0</div>
+            <div class="scope-pill" id="statScopeAmount">All</div>
+          </div>
+          <i class="fa-solid fa-indian-rupee-sign" style="color: #38bdf8;"></i>
+        </div>
       </div>
 
-      <!-- DASHBOARD MENU -->
+      <!-- PAGE 0: DASHBOARD MENU TILES -->
       <div id="pageMenuDashboard">
         <div class="menu-grid">
-          <div class="menu-tile glass-card" onclick="switchPage('report')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #1e3a8a, #38bdf8);"><i class="fa-solid fa-table-list"></i></div><h3>1. EP Status Report</h3></div></div>
-          <div class="menu-tile glass-card" onclick="switchPage('entry')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #059669, #10b981);"><i class="fa-solid fa-file-circle-plus"></i></div><h3>2. EP Entry</h3></div></div>
-          <div class="menu-tile glass-card" onclick="switchPage('cancel')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #dc2626, #f87171);"><i class="fa-solid fa-ban"></i></div><h3>3. EP Cancel Data</h3></div></div>
-          <div class="menu-tile glass-card" onclick="switchPage('fine')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #d97706, #fbbf24);"><i class="fa-solid fa-receipt"></i></div><h3>4. Contractor Fine</h3></div></div>
-          <div class="menu-tile glass-card" onclick="switchPage('overview')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"><i class="fa-solid fa-chart-pie"></i></div><h3>5. Contractor Overview</h3></div></div>
-          <div class="menu-tile glass-card" onclick="switchPage('contractors')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #7c3aed, #a855f7);"><i class="fa-solid fa-users-gear"></i></div><h3>6. User Control</h3></div></div>
-          <div class="menu-tile glass-card" onclick="switchPage('settings')"><div><div class="menu-icon-box" style="background: linear-gradient(135deg, #0284c7, #38bdf8);"><i class="fa-solid fa-user-gear"></i></div><h3>7. Settings & Profile</h3></div></div>
+          <div class="menu-tile glass-card" id="menuTileReport" onclick="switchPage('report')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #1e3a8a, #38bdf8);"><i class="fa-solid fa-table-list"></i></div>
+              <h3 id="tileTitleReport" style="font-size: 1.1rem;">1. EP Status Report</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Active & Cancel પાસ ફિલ્ટર કરો અને Excel એક્સપોર્ટ કરો.</p>
+            </div>
+          </div>
+          <div class="menu-tile glass-card" id="menuTileEntry" onclick="switchPage('entry')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #059669, #10b981);"><i class="fa-solid fa-file-circle-plus"></i></div>
+              <h3 id="tileTitleEntry" style="font-size: 1.1rem;">2. EP Entry</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">નવા પાસ ઉમેરો, સેફ એડિટ કરો અને મલ્ટિપલ પાસ કેન્સલ કરો.</p>
+            </div>
+          </div>
+          <div class="menu-tile glass-card" id="menuTileCancel" onclick="switchPage('cancel')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #dc2626, #f87171);"><i class="fa-solid fa-ban"></i></div>
+              <h3 id="tileTitleCancel" style="font-size: 1.1rem;">3. EP Cancel Data</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">કેન્સલ થયેલા પાસની યાદી તેમની કેન્સલ તારીખ સાથે જુઓ.</p>
+            </div>
+          </div>
+          <div class="menu-tile glass-card" id="menuTileFine" onclick="switchPage('fine')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #d97706, #fbbf24);"><i class="fa-solid fa-receipt"></i></div>
+              <h3 id="tileTitleFine" style="font-size: 1.1rem;">4. Contractor Fine</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Multiple Fine સિલેક્શન, Total Amount અને Realtime Status.</p>
+            </div>
+          </div>
+          <div class="menu-tile glass-card" id="menuTileOverview" onclick="switchPage('overview')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"><i class="fa-solid fa-chart-pie"></i></div>
+              <h3 id="tileTitleOverview" style="font-size: 1.1rem;">5. Contractor Overview</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">કોઈપણ કૉન્ટ્રેક્ટર સિલેક્ટ કરીને તેની પર્સનલ પાસ અને દંડની માહિતી જુઓ.</p>
+            </div>
+          </div>
+          <div class="menu-tile glass-card" id="menuTileContractors" onclick="switchPage('contractors')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #7c3aed, #a855f7);"><i class="fa-solid fa-users-gear"></i></div>
+              <h3 id="tileTitleUsers" style="font-size: 1.1rem;">6. User Control</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Staff permissions અને તમામ Contractors ના Password & Access.</p>
+            </div>
+          </div>
+          <div class="menu-tile glass-card" id="menuTileSettings" onclick="switchPage('settings')">
+            <div>
+              <div class="menu-icon-box" style="background: linear-gradient(135deg, #0284c7, #38bdf8);"><i class="fa-solid fa-user-gear"></i></div>
+              <h3 id="tileTitleSettings" style="font-size: 1.1rem;">7. Settings & Profile</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">તમારું નામ, પ્રોફાઇલ પિક્ચર, ભાષા અને પાસવર્ડ કંટ્રોલ કરો.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -185,106 +423,298 @@
             <button class="btn btn-excel btn-sm" onclick="downloadReportExcel()"><i class="fa-solid fa-file-excel"></i> Export</button>
           </div>
           <div class="filter-panel">
-            <select id="reportStatusFilter" class="form-input" style="max-width:160px;" onchange="applyStatusReportFilter()">
-              <option value="ALL">All Passes</option>
-              <option value="Active" selected>Active</option>
-              <option value="Cancel">Cancel</option>
-            </select>
-            <select id="reportContractorDropdown" class="form-input" style="flex:1; min-width:180px;" onchange="applyStatusReportFilter()"></select>
-            <input type="text" id="reportSearchKeyword" class="form-input" style="flex:1; min-width:180px;" placeholder="Search..." oninput="applyStatusReportFilter()">
+            <div style="min-width: 140px;">
+              <select id="reportStatusFilter" class="form-input" onchange="applyStatusReportFilter()">
+                <option value="ALL">All Passes</option>
+                <option value="Active" selected>Active Passes</option>
+                <option value="Cancel">Cancel Passes</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 180px;" id="adminContractorFilterBox">
+              <select id="reportContractorDropdown" class="form-input" onchange="applyStatusReportFilter()"></select>
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+              <input type="text" id="reportSearchKeyword" class="form-input" placeholder="EP No, Name, Contractor કે Plant થી સર્ચ કરો..." oninput="applyStatusReportFilter()">
+            </div>
           </div>
-          <div class="table-container"><table><thead><tr><th>Sr.</th><th>Contractor</th><th>EP No</th><th>Name</th><th>Plant</th><th>Entry Date</th><th>Status</th></tr></thead><tbody id="statusReportTableBody"></tbody></table></div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sr. No.</th>
+                  <th>Contractor</th>
+                  <th>EP No</th>
+                  <th>Name</th>
+                  <th>Plant</th>
+                  <th>Entry Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="statusReportTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       <!-- PAGE 2: EP ENTRY -->
       <div id="pageEpEntry" class="hidden">
         <div class="glass-card" style="padding: 1.5rem;">
-          <div class="filter-panel"><input type="text" id="epSearchKeyword" class="form-input" placeholder="Search EP..." oninput="renderEpEntryTable()"></div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 style="font-weight: 800; color: #34d399;">EP Entry <span id="epShowingCount" style="font-size: 0.8rem; color: var(--text-muted);"></span></h3>
-            <div style="display: flex; gap: 0.5rem;" id="epEntryActionButtons">
+          <div class="filter-panel">
+            <div style="flex: 1; min-width: 200px;">
+              <input type="text" id="epSearchKeyword" class="form-input" placeholder="EP No, Name, Contractor કે Plant થી સર્ચ કરો..." oninput="renderEpEntryTable()">
+            </div>
+          </div>
+          
+          <div id="epEditModeBanner" class="edit-mode-banner hidden">
+            <span><i class="fa-solid fa-unlock-keyhole"></i> એડિટ મોડ ચાલુ છે: તમે હવે કોઈપણ ખાનામાં સીધો ફેરફાર કરી શકો છો.</span>
+            <button class="btn btn-success btn-sm" onclick="toggleEpEditMode()"><i class="fa-solid fa-lock"></i> Save & Lock</button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-weight: 800; color: #34d399;">EP Entry <span id="epShowingCount" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;"></span></h3>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="epEntryActionButtons">
+              <button id="toggleEditModeBtn" class="btn btn-warning btn-sm" onclick="toggleEpEditMode()"><i class="fa-solid fa-pen-to-square"></i> Edit Mode</button>
               <button class="btn btn-danger btn-sm" onclick="cancelSelectedPasses()"><i class="fa-solid fa-ban"></i> Cancel Selected</button>
               <button class="btn btn-primary btn-sm" onclick="openAddEpModal()"><i class="fa-solid fa-plus"></i> Add New</button>
             </div>
           </div>
-          <div class="table-container"><table><thead><tr><th style="width:45px;text-align:center;"><input type="checkbox" class="chk-lg" onchange="toggleSelectAllPasses(this.checked)"></th><th>Sr.</th><th>Contractor</th><th>EP No</th><th>Name</th><th>Plant</th><th>Entry Date</th><th style="text-align:center;">Action</th></tr></thead><tbody id="epEntryTableBody"></tbody></table></div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: center; width: 45px;" id="epSelectAllTh"><input type="checkbox" class="chk-lg" id="epMasterCheckbox" onchange="toggleSelectAllPasses(this.checked)"></th>
+                  <th style="width: 70px;">Sr. No.</th>
+                  <th>Contractor</th>
+                  <th>EP No</th>
+                  <th>Name</th>
+                  <th>Plant</th>
+                  <th>Entry Date</th>
+                  <th id="epActionTh" style="text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="epEntryTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       <!-- PAGE 3: CANCEL DATA -->
       <div id="pageEpCancel" class="hidden">
         <div class="glass-card" style="padding: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="font-weight: 800; color: #f87171;">EP Cancel Data</h3>
             <button class="btn btn-excel btn-sm" onclick="downloadCancelDataExcel()"><i class="fa-solid fa-file-excel"></i> Export</button>
           </div>
-          <div class="filter-panel"><input type="text" id="cancelSearchKeyword" class="form-input" placeholder="Search..." oninput="renderEpCancelTable()"></div>
-          <div class="table-container"><table><thead><tr><th>Sr.</th><th>Contractor</th><th>EP No</th><th>Name</th><th>Plant</th><th>Entry Date</th><th>Cancel Date</th><th>Status</th></tr></thead><tbody id="cancelTableBody"></tbody></table></div>
+          <div class="filter-panel">
+            <div style="flex: 1; min-width: 200px;">
+              <input type="text" id="cancelSearchKeyword" class="form-input" placeholder="EP No, Name કે Contractor થી સર્ચ કરો..." oninput="renderEpCancelTable()">
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sr. No.</th>
+                  <th>Contractor</th>
+                  <th>EP No</th>
+                  <th>Name</th>
+                  <th>Plant</th>
+                  <th>Entry Date</th>
+                  <th>Cancel Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="cancelTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       <!-- PAGE 4: CONTRACTOR FINE -->
       <div id="pageContractorFine" class="hidden">
         <div class="glass-card" style="padding: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="font-weight: 800; color: #fbbf24;">Contractor Fine</h3>
-            <div style="display: flex; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button id="mainFineBulkDoneBtn" class="btn btn-success btn-sm" onclick="markSelectedFinesDone()"><i class="fa-solid fa-check-double"></i> Mark Done</button>
               <button id="mainFineAddBtn" class="btn btn-warning btn-sm" onclick="openAddFineModal()"><i class="fa-solid fa-plus"></i> Add Fine</button>
               <button class="btn btn-excel btn-sm" onclick="downloadFineExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
             </div>
           </div>
           <div class="filter-panel">
-            <select id="fineStatusFilter" class="form-input" style="max-width:160px;" onchange="applyFineFilter()"><option value="ALL">All Fines</option><option value="Pending" selected>Pending</option><option value="Done">Done</option></select>
-            <select id="fineContractorDropdown" class="form-input" style="flex:1; min-width:180px;" onchange="applyFineFilter()"></select>
-            <input type="text" id="fineSearchKeyword" class="form-input" style="flex:1; min-width:180px;" placeholder="Search..." oninput="applyFineFilter()">
+            <div style="min-width: 140px;">
+              <select id="fineStatusFilter" class="form-input" onchange="applyFineFilter()">
+                <option value="ALL">All Fines</option>
+                <option value="Pending" selected>Pending</option>
+                <option value="Done">Done</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 180px;" id="fineContractorFilterBox">
+              <select id="fineContractorDropdown" class="form-input" onchange="applyFineFilter()"></select>
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+              <input type="text" id="fineSearchKeyword" class="form-input" placeholder="Search..." oninput="applyFineFilter()">
+            </div>
           </div>
           <div class="table-container">
             <table>
-              <thead><tr><th style="width:45px;text-align:center;"><input type="checkbox" class="chk-lg" onchange="toggleSelectAllFines(this.checked)"></th><th>Sr.</th><th>Contractor</th><th>EP No</th><th>Name</th><th>Amount(₹)</th><th>Reason</th><th>Date</th><th>Status</th><th id="fineActionTh">Action</th></tr></thead>
+              <thead>
+                <tr>
+                  <th style="text-align: center; width: 45px;" id="fineSelectAllTh"><input type="checkbox" class="chk-lg" onchange="toggleSelectAllFines(this.checked)"></th>
+                  <th>Sr. No.</th>
+                  <th>Contractor</th>
+                  <th>EP No</th>
+                  <th>Name</th>
+                  <th>Amount(₹)</th>
+                  <th>Reason</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th id="fineActionTh">Action</th>
+                </tr>
+              </thead>
               <tbody id="contractorFineTableBody"></tbody>
-              <tfoot><tr><td colspan="5" id="fineTotalLabelTd" style="text-align: right; color: #38bdf8;">Total Amount:</td><td colspan="5" id="fineTotalAmountTd" style="color: #f87171;">₹0</td></tr></tfoot>
+              <tfoot id="contractorFineTableFoot">
+                <tr>
+                  <td colspan="5" id="fineTotalLabelTd" style="text-align: right; color: #38bdf8;">Total Amount:</td>
+                  <td colspan="5" id="fineTotalAmountTd" style="color: #f87171;">₹0</td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- PAGE 5: OVERVIEW -->
+      <!-- PAGE 5: CONTRACTOR OVERVIEW -->
       <div id="pageContractorOverview" class="hidden">
         <div class="glass-card" style="padding: 1.5rem; max-width: 800px; margin: 0 auto;">
           <h3 style="font-weight: 800; color: #38bdf8; margin-bottom: 1rem;"><i class="fa-solid fa-chart-pie"></i> Contractor Overview</h3>
-          <div class="form-group"><label class="form-label">Select Contractor:</label><select id="overviewContSelect" class="form-input" onchange="renderContractorOverview()"></select></div>
-          <div style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem;">
-            <div class="glass-card" style="padding: 1rem; text-align: center;"><div style="font-size: 0.75rem; color: var(--text-muted);">ACTIVE</div><div id="ovActivePasses" style="font-size: 1.5rem; font-weight: 800; color: #34d399;">0</div></div>
-            <div class="glass-card" style="padding: 1rem; text-align: center;"><div style="font-size: 0.75rem; color: var(--text-muted);">CANCELLED</div><div id="ovCancelPasses" style="font-size: 1.5rem; font-weight: 800; color: #f87171;">0</div></div>
-            <div class="glass-card" style="padding: 1rem; text-align: center;"><div style="font-size: 0.75rem; color: var(--text-muted);">PENDING FINES</div><div id="ovPendingFines" style="font-size: 1.5rem; font-weight: 800; color: #fbbf24;">0</div></div>
-            <div class="glass-card" style="padding: 1rem; text-align: center;"><div style="font-size: 0.75rem; color: var(--text-muted);">PENDING AMOUNT</div><div id="ovPendingAmount" style="font-size: 1.5rem; font-weight: 800; color: #38bdf8;">₹0</div></div>
+          <div class="form-group">
+            <label class="form-label">કૉન્ટ્રેક્ટર સિલેક્ટ કરો (Select Contractor):</label>
+            <select id="overviewContSelect" class="form-input" onchange="renderContractorOverview()"></select>
+          </div>
+
+          <div id="overviewResultBox" style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem;">
+            <div class="glass-card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">ACTIVE PASSES</div>
+              <div id="ovActivePasses" style="font-size: 1.5rem; font-weight: 800; color: #34d399; margin-top: 0.5rem;">0</div>
+            </div>
+            <div class="glass-card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">CANCELLED PASSES</div>
+              <div id="ovCancelPasses" style="font-size: 1.5rem; font-weight: 800; color: #f87171; margin-top: 0.5rem;">0</div>
+            </div>
+            <div class="glass-card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">PENDING FINES COUNT</div>
+              <div id="ovPendingFines" style="font-size: 1.5rem; font-weight: 800; color: #fbbf24; margin-top: 0.5rem;">0</div>
+            </div>
+            <div class="glass-card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">PENDING FINE AMOUNT</div>
+              <div id="ovPendingAmount" style="font-size: 1.5rem; font-weight: 800; color: #38bdf8; margin-top: 0.5rem;">₹0</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- PAGE 6: USERS -->
+      <!-- PAGE 6: USER MANAGEMENT -->
       <div id="pageContractors" class="hidden">
-        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><h3 style="font-weight: 800; color: #c084fc;">Staff Accounts</h3><button class="btn btn-primary btn-sm" onclick="openAddStaffModal()"><i class="fa-solid fa-plus"></i> Add Staff</button></div>
-          <div class="table-container"><table><thead><tr><th>Sr.</th><th>Name</th><th>Username</th><th>Password</th><th>Fine Perm</th><th>Scope</th><th>Action</th></tr></thead><tbody id="staffTableBody"></tbody></table></div>
+        <!-- STAFF ACCOUNTS -->
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem; border-color: rgba(168, 85, 247, 0.4);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-weight: 800; color: #c084fc;"><i class="fa-solid fa-user-shield"></i> Staff Accounts</h3>
+            <button class="btn btn-primary btn-sm" onclick="openAddStaffModal()"><i class="fa-solid fa-plus"></i> Add Staff</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sr. No.</th>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Fine Perm</th>
+                  <th>Report Perm</th>
+                  <th>Entry Perm</th>
+                  <th>Cancel Perm</th>
+                  <th>Overview Perm</th>
+                  <th>Scope</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="staffTableBody"></tbody>
+            </table>
+          </div>
         </div>
+
+        <!-- CONTRACTOR ACCOUNTS -->
         <div class="glass-card" style="padding: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><h3 style="font-weight: 800; color: #38bdf8;">Contractor Accounts</h3><button class="btn btn-primary btn-sm" onclick="openAddContractorModal()"><i class="fa-solid fa-plus"></i> Add</button></div>
-          <div class="table-container"><table><thead><tr><th>Sr.</th><th>Name</th><th>Username</th><th>Password</th><th>Contact</th><th>Action</th></tr></thead><tbody id="contractorTableBody"></tbody></table></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-weight: 800; color: #38bdf8;">Contractor Accounts</h3>
+            <button class="btn btn-primary btn-sm" onclick="openAddContractorModal()"><i class="fa-solid fa-plus"></i> Add Contractor</button>
+          </div>
+          <div class="form-group">
+            <input type="text" id="contractorSearchInput" class="form-input" placeholder="Search contractor..." oninput="renderContractorsTable()">
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sr. No.</th>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Contact</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="contractorTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       <!-- PAGE 7: SETTINGS -->
       <div id="pageSettings" class="hidden">
         <div class="glass-card" style="max-width: 500px; margin: 0 auto; padding: 1.5rem;">
-          <h3 style="font-weight: 800; color: #38bdf8; margin-bottom: 1.2rem;">Settings & Profile</h3>
+          <h3 style="font-weight: 800; color: #38bdf8; margin-bottom: 1.2rem;">Settings & Preferences</h3>
+          
+          <div class="form-group">
+            <label class="form-label">Theme Mode</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-secondary btn-sm" onclick="setTheme('dark')"><i class="fa-solid fa-moon"></i> Dark</button>
+              <button class="btn btn-secondary btn-sm" onclick="setTheme('light')"><i class="fa-solid fa-sun"></i> Light</button>
+              <button class="btn btn-secondary btn-sm" onclick="setTheme('system')"><i class="fa-solid fa-desktop"></i> Auto</button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Language</label>
+            <select id="appLanguageSelect" class="form-input" onchange="changeAppLanguage(this.value)">
+              <option value="en">English</option>
+              <option value="gu">ગુજરાતી (Gujarati)</option>
+              <option value="hi">हिंदी (Hindi)</option>
+            </select>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
+          
+          <h4 style="margin-bottom: 1rem; color: var(--text-main);">My Profile</h4>
           <div class="form-group"><label class="form-label">Name</label><input type="text" id="prefDisplayNameInput" class="form-input"></div>
           <div class="form-group"><label class="form-label">Contact</label><input type="text" id="prefContactInput" class="form-input"></div>
+          <div class="form-group">
+            <label class="form-label">Profile Avatar (Upload Picture)</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <input type="text" id="prefAvatarInput" class="form-input hidden" style="flex:1;">
+              <div id="settingsAvatarPreview" style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: var(--glass-bg); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold;"></div>
+              <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+                <i class="fa-solid fa-upload"></i> Upload Photo
+                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'prefAvatarInput')">
+              </label>
+            </div>
+          </div>
           <button class="btn btn-success btn-sm" onclick="savePersonalPreferences()"><i class="fa-solid fa-floppy-disk"></i> Update Profile</button>
+          
           <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
-          <h4 style="margin-bottom: 1rem;">Change Password</h4>
+          
+          <h4 style="margin-bottom: 1rem; color: var(--text-main);">Change Password</h4>
           <div class="form-group"><input type="password" id="curPassInput" class="form-input" placeholder="Current Password"></div>
           <div class="form-group"><input type="password" id="newPassInput" class="form-input" placeholder="New Password"></div>
           <button class="btn btn-warning btn-sm" onclick="handlePasswordChange()"><i class="fa-solid fa-key"></i> Update Password</button>
@@ -293,52 +723,214 @@
     </div>
   </div>
 
-  <!-- MODALS -->
-  <div id="companyDetailsModal" class="modal-overlay hidden" onclick="closeCompanyDetailsModal()"><div class="admin-drawer" onclick="event.stopPropagation()"><button class="btn btn-secondary btn-sm" style="position:absolute; top:10px; right:10px;" onclick="closeCompanyDetailsModal()"><i class="fa-solid fa-xmark"></i></button><h3 style="color:#38bdf8; font-size:1.3rem;">MAXIMAL VENTURES</h3><p style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted);">Moti Khavdi, Jamnagar, Gujarat 361140<br>Mobile: 9510039457</p></div></div>
-  <div id="adminContactModal" class="modal-overlay hidden" onclick="closeAdminContactModal()"><div class="admin-drawer" onclick="event.stopPropagation()"><button class="btn btn-secondary btn-sm" style="position:absolute; top:10px; right:10px;" onclick="closeAdminContactModal()"><i class="fa-solid fa-xmark"></i></button><h3 style="color:#38bdf8;">VIJAY BAMBHAVA</h3><p style="margin-top:0.5rem; font-size:0.85rem; color:var(--text-muted);">Designation: Pass Section Admin<br>Phone: +91 9510039457</p></div></div>
-  
-  <div id="epModal" class="modal-overlay hidden"><div class="modal"><div style="display:flex; justify-content:space-between; margin-bottom:1rem;"><h3>Add EP Pass</h3><button class="btn btn-secondary btn-sm" onclick="closeAddEpModal()"><i class="fa-solid fa-xmark"></i></button></div><div class="form-group"><label class="form-label">Contractor</label><select id="epContSelect" class="form-input"></select></div><div class="form-group"><label class="form-label">EP No</label><input type="text" id="epNoInput" class="form-input"></div><div class="form-group"><label class="form-label">Name</label><input type="text" id="epNameInput" class="form-input"></div><div class="form-group"><label class="form-label">Plant</label><input type="text" id="epPlantInput" class="form-input" value="CHO (A) KC2"></div><div class="form-group"><label class="form-label">Date</label><input type="text" id="epDateInput" class="form-input"></div><button class="btn btn-primary" style="width:100%;" onclick="saveNewEpRecord()">Save</button></div></div>
-  
-  <div id="fineModal" class="modal-overlay hidden"><div class="modal"><div style="display:flex; justify-content:space-between; margin-bottom:1rem;"><h3>Add Fine</h3><button class="btn btn-secondary btn-sm" onclick="closeAddFineModal()"><i class="fa-solid fa-xmark"></i></button></div><input type="hidden" id="fineContSelect"><input type="hidden" id="fineEpNameInput"><div class="form-group" style="position:relative;"><label class="form-label">EP Number</label><input type="text" id="fineEpNoInput" class="form-input" autocomplete="off"><div id="epAutocompleteList" style="position:absolute; top:100%; left:0; right:0; background:var(--bg-color); border:1px solid var(--glass-border); max-height:150px; overflow-y:auto; z-index:10; display:none;"></div></div><div class="form-group"><label class="form-label">Info</label><input type="text" id="fineInfoDisplay" class="form-input" readonly></div><div class="form-group"><label class="form-label">Amount(₹)</label><input type="number" id="fineDebitInput" class="form-input"></div><div class="form-group"><label class="form-label">Reason</label><input type="text" id="fineReasonInput" class="form-input"></div><button class="btn btn-warning" style="width:100%;" onclick="saveNewFineRecord()">Save Fine</button></div></div>
+  <!-- COMPANY DETAILS MODAL -->
+  <div id="companyDetailsModal" class="modal-overlay hidden" onclick="closeCompanyDetailsModal()">
+    <div class="admin-drawer" onclick="event.stopPropagation()">
+      <button class="btn btn-secondary btn-sm" style="position:absolute; top: 10px; right: 10px;" onclick="closeCompanyDetailsModal()"><i class="fa-solid fa-xmark"></i></button>
+      <img src="WhatsApp Image 2026-10-28 at 3.02.03 AM.jpeg" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #38bdf8; margin-bottom: 1rem; background: white;" onerror="this.src='https://placehold.co/80x80/1e293b/38bdf8?text=MV'">
+      <h3 style="font-size: 1.3rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.5rem;">MAXIMAL VENTURES</h3>
+      <div class="badge badge-active" style="margin-bottom: 1.5rem;">HEAD OFFICE PORTAL</div>
+      <div style="text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.8rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+        <div><strong style="color:var(--text-muted);">Mobile:</strong> <span>9510039457</span></div>
+        <div><strong style="color:var(--text-muted);">Email:</strong> <span>maximalventures1@gmail.com</span></div>
+        <div><strong style="color:var(--text-muted);">Address:</strong> <span>At Moti Khavdi, Jamnagar, Gujarat 361140</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN CONTACT MODAL -->
+  <div id="adminContactModal" class="modal-overlay hidden" onclick="closeAdminContactModal()">
+    <div class="admin-drawer" onclick="event.stopPropagation()">
+      <button class="btn btn-secondary btn-sm" style="position:absolute; top: 10px; right: 10px;" onclick="closeAdminContactModal()"><i class="fa-solid fa-xmark"></i></button>
+      <img id="adminModalPic" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==" onerror="this.src='https://placehold.co/90x90/1e293b/38bdf8?text=Admin'" alt="Admin">
+      <h3 style="font-size: 1.4rem; font-weight: 800; color: #38bdf8;" id="adminModalName">VIJAY BAMBHAVA</h3>
+      <div class="badge badge-active" style="margin-bottom: 1.5rem;">DESIGNATION: PASS SECTION ADMIN</div>
+      <div style="text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.8rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+        <div><strong style="color:var(--text-muted);">Phone:</strong> <span id="adminModalPhone">+91 9510039457</span></div>
+        <div><strong style="color:var(--text-muted);">Email:</strong> <span id="adminModalEmail">bambhavavijay8@gmail.com</span></div>
+        <div><strong style="color:var(--text-muted);">Designation:</strong> <span>PASS SECTION ADMIN</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD STAFF MODAL -->
+  <div id="staffModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-weight: 700; color: #c084fc;"><i class="fa-solid fa-user-shield"></i> Add / Edit Staff</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeAddStaffModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <input type="hidden" id="staffIdInput">
+      <div class="form-group"><label class="form-label">Staff Name</label><input type="text" id="staffNameInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Username</label><input type="text" id="staffUserInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="text" id="staffPassInput" class="form-input"></div>
+      
+      <div class="form-group">
+        <label class="form-label">Allowed Contractors (Scope)</label>
+        <div class="multi-select-box" id="staffMultiSelect"></div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+        <div class="form-group">
+          <label class="form-label">Fine Perm</label>
+          <select id="staffFinePermSelect" class="form-input">
+            <option value="VIEW_EDIT">View & Edit</option>
+            <option value="VIEW_ONLY">View Only</option>
+            <option value="NONE">No Access</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status Report</label>
+          <select id="staffReportPermSelect" class="form-input">
+            <option value="VIEW_ONLY">View Only</option>
+            <option value="NONE">No Access</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">EP Entry</label>
+          <select id="staffEntryPermSelect" class="form-input">
+            <option value="VIEW_EDIT">View & Edit</option>
+            <option value="VIEW_ONLY">View Only</option>
+            <option value="NONE">No Access</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">EP Cancel Data</label>
+          <select id="staffCancelPermSelect" class="form-input">
+            <option value="VIEW_ONLY">View Only</option>
+            <option value="NONE">No Access</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="form-label">Contractor Overview</label>
+          <select id="staffOverviewPermSelect" class="form-input">
+            <option value="VIEW_ONLY">View Only</option>
+            <option value="NONE">No Access</option>
+          </select>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" onclick="saveStaffRecord()">Save Staff</button>
+    </div>
+  </div>
+
+  <!-- ADD EP MODAL -->
+  <div id="epModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-weight: 700; color: #34d399;"><i class="fa-solid fa-file-circle-plus"></i> Add New EP Pass</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeAddEpModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label class="form-label">Contractor Name</label><select id="epContSelect" class="form-input"></select></div>
+      <div class="form-group"><label class="form-label">EP Number</label><input type="text" id="epNoInput" class="form-input" placeholder="e.g. 10612345"></div>
+      <div class="form-group"><label class="form-label">EP Name</label><input type="text" id="epNameInput" class="form-input" placeholder="Person Name"></div>
+      <div class="form-group"><label class="form-label">Plant</label><input type="text" id="epPlantInput" class="form-input" value="CHO (A) KC2"></div>
+      <div class="form-group"><label class="form-label">Entry Date</label><input type="text" id="epDateInput" class="form-input"></div>
+      <button class="btn btn-primary" style="width: 100%;" onclick="saveNewEpRecord()">Save & Create Pass</button>
+    </div>
+  </div>
+
+  <!-- ADD FINE MODAL -->
+  <div id="fineModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-weight: 700; color: #fbbf24;"><i class="fa-solid fa-receipt"></i> Add Contractor Fine</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeAddFineModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <input type="hidden" id="fineContSelect">
+      <input type="hidden" id="fineEpNameInput">
+
+      <div class="form-group" style="position:relative;">
+        <label class="form-label">EP Number (ટાઇપ કરો અથવા સર્ચ કરો)</label>
+        <input type="text" id="fineEpNoInput" class="form-input" placeholder="EP Number ટાઇપ કરો..." autocomplete="off">
+        <div id="epAutocompleteList" style="position:absolute; top:100%; left:0; right:0; background:var(--bg-color); border:1px solid var(--glass-border); border-radius:0.5rem; max-height:150px; overflow-y:auto; z-index:10; display:none;"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">EP Name & Contractor (ઓટોમેટિક આવશે)</label>
+        <input type="text" id="fineInfoDisplay" class="form-input" readonly style="background: rgba(255,255,255,0.05); color: #38bdf8;" placeholder="EP Number નાખતા જ નામ અને કૉન્ટ્રેક્ટર દેખાશે">
+      </div>
+
+      <div class="form-group"><label class="form-label">Debit Amount (₹)</label><input type="number" id="fineDebitInput" class="form-input" placeholder="દંડની રકમ"></div>
+      <div class="form-group"><label class="form-label">Reason</label><input type="text" id="fineReasonInput" class="form-input" placeholder="દંડનું કારણ"></div>
+      
+      <div class="form-group"><label class="form-label">Payment Status</label>
+        <select id="fineStatusSelect" class="form-input"><option value="Pending">Pending</option><option value="Done">Done</option></select>
+      </div>
+      
+      <button class="btn btn-warning" style="width: 100%;" onclick="saveNewFineRecord()">Save Fine Record</button>
+    </div>
+  </div>
+
+  <!-- ADD CONTRACTOR MODAL -->
+  <div id="contractorModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-weight: 700; color: #38bdf8;">Add Contractor</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeAddContractorModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label class="form-label">Contractor Name</label><input type="text" id="newContName" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Username</label><input type="text" id="newContUser" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="newContPass" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Contact Number</label><input type="text" id="newContPhone" class="form-input"></div>
+      <button class="btn btn-primary" style="width: 100%;" onclick="saveNewContractor()">Save Contractor</button>
+    </div>
+  </div>
 
   <script>
     const MASTER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2swgsXYhTRAoxN3xd_Thd15VhoGv-JhUTxRmBD_kmvlGgJQapN43HGETuG9ONkxnG/exec";
-    const INITIAL_USERS = { vijay: { password: '2008', role: 'admin', name: 'VIJAY BAMBHAVA', phone: '+91 9510039457', email: 'bambhavavijay8@gmail.com' } };
+
+    const INITIAL_USERS = {
+      vijay: { password: '2008', role: 'admin', name: 'VIJAY BAMBHAVA', phone: '+91 9510039457', email: 'bambhavavijay8@gmail.com', avatar: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==' }
+    };
 
     let users = JSON.parse(localStorage.getItem('mv_users')) || INITIAL_USERS;
+    if (!users.vijay) users.vijay = INITIAL_USERS.vijay;
+
     let staffList = JSON.parse(localStorage.getItem('mv_staff_list')) || [];
     let contractors = JSON.parse(localStorage.getItem('mv_contractors')) || [
-      { name: 'MAXIMAL', username: 'maximal', password: '123' },
-      { name: 'RAJNIBHAI', username: 'rajni', password: '123' },
-      { name: 'SADAMBHAI', username: 'sadam', password: '123' },
-      { name: 'TRUPILBHAI', username: 'trupil', password: '123' },
-      { name: 'RAHULBHAI', username: 'rahul', password: '123' },
-      { name: 'DHIRUBHAI', username: 'dhiru', password: '123' }
+      { name: 'MAXIMAL', username: 'maximal', password: '123', phone: '+91 9510039457' },
+      { name: 'RAJNIBHAI', username: 'rajni', password: '123', phone: '' },
+      { name: 'SADAMBHAI', username: 'sadam', password: '123', phone: '' },
+      { name: 'TRUPILBHAI', username: 'trupil', password: '123', phone: '' },
+      { name: 'RAHULBHAI', username: 'rahul', password: '123', phone: '' },
+      { name: 'DHIRUBHAI', username: 'dhiru', password: '123', phone: '' }
     ];
+
     let epList = JSON.parse(localStorage.getItem('mv_ep_data')) || [];
     let fineList = JSON.parse(localStorage.getItem('mv_fine_data')) || [];
+
     let currentUser = null;
     let currentFilteredRecords = [];
     let currentFilteredFines = [];
+    let isFetchingLive = false;
+    let isEpEditMode = false;
 
     function normStr(v) { return (v == null) ? '' : String(v).trim().toLowerCase(); }
-    function escHtml(str) { if (str == null) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    
+    function escHtml(str) {
+      if (str == null) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
-    // Date formatting to DD Monthname YYYY (e.g. 19 August 2026)
+    // UPDATED FUNCTION: Format date to "DD Monthname YYYY"
     function cleanDateString(dateVal) {
       if (!dateVal) return '';
       let str = String(dateVal).trim();
       let d = new Date(str);
-      if (isNaN(d.getTime()) && /^\d{2}-\d{2}-\d{4}$/.test(str)) {
-        const p = str.split('-');
-        d = new Date(`${p[2]}-${p[1]}-${p[0]}`);
+      
+      // Try parsing if it's DD-MM-YYYY or DD/MM/YYYY
+      if (isNaN(d.getTime())) {
+        if (/^\d{1,2}[-/]\d{1,2}[-/]\d{4}/.test(str)) {
+          const parts = str.split(/[-/]/);
+          d = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`); 
+        }
       }
+      
       if (!isNaN(d.getTime())) {
-        const day = String(d.getDate()).padStart(2, '0');
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const monthName = months[d.getMonth()];
-        const year = d.getFullYear();
-        return `${day} ${monthName} ${year}`;
+        return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
       }
       return str;
     }
@@ -349,9 +941,33 @@
       return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
     }
 
+    // Helper for sorting logic
+    function getSortTime(dateStr) {
+       if (!dateStr) return 0;
+       let d = new Date(dateStr);
+       if (!isNaN(d.getTime())) return d.getTime();
+       return 0;
+    }
+
     function ensureUniqueIds() {
-      epList.forEach((item, idx) => { if (!item.id) item.id = 'ep_' + Date.now() + '_' + idx; });
-      fineList.forEach((item, idx) => { if (!item.id) item.id = 'fn_' + Date.now() + '_' + idx; });
+      let modified = false;
+      const seenEp = new Set();
+      epList.forEach((item, idx) => {
+        if (!item.id || seenEp.has(String(item.id))) {
+          item.id = 'ep_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substring(2, 7);
+          modified = true;
+        }
+        seenEp.add(String(item.id));
+      });
+      const seenFine = new Set();
+      fineList.forEach((item, idx) => {
+        if (!item.id || seenFine.has(String(item.id))) {
+          item.id = 'fn_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substring(2, 7);
+          modified = true;
+        }
+        seenFine.add(String(item.id));
+      });
+      if (modified) saveState();
     }
 
     function saveState() {
@@ -362,17 +978,87 @@
       localStorage.setItem('mv_staff_list', JSON.stringify(staffList));
     }
 
+    document.getElementById('loginUsername').addEventListener('keypress', function(e) { if(e.key === 'Enter') handleLogin(); });
+    document.getElementById('loginPassword').addEventListener('keypress', function(e) { if(e.key === 'Enter') handleLogin(); });
+
+    function handleImageUpload(event, inputId) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const b64 = e.target.result;
+          document.getElementById(inputId).value = b64;
+          document.getElementById('settingsAvatarPreview').innerHTML = `<img src="${b64}" style="width:100%;height:100%;object-fit:cover;">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function setTheme(mode) {
+      if (mode === 'system') {
+        const isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        mode = isLight ? 'light' : 'dark';
+      }
+      if (mode === 'light') {
+        document.body.classList.add('theme-light');
+        localStorage.setItem('mv_theme', 'light');
+      } else {
+        document.body.classList.remove('theme-light');
+        localStorage.setItem('mv_theme', 'dark');
+      }
+    }
+    const savedTheme = localStorage.getItem('mv_theme');
+    if (savedTheme) setTheme(savedTheme);
+    else setTheme('system');
+
+    const dict = {
+      'en': { login_desc: 'Enter your Username and Password:', username_label: 'Username', password_label: 'Password', login_btn: 'Login', stat_active: 'Active Passes', stat_cancel: 'Cancelled Passes', stat_pending: 'Pending Fines', stat_total: 'Total Fine Amount' },
+      'gu': { login_desc: 'પોતાના Username અને Password થી લૉગિન કરો:', username_label: 'યુઝરનેમ (Username)', password_label: 'પાસવર્ડ (Password)', login_btn: 'લૉગિન કરો (Login)', stat_active: 'એક્ટિવ પાસ', stat_cancel: 'કેન્સલ પાસ', stat_pending: 'બાકી દંડ', stat_total: 'કુલ દંડની રકમ' },
+      'hi': { login_desc: 'अपना Username और Password दर्ज करें:', username_label: 'यूज़रनेम (Username)', password_label: 'पासवर्ड (Password)', login_btn: 'लॉगिन करें (Login)', stat_active: 'सक्रिय पास', stat_cancel: 'रद्द पास', stat_pending: 'बकाया जुर्माना', stat_total: 'कुल जुर्माना राशि' }
+    };
+    function changeAppLanguage(lang) {
+      localStorage.setItem('mv_lang', lang);
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        const key = el.getAttribute('data-lang');
+        if (dict[lang] && dict[lang][key]) el.innerText = dict[lang][key];
+      });
+    }
+    const savedLang = localStorage.getItem('mv_lang') || 'en';
+    document.getElementById('appLanguageSelect').value = savedLang;
+    changeAppLanguage(savedLang);
+
+    function getAllContractorNames() {
+      const set = new Set();
+      contractors.forEach(c => { if (c.name && c.name.trim()) set.add(c.name.trim()); });
+      epList.forEach(e => { if (e.contractor && e.contractor.trim()) set.add(e.contractor.trim()); });
+      fineList.forEach(f => { if (f.contractor && f.contractor.trim()) set.add(f.contractor.trim()); });
+      return Array.from(set).sort();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       ensureUniqueIds();
       populateContractorDropdown();
       autoFetchMasterData();
       setupFineAutocomplete();
+      setInterval(() => {
+        if (!isFetchingLive && currentUser && !isEpEditMode) {
+          const anyPassChecked = document.querySelectorAll('.pass-select-chk:checked').length > 0;
+          const anyFineChecked = document.querySelectorAll('.fine-select-chk:checked').length > 0;
+          if (!anyPassChecked && !anyFineChecked) {
+            autoFetchMasterData(false, true);
+          }
+        }
+      }, 25000);
     });
 
-    function openCompanyDetailsModal() { document.getElementById('companyDetailsModal').classList.remove('hidden'); }
-    function closeCompanyDetailsModal() { document.getElementById('companyDetailsModal').classList.add('hidden'); }
-    function openAdminContactModal() { document.getElementById('adminContactModal').classList.remove('hidden'); }
-    function closeAdminContactModal() { document.getElementById('adminContactModal').classList.add('hidden'); }
+    function openCompanyDetailsModal() {
+      const modal = document.getElementById('companyDetailsModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+    function closeCompanyDetailsModal() {
+      const modal = document.getElementById('companyDetailsModal');
+      if (modal) modal.classList.add('hidden');
+    }
 
     function setupFineAutocomplete() {
       const epInput = document.getElementById('fineEpNoInput');
@@ -384,9 +1070,11 @@
         document.getElementById('fineInfoDisplay').value = '';
         document.getElementById('fineEpNameInput').value = '';
         document.getElementById('fineContSelect').value = '';
+        
         if (!q) { listDiv.style.display = 'none'; return; }
         
         const matches = epList.filter(e => normStr(e.status) === 'active' && (normStr(e.epNo).includes(q) || normStr(e.epName).includes(q) || normStr(e.contractor).includes(q))).slice(0, 10);
+        
         if (matches.length === 0) { listDiv.style.display = 'none'; return; }
         
         listDiv.innerHTML = matches.map(m => `
@@ -398,7 +1086,9 @@
       });
 
       document.addEventListener('click', function(e) {
-        if (!epInput.contains(e.target) && !listDiv.contains(e.target)) { listDiv.style.display = 'none'; }
+        if (!epInput.contains(e.target) && !listDiv.contains(e.target)) {
+          listDiv.style.display = 'none';
+        }
       });
     }
 
@@ -419,8 +1109,17 @@
       if (!u || !p) { document.getElementById('loginError').style.display = 'block'; return; }
 
       let matched = checkCredentials(u, p);
+      if (!matched && u !== 'vijay') {
+        const btn = document.getElementById('loginSubmitBtn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
+        await autoFetchMasterData();
+        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> <span data-lang="login_btn">' + dict[savedLang].login_btn + '</span>';
+        matched = checkCredentials(u, p);
+      }
+
       if (matched) {
         currentUser = matched;
+        isEpEditMode = false;
         document.getElementById('loginError').style.display = 'none';
         document.getElementById('loginPage').classList.add('hidden');
         document.getElementById('appContainer').classList.remove('hidden');
@@ -432,99 +1131,459 @@
 
     function checkCredentials(u, p) {
       if (u === 'vijay' && p === users.vijay.password) return { username: 'vijay', role: 'admin', ...users.vijay };
+      
+      const staffMatch = staffList.find(s => normStr(s.username) === u && String(s.password).trim() === p);
+      if (staffMatch) return { ...staffMatch, role: 'staff' };
+      
       const found = contractors.find(c => (normStr(c.username) === u || normStr(c.name) === u) && String(c.password).trim() === p);
-      if (found) return { username: u, role: 'contractor', name: found.name, contractorName: found.name };
+      if (found) {
+        const userObj = { password: found.password, role: 'contractor', name: found.name, contractorName: found.name, phone: found.phone || '' };
+        users[u] = userObj; saveState();
+        return { username: u, ...userObj };
+      }
       return null;
     }
 
     function handleLogout() {
       currentUser = null;
+      isEpEditMode = false;
+      document.getElementById('loginPassword').value = '';
       document.getElementById('appContainer').classList.add('hidden');
       document.getElementById('loginPage').classList.remove('hidden');
     }
 
+    function openAdminContactModal() {
+      document.getElementById('adminModalName').innerText = users.vijay.name || 'VIJAY BAMBHAVA';
+      document.getElementById('adminModalPhone').innerText = users.vijay.phone || '+91 9510039457';
+      document.getElementById('adminModalEmail').innerText = users.vijay.email || 'bambhavavijay8@gmail.com';
+      document.getElementById('adminModalPic').src = users.vijay.avatar && users.vijay.avatar.length > 5 ? users.vijay.avatar : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+      document.getElementById('adminContactModal').classList.remove('hidden');
+    }
+    function closeAdminContactModal() { document.getElementById('adminContactModal').classList.add('hidden'); }
+
+    function applyUserAvatar(user) {
+      if (user.avatar && user.avatar.length > 5) {
+        document.getElementById('avatarDisplay').innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+        document.getElementById('settingsAvatarPreview').innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        const initial = (user.name || user.username || 'U').charAt(0).toUpperCase();
+        document.getElementById('avatarDisplay').innerText = initial;
+        document.getElementById('settingsAvatarPreview').innerText = initial;
+      }
+      
+      const adminPic = users.vijay.avatar && users.vijay.avatar.length > 5 ? users.vijay.avatar : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+      const adminNavImg = document.querySelector('.admin-contact-badge img');
+      if (adminNavImg) adminNavImg.src = adminPic;
+    }
+
     function setupPortalSession() {
       const isAdmin = currentUser.role === 'admin';
+      const isStaff = currentUser.role === 'staff';
       const isContractor = currentUser.role === 'contractor';
-      document.getElementById('navUserName').innerText = currentUser.name || 'USER';
-      document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : 'CONTRACTOR';
+
+      const canManageFine = isAdmin || (isStaff && currentUser.finePerm === 'VIEW_EDIT');
+      const canViewFine = isAdmin || isContractor || (isStaff && currentUser.finePerm !== 'NONE');
+      const canViewReport = isAdmin || isContractor || (isStaff && currentUser.reportPerm !== 'NONE');
+      const canManageEntry = isAdmin || (isStaff && currentUser.entryPerm === 'VIEW_EDIT');
+      const canViewEntry = isAdmin || (isStaff && currentUser.entryPerm !== 'NONE');
+      const canViewCancel = isAdmin || isContractor || (isStaff && currentUser.cancelPerm !== 'NONE');
+      const canViewOverview = isAdmin || (isStaff && currentUser.overviewPerm !== 'NONE');
+
+      const displayName = currentUser.name || (isContractor ? currentUser.contractorName : 'USER');
+      document.getElementById('navUserName').innerText = displayName;
+      document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : (isStaff ? 'STAFF' : 'CONTRACTOR');
+      applyUserAvatar(currentUser);
       
+      document.getElementById('prefDisplayNameInput').value = currentUser.name || '';
+      document.getElementById('prefContactInput').value = currentUser.phone || '';
+      document.getElementById('prefAvatarInput').value = currentUser.avatar || '';
+
+      document.getElementById('adminPullSheetBtn').style.display = (isAdmin || isStaff) ? 'inline-flex' : 'none';
+      document.getElementById('adminSaveSheetBtn').style.display = (isAdmin || isStaff) ? 'inline-flex' : 'none';
+
+      document.getElementById('tabStatusReport').style.display = canViewReport ? 'inline-flex' : 'none';
+      document.getElementById('menuTileReport').style.display = canViewReport ? 'flex' : 'none';
+
+      document.getElementById('tabEpEntry').style.display = canViewEntry ? 'inline-flex' : 'none';
+      document.getElementById('menuTileEntry').style.display = canViewEntry ? 'flex' : 'none';
+
+      document.getElementById('tabEpCancel').style.display = canViewCancel ? 'inline-flex' : 'none';
+      document.getElementById('menuTileCancel').style.display = canViewCancel ? 'flex' : 'none';
+
+      document.getElementById('tabContractorFine').style.display = canViewFine ? 'inline-flex' : 'none';
+      document.getElementById('menuTileFine').style.display = canViewFine ? 'flex' : 'none';
+
+      document.getElementById('tabContractorOverview').style.display = canViewOverview ? 'inline-flex' : 'none';
+      document.getElementById('menuTileOverview').style.display = canViewOverview ? 'flex' : 'none';
+
       document.getElementById('tabContractorMgmt').style.display = isAdmin ? 'inline-flex' : 'none';
-      document.getElementById('adminPullSheetBtn').style.display = isAdmin ? 'inline-flex' : 'none';
-      document.getElementById('adminSaveSheetBtn').style.display = isAdmin ? 'inline-flex' : 'none';
-      
+      document.getElementById('menuTileContractors').style.display = isAdmin ? 'flex' : 'none';
+
+      document.getElementById('mainFineAddBtn').style.display = canManageFine ? 'inline-flex' : 'none';
+      document.getElementById('mainFineBulkDoneBtn').style.display = canManageFine ? 'inline-flex' : 'none';
+      document.getElementById('fineActionTh').style.display = canManageFine ? 'table-cell' : 'none';
+      document.getElementById('fineSelectAllTh').style.display = canManageFine ? 'table-cell' : 'none';
+      document.getElementById('fineTotalLabelTd').colSpan = canManageFine ? 5 : 4;
+
+      const epActionBox = document.getElementById('epEntryActionButtons');
+      if (epActionBox) epActionBox.style.display = canManageEntry ? 'flex' : 'none';
+      const epSelectAllTh = document.getElementById('epSelectAllTh');
+      const epActionTh = document.getElementById('epActionTh');
+      if (epSelectAllTh) epSelectAllTh.style.display = canManageEntry ? 'table-cell' : 'none';
+      if (epActionTh) epActionTh.style.display = canManageEntry ? 'table-cell' : 'none';
+
+      if (isContractor) {
+        document.getElementById('tabTitleReport').innerText = '1. EP Status Report';
+        document.getElementById('tabTitleCancel').innerText = '2. EP Cancel Data';
+        document.getElementById('tabTitleFine').innerText = '3. Contractor Fine';
+        document.getElementById('tabTitleSettings').innerText = '4. Settings';
+
+        document.getElementById('adminContractorFilterBox').style.display = 'none';
+        document.getElementById('fineContractorFilterBox').style.display = 'none';
+      } else {
+        document.getElementById('tabTitleReport').innerText = '1. EP Status Report';
+        document.getElementById('tabTitleEntry').innerText = '2. EP Entry';
+        document.getElementById('tabTitleCancel').innerText = '3. EP Cancel Data';
+        document.getElementById('tabTitleFine').innerText = '4. Contractor Fine';
+        document.getElementById('tabTitleOverview').innerText = '5. Contractor Overview';
+        document.getElementById('tabTitleUsers').innerText = '6. User Control';
+        document.getElementById('tabTitleSettings').innerText = '7. Settings';
+
+        let userAssignedScope = (isStaff && currentUser.scope) ? currentUser.scope : 'ALL';
+        if (userAssignedScope !== 'ALL' && userAssignedScope.indexOf(',') === -1) {
+          document.getElementById('adminContractorFilterBox').style.display = 'none';
+          document.getElementById('fineContractorFilterBox').style.display = 'none';
+        } else {
+          document.getElementById('adminContractorFilterBox').style.display = 'block';
+          document.getElementById('fineContractorFilterBox').style.display = 'block';
+        }
+      }
+
       populateContractorDropdown();
       updateDashboardStats();
-      switchPage(isContractor ? 'report' : 'menu');
+      
+      if (isContractor) {
+        switchPage('report');
+      } else {
+        switchPage('menu');
+      }
+    }
+
+    function isContractorInScope(contName, scopeStr) {
+      if (!scopeStr || scopeStr === 'ALL') return true;
+      const arr = scopeStr.split(',').map(s => normStr(s));
+      return arr.includes(normStr(contName));
     }
 
     function updateDashboardStats() {
-      const activeCount = epList.filter(x => normStr(x.status) === 'active').length;
-      const cancelCount = epList.filter(x => normStr(x.status) === 'cancel').length;
-      const pendingFinesList = fineList.filter(x => normStr(x.status || 'pending') === 'pending');
+      if (!currentUser) return;
+      let scopeStr = 'ALL';
+      if (currentUser.role === 'contractor') scopeStr = currentUser.contractorName;
+      else if (currentUser.role === 'staff' && currentUser.scope) scopeStr = currentUser.scope;
+
+      const scopedPasses = epList.filter(x => isContractorInScope(x.contractor, scopeStr));
+      const scopedFines = fineList.filter(x => isContractorInScope(x.contractor, scopeStr));
+
+      const activeCount = scopedPasses.filter(x => normStr(x.status) === 'active').length;
+      const cancelCount = scopedPasses.filter(x => normStr(x.status) === 'cancel').length;
+      const pendingFines = scopedFines.filter(x => normStr(x.status || 'pending') === 'pending').length;
+      const pendingFinesList = scopedFines.filter(x => normStr(x.status || 'pending') === 'pending');
       const totalFine = pendingFinesList.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
-      
       document.getElementById('statActiveCount').innerText = activeCount;
       document.getElementById('statCancelCount').innerText = cancelCount;
-      document.getElementById('statPendingFineCount').innerText = pendingFinesList.length;
+      document.getElementById('statPendingFineCount').innerText = pendingFines;
       document.getElementById('statTotalFineAmt').innerText = `₹${totalFine.toLocaleString('en-IN')}`;
+
+      let scopeText = scopeStr === 'ALL' ? 'All Contractors' : (scopeStr.split(',').length > 1 ? 'Multiple Selected' : scopeStr.toUpperCase());
+      document.getElementById('statScopePasses').innerText = scopeText;
+      document.getElementById('statScopeCancel').innerText = scopeText;
+      document.getElementById('statScopePending').innerText = scopeText;
+      document.getElementById('statScopeAmount').innerText = scopeText;
     }
 
     function populateContractorDropdown() {
-      const set = new Set();
-      contractors.forEach(c => set.add(c.name));
-      epList.forEach(e => { if (e.contractor) set.add(e.contractor); });
-      const names = Array.from(set).sort();
+      const allNames = getAllContractorNames();
+      
+      let userAssignedScope = 'ALL';
+      if (currentUser && currentUser.role === 'staff' && currentUser.scope) userAssignedScope = currentUser.scope;
 
-      ['reportContractorDropdown', 'fineContractorDropdown', 'epContSelect', 'overviewContSelect'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.innerHTML = '<option value="ALL">-- તમામ (All) --</option>' + names.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
-        }
+      let allowedNames = allNames;
+      if (userAssignedScope !== 'ALL') {
+        const arr = userAssignedScope.split(',').map(s=>normStr(s));
+        allowedNames = allNames.filter(n => arr.includes(normStr(n)));
+      }
+
+      const dd1 = document.getElementById('reportContractorDropdown');
+      const curVal1 = dd1 ? (dd1.value || 'ALL') : 'ALL';
+      if (dd1) {
+        dd1.innerHTML = '<option value="ALL">-- તમામ (All Allowed) --</option>' + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+        dd1.value = allowedNames.includes(curVal1) ? curVal1 : 'ALL';
+      }
+
+      const dd2 = document.getElementById('fineContractorDropdown');
+      const curVal2 = dd2 ? (dd2.value || 'ALL') : 'ALL';
+      if (dd2) {
+        dd2.innerHTML = '<option value="ALL">-- તમામ (All Allowed) --</option>' + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+        dd2.value = allowedNames.includes(curVal2) ? curVal2 : 'ALL';
+      }
+
+      const epDD = document.getElementById('epContSelect');
+      if (epDD) {
+        epDD.innerHTML = '<option value="" disabled selected>-- Select Contractor --</option>' + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+      }
+
+      const ovDD = document.getElementById('overviewContSelect');
+      if (ovDD) {
+        const curOv = ovDD.value;
+        ovDD.innerHTML = '<option value="" disabled selected>-- કૉન્ટ્રેક્ટર પસંદ કરો --</option>' + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+        if (curOv && allowedNames.includes(curOv)) ovDD.value = curOv;
+      }
+    }
+
+    function renderMultiSelect(containerId, selectedStr, allNames) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const selectedArr = selectedStr === 'ALL' ? [] : selectedStr.split(',').map(s=>normStr(s));
+      
+      let html = `<label class="multi-select-item"><input type="checkbox" value="ALL" onchange="handleMultiSelectAll('${containerId}', this)" ${selectedStr === 'ALL' ? 'checked' : ''}> <strong>-- ALL CONTRACTORS --</strong></label>`;
+      
+      allNames.forEach(c => {
+        const isChecked = selectedStr === 'ALL' || selectedArr.includes(normStr(c));
+        html += `<label class="multi-select-item"><input type="checkbox" class="cont-chk" value="${escHtml(c)}" ${isChecked ? 'checked' : ''}> ${escHtml(c)}</label>`;
       });
+      container.innerHTML = html;
+    }
+
+    function handleMultiSelectAll(containerId, allCb) {
+      const container = document.getElementById(containerId);
+      const checkboxes = container.querySelectorAll('.cont-chk');
+      checkboxes.forEach(cb => cb.checked = allCb.checked);
+    }
+
+    function getMultiSelectValue(containerId) {
+      const container = document.getElementById(containerId);
+      const allCb = container.querySelector('input[value="ALL"]');
+      if (allCb && allCb.checked) return 'ALL';
+      
+      const checkboxes = Array.from(container.querySelectorAll('.cont-chk:checked'));
+      if (checkboxes.length === 0) return 'ALL'; 
+      return checkboxes.map(cb => cb.value).join(',');
     }
 
     function switchPage(pageKey) {
+      if (!currentUser) return;
+      const isAdmin = currentUser.role === 'admin';
+      const isStaff = currentUser.role === 'staff';
+
+      if (pageKey === 'contractors' && !isAdmin) {
+        alert('આ સેક્શન માત્ર Administrator માટે જ છે!'); return;
+      }
+      if (pageKey === 'entry' && !isAdmin && !(isStaff && currentUser.entryPerm !== 'NONE')) {
+        alert('તમને EP Entry સેક્શનની પરમિશન નથી!'); return;
+      }
+
       const pages = {
-        menu: 'pageMenuDashboard', report: 'pageStatusReport', entry: 'pageEpEntry',
-        cancel: 'pageEpCancel', fine: 'pageContractorFine', overview: 'pageContractorOverview',
-        contractors: 'pageContractors', settings: 'pageSettings'
+        menu: { btn: 'tabHomeMenu', view: 'pageMenuDashboard' },
+        report: { btn: 'tabStatusReport', view: 'pageStatusReport' },
+        entry: { btn: 'tabEpEntry', view: 'pageEpEntry' },
+        cancel: { btn: 'tabEpCancel', view: 'pageEpCancel' },
+        fine: { btn: 'tabContractorFine', view: 'pageContractorFine' },
+        overview: { btn: 'tabContractorOverview', view: 'pageContractorOverview' },
+        contractors: { btn: 'tabContractorMgmt', view: 'pageContractors' },
+        settings: { btn: 'tabSettings', view: 'pageSettings' }
       };
+
       Object.keys(pages).forEach(k => {
-        const view = document.getElementById(pages[k]);
+        const p = pages[k];
+        const btn = document.getElementById(p.btn);
+        const view = document.getElementById(p.view);
+        if (btn) btn.classList.toggle('active', k === pageKey);
         if (view) view.classList.toggle('hidden', k !== pageKey);
       });
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (pageKey === 'report') applyStatusReportFilter();
       if (pageKey === 'fine') applyFineFilter();
       if (pageKey === 'entry') renderEpEntryTable();
       if (pageKey === 'cancel') renderEpCancelTable();
-      if (pageKey === 'overview') renderContractorOverview();
+      if (pageKey === 'overview') { populateContractorDropdown(); renderContractorOverview(); }
+      if (pageKey === 'contractors') { renderContractorsTable(); renderStaffTable(); }
     }
 
+    function renderContractorOverview() {
+      const select = document.getElementById('overviewContSelect');
+      const contractorName = select ? select.value : '';
+      
+      if (!contractorName) {
+        document.getElementById('ovActivePasses').innerText = '0';
+        document.getElementById('ovCancelPasses').innerText = '0';
+        document.getElementById('ovPendingFines').innerText = '0';
+        document.getElementById('ovPendingAmount').innerText = '₹0';
+        return;
+      }
+
+      const passes = epList.filter(x => normStr(x.contractor) === normStr(contractorName));
+      const fines = fineList.filter(x => normStr(x.contractor) === normStr(contractorName));
+
+      const active = passes.filter(x => normStr(x.status) === 'active').length;
+      const cancelled = passes.filter(x => normStr(x.status) === 'cancel').length;
+      const pendingFinesList = fines.filter(x => normStr(x.status || 'pending') === 'pending');
+      const pendingCount = pendingFinesList.length;
+      const pendingAmt = pendingFinesList.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
+
+      document.getElementById('ovActivePasses').innerText = active;
+      document.getElementById('ovCancelPasses').innerText = cancelled;
+      document.getElementById('ovPendingFines').innerText = pendingCount;
+      document.getElementById('ovPendingAmount').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`;
+    }
+
+    // NEW ADDITION: Date Sort applied
     function applyStatusReportFilter() {
       const statusFilter = normStr(document.getElementById('reportStatusFilter').value);
       const search = normStr(document.getElementById('reportSearchKeyword').value);
-      const contractorDd = document.getElementById('reportContractorDropdown').value;
+      
+      let baseScope = 'ALL';
+      if (currentUser.role === 'contractor') baseScope = currentUser.contractorName;
+      else if (currentUser.role === 'staff' && currentUser.scope) baseScope = currentUser.scope;
 
-      currentFilteredRecords = epList.filter(item => {
-        if (contractorDd !== 'ALL' && normStr(item.contractor) !== normStr(contractorDd)) return false;
-        if (statusFilter !== 'all' && normStr(item.status) !== statusFilter) return false;
-        if (search && !normStr(item.epNo).includes(search) && !normStr(item.epName).includes(search) && !normStr(item.contractor).includes(search)) return false;
-        return true;
+      const dd = document.getElementById('reportContractorDropdown');
+      let selectedDd = dd && dd.value !== 'ALL' ? dd.value : 'ALL';
+
+      const filtered = epList.filter(item => {
+        if (!isContractorInScope(item.contractor, baseScope)) return false;
+        if (selectedDd !== 'ALL' && normStr(item.contractor) !== normStr(selectedDd)) return false;
+
+        const itemStatus = normStr(item.status);
+        const matchStatus = (statusFilter === 'all') || (itemStatus === statusFilter);
+        const matchSearch = !search || normStr(item.epNo).includes(search) || normStr(item.epName).includes(search) || normStr(item.plant).includes(search) || normStr(item.contractor).includes(search);
+
+        return matchStatus && matchSearch;
       });
 
+      // Sort Descending (Newest to Oldest)
+      filtered.sort((a, b) => getSortTime(b.entryDate) - getSortTime(a.entryDate));
+      currentFilteredRecords = filtered;
+      
       const tbody = document.getElementById('statusReportTableBody');
-      tbody.innerHTML = currentFilteredRecords.length === 0 ? `<tr><td colspan="7" style="text-align:center; padding:2rem;">કોઈ ડેટા નથી.</td></tr>` :
-        currentFilteredRecords.map((r, i) => `<tr><td><strong>${i+1}</strong></td><td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td><td><strong>${escHtml(r.epNo)}</strong></td><td>${escHtml(r.epName)}</td><td>${escHtml(r.plant)}</td><td style="color:#38bdf8;">${escHtml(cleanDateString(r.entryDate))}</td><td><span class="badge ${normStr(r.status)==='active'?'badge-active':'badge-cancel'}">${escHtml(r.status)}</span></td></tr>`).join('');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ ડેટા મળ્યો નથી.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((row, idx) => `
+        <tr>
+          <td><strong>${idx + 1}</strong></td>
+          <td><span class="badge badge-contractor">${escHtml(row.contractor || '-')}</span></td>
+          <td><strong>${escHtml(row.epNo || '-')}</strong></td>
+          <td>${escHtml(row.epName || '-')}</td>
+          <td>${escHtml(row.plant || '-')}</td>
+          <td style="font-weight: 700; color: #38bdf8;">${escHtml(cleanDateString(row.entryDate) || '-')}</td>
+          <td><span class="badge ${normStr(row.status) === 'active' ? 'badge-active' : 'badge-cancel'}">${escHtml(row.status)}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // Toggle Safe Edit Mode for EP Entry
+    function toggleEpEditMode() {
+      const canEditEntry = currentUser && (currentUser.role === 'admin' || (currentUser.role === 'staff' && currentUser.entryPerm === 'VIEW_EDIT'));
+      if (!canEditEntry) return;
+
+      isEpEditMode = !isEpEditMode;
+      const btn = document.getElementById('toggleEditModeBtn');
+      const banner = document.getElementById('epEditModeBanner');
+
+      if (isEpEditMode) {
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Done Editing';
+        btn.className = 'btn btn-success btn-sm';
+        banner.classList.remove('hidden');
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Mode';
+        btn.className = 'btn btn-warning btn-sm';
+        banner.classList.add('hidden');
+        syncWithGoogleSheet();
+      }
+      renderEpEntryTable();
     }
 
     function renderEpEntryTable() {
       const tbody = document.getElementById('epEntryTableBody');
-      const active = epList.filter(x => normStr(x.status) === 'active');
-      document.getElementById('epShowingCount').innerText = `(${active.length} Passes)`;
-      tbody.innerHTML = active.length === 0 ? `<tr><td colspan="8" style="text-align:center; padding:2rem;">કોઈ એક્ટિવ પાસ નથી.</td></tr>` :
-        active.map((r, i) => `<tr><td style="text-align:center;"><input type="checkbox" class="pass-select-chk chk-lg" data-id="${escHtml(r.id)}"></td><td><strong>${i+1}</strong></td><td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td><td><strong>${escHtml(r.epNo)}</strong></td><td>${escHtml(r.epName)}</td><td>${escHtml(r.plant)}</td><td style="color:#38bdf8;">${escHtml(cleanDateString(r.entryDate))}</td><td style="text-align:center;"><button class="btn btn-danger btn-sm" onclick="cancelSinglePass('${escHtml(r.id)}')">Cancel</button></td></tr>`).join('');
+      const masterChk = document.getElementById('epMasterCheckbox');
+      if (masterChk) masterChk.checked = false;
+
+      let baseScope = 'ALL';
+      if (currentUser.role === 'contractor') baseScope = currentUser.contractorName;
+      else if (currentUser.role === 'staff' && currentUser.scope) baseScope = currentUser.scope;
+
+      const search = normStr(document.getElementById('epSearchKeyword')?.value);
+
+      const activeFiltered = epList.filter(item => {
+        if (normStr(item.status) !== 'active') return false;
+        if (!isContractorInScope(item.contractor, baseScope)) return false;
+        if (search) {
+          return normStr(item.epNo).includes(search) ||
+                 normStr(item.epName).includes(search) ||
+                 normStr(item.contractor).includes(search) ||
+                 normStr(item.plant).includes(search) ||
+                 normStr(item.entryDate).includes(search);
+        }
+        return true;
+      });
+
+      // Sort Descending (Newest to Oldest)
+      activeFiltered.sort((a, b) => getSortTime(b.entryDate) - getSortTime(a.entryDate));
+      
+      const countSpan = document.getElementById('epShowingCount');
+      if (countSpan) countSpan.innerText = `(${activeFiltered.length} Passes)`;
+
+      const canEditEntry = currentUser && (currentUser.role === 'admin' || (currentUser.role === 'staff' && currentUser.entryPerm === 'VIEW_EDIT'));
+
+      if (activeFiltered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="${canEditEntry ? 8 : 6}" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ એક્ટિવ પાસ મળ્યો નથી.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = activeFiltered.map((row, idx) => {
+        const safeId = escHtml(row.id);
+        const chkCol = canEditEntry ? `<td style="text-align: center;"><input type="checkbox" class="pass-select-chk chk-lg" data-id="${safeId}"></td>` : '';
+        const actionCol = canEditEntry ? `<td style="text-align: center;"><button class="btn btn-danger btn-sm" onclick="cancelSinglePassAction('${safeId}')"><i class="fa-solid fa-ban"></i> Cancel</button></td>` : '';
+
+        if (isEpEditMode && canEditEntry) {
+          return `
+            <tr>
+              ${chkCol}
+              <td><strong>${idx + 1}</strong></td>
+              <td><input type="text" class="form-input" style="padding:0.35rem 0.5rem; font-size:0.8rem; min-width:110px;" value="${escHtml(row.contractor)}" onchange="updateEpField('${safeId}', 'contractor', this.value)"></td>
+              <td><input type="text" class="form-input" style="padding:0.35rem 0.5rem; font-size:0.8rem; min-width:110px;" value="${escHtml(row.epNo)}" onchange="updateEpField('${safeId}', 'epNo', this.value)"></td>
+              <td><input type="text" class="form-input" style="padding:0.35rem 0.5rem; font-size:0.8rem; min-width:140px;" value="${escHtml(row.epName)}" onchange="updateEpField('${safeId}', 'epName', this.value)"></td>
+              <td><input type="text" class="form-input" style="padding:0.35rem 0.5rem; font-size:0.8rem; min-width:110px;" value="${escHtml(row.plant)}" onchange="updateEpField('${safeId}', 'plant', this.value)"></td>
+              <td><input type="text" class="form-input" style="padding:0.35rem 0.5rem; font-size:0.8rem; min-width:105px;" value="${escHtml(cleanDateString(row.entryDate))}" onchange="updateEpField('${safeId}', 'entryDate', this.value)"></td>
+              ${actionCol}
+            </tr>
+          `;
+        } else {
+          return `
+            <tr>
+              ${chkCol}
+              <td><strong>${idx + 1}</strong></td>
+              <td><span class="badge badge-contractor">${escHtml(row.contractor || '-')}</span></td>
+              <td><strong>${escHtml(row.epNo || '-')}</strong></td>
+              <td>${escHtml(row.epName || '-')}</td>
+              <td>${escHtml(row.plant || '-')}</td>
+              <td style="font-weight: 700; color: #38bdf8;">${escHtml(cleanDateString(row.entryDate) || '-')}</td>
+              ${actionCol}
+            </tr>
+          `;
+        }
+      }).join('');
+    }
+
+    function updateEpField(id, field, val) {
+      const target = epList.find(x => String(x.id) === String(id));
+      if (target) {
+        target[field] = String(val).trim();
+        saveState();
+        updateDashboardStats();
+      }
     }
 
     function toggleSelectAllPasses(chk) {
@@ -533,149 +1592,540 @@
 
     async function cancelSelectedPasses() {
       const selected = Array.from(document.querySelectorAll('.pass-select-chk:checked')).map(x => String(x.getAttribute('data-id')));
-      if (selected.length === 0) { alert('ઓછામાં ઓછો ૧ પાસ સિલેક્ટ કરો!'); return; }
-      if (!confirm(`સિલેક્ટ કરેલા ${selected.length} પાસ કેન્સલ કરવા છે?`)) return;
+      if (selected.length === 0) { alert('કૃપા કરીને Cancel કરવા માટે ઓછામાં ઓછો ૧ પાસ સિલેક્ટ કરો!'); return; }
+      if (!confirm(`શું તમે સિલેક્ટ કરેલા ${selected.length} પાસ એકસાથે Cancel કરવા માંગો છો?`)) return;
+
       const selectedSet = new Set(selected);
       const today = getToday();
-      epList.forEach(item => { if (selectedSet.has(String(item.id))) { item.status = 'Cancel'; item.cancelDate = today; } });
-      saveState(); renderEpEntryTable(); updateDashboardStats(); syncWithGoogleSheet();
-      alert('સફળતાપૂર્વક કેન્સલ થઈ ગયા!');
+      let cancelCount = 0;
+
+      epList.forEach(item => {
+        if (selectedSet.has(String(item.id))) {
+          item.status = 'Cancel';
+          item.cancelDate = today;
+          cancelCount++;
+        }
+      });
+
+      saveState();
+      renderEpEntryTable();
+      updateDashboardStats();
+      await syncWithGoogleSheet();
+      alert(`${cancelCount} પાસ સફળતાપૂર્વક Cancel થઈ ગયા!`);
+    }
+
+    async function cancelSinglePassAction(id) {
+      const item = epList.find(x => String(x.id) === String(id));
+      if (!item) return;
+      if (confirm(`શું પાસ ${item.epNo} (${item.epName}) કેન્સલ કરવો છે?`)) {
+        item.status = 'Cancel';
+        item.cancelDate = getToday();
+        saveState();
+        renderEpEntryTable();
+        updateDashboardStats();
+        await syncWithGoogleSheet();
+      }
+    }
+
+    function openAddEpModal() {
+      populateContractorDropdown();
+      document.getElementById('epNoInput').value = '';
+      document.getElementById('epNameInput').value = '';
+      document.getElementById('epPlantInput').value = 'CHO (A) KC2';
+      document.getElementById('epDateInput').value = getToday();
+      document.getElementById('epModal').classList.remove('hidden');
+    }
+    function closeAddEpModal() { document.getElementById('epModal').classList.add('hidden'); }
+
+    async function saveNewEpRecord() {
+      const contractorElem = document.getElementById('epContSelect');
+      const contractor = contractorElem ? String(contractorElem.value).trim() : '';
+      const epNo = String(document.getElementById('epNoInput').value).trim();
+      const epName = String(document.getElementById('epNameInput').value).trim();
+      const plant = String(document.getElementById('epPlantInput').value).trim();
+      const entryDate = cleanDateString(document.getElementById('epDateInput').value);
+
+      if (!contractor || !epNo || !epName) { alert('કૃપા કરીને Contractor સિલેક્ટ કરો અને EP Number તથા Name ભરો!'); return; }
+
+      const duplicate = epList.find(x => normStr(x.status) === 'active' && normStr(x.epNo) === normStr(epNo));
+      if (duplicate) {
+        alert(`આ EP Number (${epNo}) પહેલેથી જ Active લિસ્ટમાં છે!`);
+        return;
+      }
+
+      epList.unshift({
+        id: 'ep_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        contractor, epNo, epName,
+        plant: plant || 'CHO (A) KC2',
+        entryDate: entryDate || getToday(),
+        status: 'Active', cancelDate: ''
+      });
+
+      saveState(); closeAddEpModal(); renderEpEntryTable(); updateDashboardStats(); await syncWithGoogleSheet();
+      alert('નવો એક્ટિવ પાસ સફળતાપૂર્વક ઉમેરાઈ ગયો!');
     }
 
     function renderEpCancelTable() {
       const tbody = document.getElementById('cancelTableBody');
-      const cancelled = epList.filter(x => normStr(x.status) === 'cancel');
-      tbody.innerHTML = cancelled.length === 0 ? `<tr><td colspan="8" style="text-align:center; padding:2rem;">કોઈ કેન્સલ પાસ નથી.</td></tr>` :
-        cancelled.map((r, i) => `<tr><td><strong>${i+1}</strong></td><td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td><td><strong>${escHtml(r.epNo)}</strong></td><td>${escHtml(r.epName)}</td><td>${escHtml(r.plant)}</td><td>${escHtml(cleanDateString(r.entryDate))}</td><td style="color:#f87171;">${escHtml(cleanDateString(r.cancelDate))}</td><td><span class="badge badge-cancel">Cancel</span></td></tr>`).join('');
+      let baseScope = 'ALL';
+      if (currentUser.role === 'contractor') baseScope = currentUser.contractorName;
+      else if (currentUser.role === 'staff' && currentUser.scope) baseScope = currentUser.scope;
+
+      const search = normStr(document.getElementById('cancelSearchKeyword')?.value);
+
+      const cancelled = epList.filter(item => {
+        if (normStr(item.status) !== 'cancel') return false;
+        if (!isContractorInScope(item.contractor, baseScope)) return false;
+        if (search) {
+          return normStr(item.epNo).includes(search) ||
+                 normStr(item.epName).includes(search) ||
+                 normStr(item.contractor).includes(search) ||
+                 normStr(item.plant).includes(search);
+        }
+        return true;
+      });
+
+      // Sort Descending (Newest to Oldest)
+      cancelled.sort((a, b) => getSortTime(b.cancelDate || b.entryDate) - getSortTime(a.cancelDate || a.entryDate));
+
+      if (cancelled.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ કેન્સલ પાસ નથી.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = cancelled.map((r, idx) => `
+        <tr>
+          <td><strong>${idx + 1}</strong></td>
+          <td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td>
+          <td><strong>${escHtml(r.epNo)}</strong></td>
+          <td>${escHtml(r.epName)}</td>
+          <td>${escHtml(r.plant)}</td>
+          <td>${escHtml(cleanDateString(r.entryDate))}</td>
+          <td><strong style="color: #f87171;">${escHtml(cleanDateString(r.cancelDate) || '-')}</strong></td>
+          <td><span class="badge badge-cancel">Cancel</span></td>
+        </tr>
+      `).join('');
     }
 
     function applyFineFilter() {
       const statusFilter = normStr(document.getElementById('fineStatusFilter').value);
-      const contractorDd = document.getElementById('fineContractorDropdown').value;
       const search = normStr(document.getElementById('fineSearchKeyword').value);
 
-      currentFilteredFines = fineList.filter(f => {
-        if (contractorDd !== 'ALL' && normStr(f.contractor) !== normStr(contractorDd)) return false;
-        if (statusFilter !== 'all' && normStr(f.status || 'pending') !== statusFilter) return false;
-        if (search && !normStr(f.epNo).includes(search) && !normStr(f.epName).includes(search)) return false;
-        return true;
+      let baseScope = 'ALL';
+      if (currentUser.role === 'contractor') baseScope = currentUser.contractorName;
+      else if (currentUser.role === 'staff' && currentUser.scope) baseScope = currentUser.scope;
+
+      const dd = document.getElementById('fineContractorDropdown');
+      let selectedDd = dd && dd.value !== 'ALL' ? dd.value : 'ALL';
+
+      const canManageFine = (currentUser.role === 'admin') || (currentUser.role === 'staff' && currentUser.finePerm === 'VIEW_EDIT');
+
+      const filtered = fineList.filter(item => {
+        if (!isContractorInScope(item.contractor, baseScope)) return false;
+        if (selectedDd !== 'ALL' && normStr(item.contractor) !== normStr(selectedDd)) return false;
+
+        const itemStatus = normStr(item.status || 'Pending');
+        const matchStatus = (statusFilter === 'all') || (itemStatus === statusFilter);
+        const matchSearch = !search || normStr(item.epNo).includes(search) || normStr(item.epName).includes(search) || normStr(item.reason).includes(search) || normStr(item.contractor).includes(search);
+
+        return matchStatus && matchSearch;
       });
 
+      // Sort Descending (Newest to Oldest)
+      filtered.sort((a, b) => getSortTime(b.date) - getSortTime(a.date));
+      currentFilteredFines = filtered;
+      
       const tbody = document.getElementById('contractorFineTableBody');
-      let totalAmt = 0;
-      tbody.innerHTML = currentFilteredFines.length === 0 ? `<tr><td colspan="10" style="text-align:center; padding:2rem;">કોઈ દંડ નથી.</td></tr>` :
-        currentFilteredFines.map((f, i) => {
-          const isDone = normStr(f.status) === 'done';
-          const debit = parseFloat(f.debit) || 0;
-          totalAmt += debit;
-          // REVERT BUTTON REMOVED COMPLETELY AS REQUESTED
-          return `<tr><td style="text-align:center;"><input type="checkbox" class="fine-select-chk chk-lg" data-id="${escHtml(f.id)}"></td><td><strong>${i+1}</strong></td><td><span class="badge badge-contractor">${escHtml(f.contractor)}</span></td><td><strong>${escHtml(f.epNo)}</strong></td><td>${escHtml(f.epName)}</td><td style="color:#f87171;">₹${debit}</td><td>${escHtml(f.reason)}</td><td style="color:#38bdf8;">${escHtml(cleanDateString(f.date))}</td><td><span class="badge ${isDone?'badge-done':'badge-pending'}">${isDone?'Done':'Pending'}</span></td><td>${isDone?'-':`<button class="btn btn-success btn-sm" onclick="markFineDone('${escHtml(f.id)}')">Done</button>`}</td></tr>`;
-        }).join('');
-      document.getElementById('fineTotalAmountTd').innerText = `₹${totalAmt.toLocaleString('en-IN')}`;
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="${canManageFine ? 10 : 8}" style="text-align: center; padding: 2rem; color: var(--text-muted);">કોઈ દંડ (Fine) નો ડેટા મળ્યો નથી.</td></tr>`;
+        document.getElementById('fineTotalAmountTd').innerText = '₹0';
+        return;
+      }
+
+      let totalFilteredAmt = 0;
+      tbody.innerHTML = filtered.map((row, idx) => {
+        const safeId = escHtml(row.id);
+        const isDone = (normStr(row.status) === 'done');
+        const numDebit = parseFloat(row.debit) || 0;
+        totalFilteredAmt += numDebit;
+        
+        // REVERT BUTTON REMOVED AS REQUESTED
+        const actionBtn = canManageFine ? (isDone ? `<span class="badge badge-done"><i class="fa-solid fa-check"></i> Done</span>` : `<button class="btn btn-success btn-sm" onclick="markFineDone('${safeId}')"><i class="fa-solid fa-check-double"></i> Done</button>`) : '';
+        const chkCol = canManageFine ? `<td style="text-align: center;"><input type="checkbox" class="fine-select-chk chk-lg" data-id="${safeId}"></td>` : '';
+        
+        return `
+          <tr>
+            ${chkCol}
+            <td><strong>${idx + 1}</strong></td>
+            <td><span class="badge badge-contractor">${escHtml(row.contractor || '-')}</span></td>
+            <td><strong>${escHtml(row.epNo || '-')}</strong></td>
+            <td>${escHtml(row.epName || '-')}</td>
+            <td><strong style="color: #f87171; font-size: 0.95rem;">₹${numDebit}</strong></td>
+            <td><span class="badge badge-pending">${escHtml(row.reason || '-')}</span></td>
+            <td style="font-weight: 700; color: #38bdf8;">${escHtml(cleanDateString(row.date) || '-')}</td>
+            <td><span class="badge ${isDone ? 'badge-done' : 'badge-pending'}">${isDone ? 'Done' : 'Pending'}</span></td>
+            ${canManageFine ? `<td>${actionBtn}</td>` : ''}
+          </tr>
+        `;
+      }).join('');
+      document.getElementById('fineTotalAmountTd').innerText = `₹${totalFilteredAmt.toLocaleString('en-IN')}`;
     }
 
-    function toggleSelectAllFines(isChecked) {
-      document.querySelectorAll('.fine-select-chk').forEach(cb => cb.checked = isChecked);
+    function renderContractorsTable() {
+      const tbody = document.getElementById('contractorTableBody');
+      const search = normStr(document.getElementById('contractorSearchInput')?.value);
+      const isAdmin = currentUser && currentUser.role === 'admin';
+
+      let list = contractors;
+      if (search) {
+        list = contractors.filter(c => normStr(c.name).includes(search) || normStr(c.username).includes(search) || normStr(c.phone).includes(search));
+      }
+
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 1.5rem; color: var(--text-muted);">કોઈ Contractor મળ્યા નથી.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map((c, idx) => `
+        <tr>
+          <td><strong>${idx + 1}</strong></td>
+          <td><strong>${escHtml(c.name)}</strong></td>
+          <td>${escHtml(c.username)}</td>
+          <td>${escHtml(c.password)}</td>
+          <td>${escHtml(c.phone || '-')}</td>
+          <td>${isAdmin ? `<button class="btn btn-danger btn-sm" onclick="deleteContractor(${contractors.indexOf(c)})"><i class="fa-solid fa-trash"></i></button>` : '-'}</td>
+        </tr>
+      `).join('');
     }
+
+    function renderStaffTable() {
+      const tbody = document.getElementById('staffTableBody');
+      const isAdmin = currentUser && currentUser.role === 'admin';
+      
+      if (!staffList || staffList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 1.5rem; color: var(--text-muted);">No staff found.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = staffList.map((s, idx) => `
+        <tr>
+          <td><strong>${idx + 1}</strong></td>
+          <td><strong>${escHtml(s.name)}</strong></td>
+          <td>${escHtml(s.username)}</td>
+          <td>${escHtml(s.password)}</td>
+          <td><span class="badge ${s.finePerm === 'VIEW_EDIT' ? 'badge-success' : 'badge-pending'}">${escHtml(s.finePerm)}</span></td>
+          <td><span class="badge badge-contractor">${escHtml(s.reportPerm || 'VIEW_ONLY')}</span></td>
+          <td><span class="badge ${s.entryPerm === 'VIEW_EDIT' ? 'badge-success' : 'badge-pending'}">${escHtml(s.entryPerm || 'VIEW_EDIT')}</span></td>
+          <td><span class="badge badge-contractor">${escHtml(s.cancelPerm || 'VIEW_ONLY')}</span></td>
+          <td><span class="badge badge-contractor">${escHtml(s.overviewPerm || 'VIEW_ONLY')}</span></td>
+          <td>${s.scope === 'ALL' ? 'ALL' : escHtml(s.scope.length > 20 ? s.scope.substring(0,20)+'...' : s.scope)}</td>
+          <td>${isAdmin ? `<button class="btn btn-primary btn-sm" onclick="openAddStaffModal('${escHtml(s.id)}')"><i class="fa-solid fa-pen"></i></button> <button class="btn btn-danger btn-sm" onclick="deleteStaff('${escHtml(s.id)}')"><i class="fa-solid fa-trash"></i></button>` : '-'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function openAddStaffModal(id = null) {
+      if (currentUser.role !== 'admin') return;
+      if (id) {
+        const s = staffList.find(x => x.id === id);
+        if (s) {
+          document.getElementById('staffIdInput').value = s.id;
+          document.getElementById('staffNameInput').value = s.name;
+          document.getElementById('staffUserInput').value = s.username;
+          document.getElementById('staffPassInput').value = s.password;
+          document.getElementById('staffFinePermSelect').value = s.finePerm || 'VIEW_ONLY';
+          document.getElementById('staffReportPermSelect').value = s.reportPerm || 'VIEW_ONLY';
+          document.getElementById('staffEntryPermSelect').value = s.entryPerm || 'VIEW_EDIT';
+          document.getElementById('staffCancelPermSelect').value = s.cancelPerm || 'VIEW_ONLY';
+          document.getElementById('staffOverviewPermSelect').value = s.overviewPerm || 'VIEW_ONLY';
+          renderMultiSelect('staffMultiSelect', s.scope || 'ALL', getAllContractorNames());
+        }
+      } else {
+        document.getElementById('staffIdInput').value = '';
+        document.getElementById('staffNameInput').value = '';
+        document.getElementById('staffUserInput').value = '';
+        document.getElementById('staffPassInput').value = '';
+        document.getElementById('staffFinePermSelect').value = 'VIEW_EDIT';
+        document.getElementById('staffReportPermSelect').value = 'VIEW_ONLY';
+        document.getElementById('staffEntryPermSelect').value = 'VIEW_EDIT';
+        document.getElementById('staffCancelPermSelect').value = 'VIEW_ONLY';
+        document.getElementById('staffOverviewPermSelect').value = 'VIEW_ONLY';
+        renderMultiSelect('staffMultiSelect', 'ALL', getAllContractorNames());
+      }
+      document.getElementById('staffModal').classList.remove('hidden');
+    }
+
+    function closeAddStaffModal() { document.getElementById('staffModal').classList.add('hidden'); }
+
+    async function saveStaffRecord() {
+      const id = document.getElementById('staffIdInput').value;
+      const name = String(document.getElementById('staffNameInput').value).trim();
+      const username = normStr(document.getElementById('staffUserInput').value);
+      const password = String(document.getElementById('staffPassInput').value).trim();
+      const finePerm = document.getElementById('staffFinePermSelect').value;
+      const reportPerm = document.getElementById('staffReportPermSelect').value;
+      const entryPerm = document.getElementById('staffEntryPermSelect').value;
+      const cancelPerm = document.getElementById('staffCancelPermSelect').value;
+      const overviewPerm = document.getElementById('staffOverviewPermSelect').value;
+      const scope = getMultiSelectValue('staffMultiSelect');
+
+      if (!name || !username || !password) { alert('Please fill all details!'); return; }
+      
+      const newStaffObj = { id: id || 'st_'+Date.now(), name, username, password, finePerm, reportPerm, entryPerm, cancelPerm, overviewPerm, scope };
+
+      if (id) {
+        const existingIdx = staffList.findIndex(s => s.id === id);
+        if (existingIdx >= 0) staffList[existingIdx] = newStaffObj;
+      } else {
+        staffList.push(newStaffObj);
+      }
+      
+      saveState(); closeAddStaffModal(); renderStaffTable(); await syncWithGoogleSheet();
+      alert('Staff saved successfully!');
+    }
+
+    function deleteStaff(id) {
+      if (confirm('Delete this staff member?')) {
+        staffList = staffList.filter(s => s.id !== id);
+        saveState(); renderStaffTable(); syncWithGoogleSheet();
+      }
+    }
+
+    function toggleSelectAllFines(isChecked) { document.querySelectorAll('.fine-select-chk').forEach(cb => cb.checked = isChecked); }
 
     async function markSelectedFinesDone() {
-      const selected = Array.from(document.querySelectorAll('.fine-select-chk:checked')).map(b => String(b.getAttribute('data-id')));
-      if (selected.length === 0) { alert('ઓછામાં ઓછો ૧ દંડ સિલેક્ટ કરો!'); return; }
-      if (!confirm(`સિલેક્ટ કરેલા ${selected.length} દંડ Done કરવા છે?`)) return;
-      const ids = new Set(selected);
+      const selectedBoxes = Array.from(document.querySelectorAll('.fine-select-chk:checked'));
+      if (selectedBoxes.length === 0) { alert('કૃપા કરીને Done કરવા માટે ઓછામાં ઓછો ૧ દંડ પસંદ કરો!'); return; }
+      if (!confirm(`શું તમે સિલેક્ટ કરેલા તમામ ${selectedBoxes.length} દંડને એકસાથે Done કરવા માંગો છો?`)) return;
+
+      const ids = new Set(selectedBoxes.map(b => String(b.getAttribute('data-id'))));
       const today = getToday();
       fineList.forEach(item => { if (ids.has(String(item.id))) { item.status = 'Done'; item.doneDate = today; } });
-      saveState(); applyFineFilter(); updateDashboardStats(); syncWithGoogleSheet();
-      alert('સફળતાપૂર્વક Done થઈ ગયા!');
+      saveState(); applyFineFilter(); updateDashboardStats(); await syncWithGoogleSheet();
+      alert(`${ids.size} દંડ સફળતાપૂર્વક Done થઈ ગયા!`);
     }
 
-    function renderContractorOverview() {
-      const name = document.getElementById('overviewContSelect').value;
-      const passes = epList.filter(x => normStr(x.contractor) === normStr(name));
-      const fines = fineList.filter(x => normStr(x.contractor) === normStr(name));
-      document.getElementById('ovActivePasses').innerText = passes.filter(x => normStr(x.status) === 'active').length;
-      document.getElementById('ovCancelPasses').innerText = passes.filter(x => normStr(x.status) === 'cancel').length;
-      const pendingFines = fines.filter(x => normStr(x.status || 'pending') === 'pending');
-      document.getElementById('ovPendingFines').innerText = pendingFines.length;
-      document.getElementById('ovPendingAmount').innerText = `₹${pendingFines.reduce((s,i)=>s+(parseFloat(i.debit)||0),0)}`;
-    }
-
-    function openAddEpModal() { document.getElementById('epModal').classList.remove('hidden'); document.getElementById('epDateInput').value = getToday(); }
-    function closeAddEpModal() { document.getElementById('epModal').classList.add('hidden'); }
-    
-    function saveNewEpRecord() {
-      const contractor = document.getElementById('epContSelect').value;
-      const epNo = document.getElementById('epNoInput').value.trim();
-      const epName = document.getElementById('epNameInput').value.trim();
-      if (!contractor || !epNo || !epName) { alert('બધી વિગતો ભરો!'); return; }
-      epList.unshift({ id: 'ep_' + Date.now(), contractor, epNo, epName, plant: document.getElementById('epPlantInput').value, entryDate: getToday(), status: 'Active' });
-      saveState(); closeAddEpModal(); renderEpEntryTable(); updateDashboardStats(); syncWithGoogleSheet(); alert('પાસ ઉમેરાઈ ગયો!');
+    async function markFineDone(id) {
+      const target = fineList.find(f => String(f.id) === String(id));
+      if (target && confirm(`શું Contractor "${target.contractor}" નો ₹${target.debit} દંડ Done કરવો છે?`)) {
+        target.status = 'Done'; target.doneDate = getToday();
+        saveState(); applyFineFilter(); updateDashboardStats(); await syncWithGoogleSheet();
+      }
     }
 
     function openAddFineModal() {
-      document.getElementById('fineEpNoInput').value = '';
+      populateContractorDropdown();
+      document.getElementById('fineEpNoInput').value = ''; 
       document.getElementById('fineInfoDisplay').value = '';
-      document.getElementById('fineDebitInput').value = '';
+      document.getElementById('fineEpNameInput').value = '';
+      document.getElementById('fineContSelect').value = '';
+      document.getElementById('fineDebitInput').value = ''; 
       document.getElementById('fineReasonInput').value = '';
       document.getElementById('fineModal').classList.remove('hidden');
     }
     function closeAddFineModal() { document.getElementById('fineModal').classList.add('hidden'); }
 
-    function saveNewFineRecord() {
-      const contractor = document.getElementById('fineContSelect').value;
-      const epNo = document.getElementById('fineEpNoInput').value.trim();
-      const epName = document.getElementById('fineEpNameInput').value.trim();
-      const debit = document.getElementById('fineDebitInput').value.trim();
-      const reason = document.getElementById('fineReasonInput').value.trim();
-      if (!contractor || !epNo || !debit || !reason) { alert('બધી વિગતો ભરો!'); return; }
-      fineList.unshift({ id: 'fn_' + Date.now(), contractor, epNo, epName: epName || '-', debit, reason, date: getToday(), status: 'Pending' });
-      saveState(); closeAddFineModal(); applyFineFilter(); updateDashboardStats(); syncWithGoogleSheet(); alert('દંડ ઉમેરાઈ ગયો!');
+    async function saveNewFineRecord() {
+      const cont = String(document.getElementById('fineContSelect').value).trim();
+      const epNo = String(document.getElementById('fineEpNoInput').value).trim();
+      const epName = String(document.getElementById('fineEpNameInput').value).trim();
+      const debit = String(document.getElementById('fineDebitInput').value).trim();
+      const reason = String(document.getElementById('fineReasonInput').value).trim();
+      const status = document.getElementById('fineStatusSelect').value;
+
+      if (!cont || !epNo || !debit || !reason) { alert('બધી વિગતો ભરવી જરૂરી છે! (EP Number લિસ્ટમાંથી સિલેક્ટ કરો)'); return; }
+
+      fineList.unshift({
+        id: 'fn_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        contractor: cont, epNo, epName: epName || '-',
+        debit, reason, date: getToday(), status, doneDate: status === 'Done' ? getToday() : ''
+      });
+      saveState(); closeAddFineModal(); applyFineFilter(); updateDashboardStats(); await syncWithGoogleSheet();
+      alert('નવો દંડ સફળતાપૂર્વક ઉમેરાઈ ગયો!');
     }
 
-    async function cancelSinglePass(id) {
-      const item = epList.find(x => String(x.id) === String(id));
-      if (item && confirm('આ પાસ કેન્સલ કરવો છે?')) {
-        item.status = 'Cancel'; item.cancelDate = getToday();
-        saveState(); renderEpEntryTable(); updateDashboardStats(); syncWithGoogleSheet();
-      }
-    }
-
-    async function markFineDone(id) {
-      const item = fineList.find(x => String(x.id) === String(id));
-      if (item) {
-        item.status = 'Done'; item.doneDate = getToday();
-        saveState(); applyFineFilter(); updateDashboardStats(); syncWithGoogleSheet();
-      }
-    }
-
-    async function syncWithGoogleSheet() {
+    async function syncWithGoogleSheet(showNotification = false) {
+      const btn = document.getElementById('adminSaveSheetBtn');
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
       try {
-        await fetch(MASTER_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ epList, contractors, fineList, staffList }) });
-      } catch(e) {}
+        await fetch(MASTER_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ epList, contractors, fineList, staffList, adminProfile: users.vijay })
+        });
+        if (showNotification) alert('ડેટા સેવ થઈ ગયો!');
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only">Save</span>';
+      }
     }
 
-    async function autoFetchMasterData() {
+    async function autoFetchMasterData(showError = false, isPolling = false) {
+      if (isFetchingLive) return false;
+      isFetchingLive = true;
       try {
         const res = await fetch(MASTER_SCRIPT_URL);
         const data = await res.json();
         if (data && data.success) {
-          if (data.epList) epList = data.epList;
-          if (data.fineList) fineList = data.fineList;
+          if (Array.isArray(data.epList) && data.epList.length > 0) {
+            epList = data.epList.map((item, idx) => ({
+              id: item.id || ('ep_' + idx + '_' + String(item.epNo || '').trim()),
+              contractor: String(item.contractor || '').trim(),
+              epNo: String(item.epNo || '').trim(),
+              epName: String(item.epName || '').trim(),
+              plant: String(item.plant || 'CHO (A) KC2').trim(),
+              entryDate: cleanDateString(item.entryDate),
+              status: String(item.status || 'Active').trim(),
+              cancelDate: cleanDateString(item.cancelDate)
+            }));
+          }
+          if (Array.isArray(data.fineList) && data.fineList.length > 0) {
+            fineList = data.fineList.map((item, idx) => ({
+              id: item.id || ('fn_' + idx + '_' + String(item.epNo || '').trim()),
+              contractor: String(item.contractor || '').trim(),
+              epNo: String(item.epNo || '').trim(),
+              epName: String(item.epName || '-').trim(),
+              debit: String(item.debit || '0').trim(),
+              reason: String(item.reason || '').trim(),
+              date: cleanDateString(item.date),
+              status: String(item.status || 'Pending').trim(),
+              doneDate: cleanDateString(item.doneDate)
+            }));
+          }
+          if (Array.isArray(data.contractors) && data.contractors.length > 0) {
+            data.contractors.forEach(c => {
+              const existingIdx = contractors.findIndex(x => normStr(x.username) === normStr(c.username));
+              if (existingIdx >= 0) contractors[existingIdx] = c; else contractors.push(c);
+              users[normStr(c.username)] = { password: c.password, role: 'contractor', name: c.name, contractorName: c.name, phone: c.phone || '' };
+            });
+          }
+          if (Array.isArray(data.staffList) && data.staffList.length > 0) {
+            staffList = data.staffList;
+          }
+          if (data.adminProfile) {
+            users.vijay.name = data.adminProfile.name || users.vijay.name;
+            users.vijay.phone = data.adminProfile.phone || users.vijay.phone;
+            users.vijay.email = data.adminProfile.email || users.vijay.email;
+            if (data.adminProfile.avatar) users.vijay.avatar = data.adminProfile.avatar;
+          }
+
+          ensureUniqueIds();
           saveState();
+          populateContractorDropdown();
           updateDashboardStats();
+
+          const curTab = document.querySelector('.page-tab-btn.active');
+          if (curTab) {
+            if (curTab.id === 'tabStatusReport') applyStatusReportFilter();
+            else if (curTab.id === 'tabContractorFine') applyFineFilter();
+            else if (curTab.id === 'tabEpCancel') renderEpCancelTable();
+            else if (curTab.id === 'tabContractorOverview') renderContractorOverview();
+            else if (curTab.id === 'tabContractorMgmt') { renderContractorsTable(); renderStaffTable(); }
+            else if (curTab.id === 'tabEpEntry' && !isEpEditMode) renderEpEntryTable();
+          }
+          if (currentUser) applyUserAvatar(currentUser);
+          return true;
         }
-      } catch(e) {}
+      } catch (err) {
+        if (showError) alert('Sync Error!');
+      } finally {
+        isFetchingLive = false;
+      }
+      return false;
     }
 
-    function manualPullData() { autoFetchMasterData(); alert('ડેટા સિન્ક થઈ ગયો!'); }
-    function downloadReportExcel() { XLSX.writeFile(XLSX.utils.json_to_sheet(currentFilteredRecords), `Report_${Date.now()}.xlsx`); }
-    function downloadFineExcel() { XLSX.writeFile(XLSX.utils.json_to_sheet(currentFilteredFines), `Fines_${Date.now()}.xlsx`); }
-    function downloadCancelDataExcel() { XLSX.writeFile(XLSX.utils.json_to_sheet(epList.filter(x=>normStr(x.status)==='cancel')), `Cancelled_${Date.now()}.xlsx`); }
+    async function manualPullData() {
+      const btn = document.getElementById('adminPullSheetBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      await autoFetchMasterData(true);
+      btn.innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="desktop-only">Sync</span>';
+      alert('Master Sheet માંથી તાજો ડેટા લોડ થઈ ગયો!');
+    }
 
-    function savePersonalPreferences() { alert('પ્રોફાઇલ સેવ થઈ ગઈ!'); }
-    function handlePasswordChange() { alert('પાસવર્ડ અપડેટ થઈ ગયો!'); }
-    function renderContractorsTable() {}
-    function renderStaffTable() {}
+    function openAddContractorModal() { if (currentUser.role !== 'admin') return; document.getElementById('contractorModal').classList.remove('hidden'); }
+    function closeAddContractorModal() { document.getElementById('contractorModal').classList.add('hidden'); }
+
+    async function saveNewContractor() {
+      const name = String(document.getElementById('newContName').value).trim();
+      const username = normStr(document.getElementById('newContUser').value);
+      const password = String(document.getElementById('newContPass').value).trim();
+      const phone = String(document.getElementById('newContPhone').value).trim();
+      if (!name || !username || !password) { alert('બધી વિગતો ભરો!'); return; }
+      contractors.push({ name, username, password, phone });
+      users[username] = { password, role: 'contractor', name, contractorName: name, phone };
+      saveState(); closeAddContractorModal(); renderContractorsTable(); populateContractorDropdown(); await syncWithGoogleSheet(); alert('Contractor ઉમેરાઈ ગયો!');
+    }
+
+    function deleteContractor(idx) {
+      if (confirm('Contractor Delete કરવો છે?')) {
+        const u = normStr(contractors[idx].username); delete users[u]; contractors.splice(idx, 1);
+        saveState(); renderContractorsTable(); populateContractorDropdown(); syncWithGoogleSheet();
+      }
+    }
+
+    function downloadReportExcel() {
+      if (!currentFilteredRecords.length) return;
+      const ws = XLSX.utils.json_to_sheet(currentFilteredRecords); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Report"); XLSX.writeFile(wb, `EP_Report_${getToday()}.xlsx`);
+    }
+
+    function downloadFineExcel() {
+      if (!currentFilteredFines.length) return;
+      const ws = XLSX.utils.json_to_sheet(currentFilteredFines); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Fines"); XLSX.writeFile(wb, `Contractor_Fines_${getToday()}.xlsx`);
+    }
+
+    function downloadCancelDataExcel() {
+      const cancelled = epList.filter(x => normStr(x.status) === 'cancel');
+      const ws = XLSX.utils.json_to_sheet(cancelled); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Cancel_Passes"); XLSX.writeFile(wb, `Cancelled_Passes_${getToday()}.xlsx`);
+    }
+
+    async function savePersonalPreferences() {
+      const dName = String(document.getElementById('prefDisplayNameInput').value).trim();
+      const phone = String(document.getElementById('prefContactInput').value).trim();
+      const avatar = String(document.getElementById('prefAvatarInput').value).trim();
+      
+      if (dName) currentUser.name = dName;
+      currentUser.phone = phone;
+      if (avatar) currentUser.avatar = avatar;
+
+      if (users[currentUser.username]) {
+        users[currentUser.username].name = currentUser.name;
+        users[currentUser.username].phone = currentUser.phone;
+        users[currentUser.username].avatar = currentUser.avatar;
+      }
+
+      if (currentUser.username === 'vijay' || currentUser.role === 'admin') {
+        users.vijay.name = currentUser.name;
+        users.vijay.phone = currentUser.phone;
+        if (avatar) users.vijay.avatar = avatar;
+      }
+
+      applyUserAvatar(currentUser);
+      document.getElementById('navUserName').innerText = currentUser.name;
+      saveState();
+      alert('પ્રોફાઇલ સાચવી લેવામાં આવી! (Profile Updated)');
+      
+      await syncWithGoogleSheet();
+    }
+
+    function handlePasswordChange() {
+      const cur = String(document.getElementById('curPassInput').value).trim();
+      const nxt = String(document.getElementById('newPassInput').value).trim();
+      if (cur !== currentUser.password) { alert('હાલનો પાસવર્ડ ખોટો છે!'); return; }
+      if (!nxt || nxt.length < 3) { alert('પાસવર્ડ ઓછામાં ઓછા 3 અક્ષરનો રાખો!'); return; }
+      currentUser.password = nxt;
+      
+      if (currentUser.role === 'staff') {
+        const staffIndex = staffList.findIndex(s => normStr(s.username) === normStr(currentUser.username));
+        if (staffIndex > -1) staffList[staffIndex].password = nxt;
+      } else if (currentUser.role === 'contractor') {
+        const contIndex = contractors.findIndex(c => normStr(c.username) === normStr(currentUser.username));
+        if (contIndex > -1) contractors[contIndex].password = nxt;
+        if (users[currentUser.username]) users[currentUser.username].password = nxt;
+      } else {
+        if (users[currentUser.username]) users[currentUser.username].password = nxt;
+      }
+      
+      saveState(); alert('પાસવર્ડ બદલાઈ ગયો!'); syncWithGoogleSheet();
+    }
   </script>
 </body>
 </html>
