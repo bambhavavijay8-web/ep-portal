@@ -85,7 +85,7 @@
       .login-right-form { padding: 2rem 1.5rem; }
     }
 
-    /* NAVBAR & TABS */
+    /* NAVBAR & TOP CONTROLS */
     .navbar { background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-bottom: 1px solid var(--glass-border); padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .nav-brand { font-size: 1.2rem; font-weight: 800; color: #38bdf8; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; }
     .nav-brand img { width: 32px; height: 32px; object-fit: contain; border-radius: 6px; background: rgba(255,255,255,0.9); padding: 2px; }
@@ -101,17 +101,10 @@
     .user-pill { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 0.3rem 0.75rem; border-radius: 9999px; cursor: pointer; }
     .user-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #2563eb); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; overflow: hidden; }
 
-    .page-nav { background: rgba(15, 23, 42, 0.6); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-bottom: 1px solid var(--glass-border); display: flex; gap: 0.5rem; padding: 0.5rem 1.5rem; overflow-x: auto; position: sticky; top: 57px; z-index: 90; }
-    body.theme-light .page-nav { background: rgba(255, 255, 255, 0.6); }
-    
-    .page-tab-btn { padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid transparent; background: transparent; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; transition: 0.2s; }
-    .page-tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
-    .page-tab-btn.active { background: rgba(37, 99, 235, 0.3); color: #fff; border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 4px 12px rgba(37,99,235,0.1); }
-
     .container { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
 
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-    .menu-tile { padding: 1.4rem; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 160px;}
+    .menu-tile { padding: 1.4rem; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 160px; position: relative;}
     .menu-icon-box { width: 50px; height: 50px; border-radius: 0.8rem; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 0.8rem; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
     .filter-panel { background: var(--glass-bg); backdrop-filter: var(--blur); border: 1px solid var(--glass-border); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; }
@@ -134,42 +127,32 @@
     .search-highlight { background-color: #fef08a; color: #854d0e; font-weight: 800; padding: 0 2px; border-radius: 3px; }
     .active-search-highlight { background-color: #f97316; color: white; box-shadow: 0 0 8px #f97316; }
 
-    /* Sticky Header Table Layout */
+    /* Proper Sticky Table Header - No Double Scrollbars */
     .table-container { 
-      max-height: 60vh; /* Limits table height to allow scrolling within table */
-      overflow-y: auto; 
-      overflow-x: auto; 
+      overflow-x: auto; /* Only allow horizontal scrolling for wide tables */
       border: 1px solid var(--glass-border); 
       border-radius: 0.75rem; 
       background: var(--glass-bg-card); 
       backdrop-filter: var(--blur); 
-      -webkit-overflow-scrolling: touch; 
     }
-    table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; font-size: 0.85rem; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    
+    /* Sticky Header Magic */
     th { 
-      background: #1e293b; /* Solid color for sticky header */
+      background: #0f172a; 
       padding: 0.85rem 1rem; 
       font-weight: 700; 
       color: var(--accent); 
       border-bottom: 1px solid var(--glass-border); 
       white-space: nowrap; 
       position: sticky; 
-      top: 0; 
+      top: 57px; /* Stick exactly below the navbar */
       z-index: 10; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Shadow for depth */
     }
-    body.theme-light th { background: #cbd5e1; }
+    body.theme-light th { background: #f8fafc; }
     
     td { padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-    tfoot td { 
-      background: rgba(0,0,0,0.3); 
-      font-weight: 800; 
-      border-top: 1px solid var(--glass-border); 
-      color: #34d399; 
-      position: sticky; 
-      bottom: 0; 
-      z-index: 10; 
-    }
+    tfoot td { background: rgba(0,0,0,0.3); font-weight: 800; border-top: 1px solid var(--glass-border); color: #34d399; }
     tr:hover { background: rgba(255,255,255,0.05); }
 
     .chk-lg { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); vertical-align: middle; }
@@ -236,12 +219,18 @@
   <!-- MAIN APP -->
   <div id="appContainer" class="hidden">
     <nav class="navbar">
-      <div class="nav-brand" onclick="openCompanyDetailsModal()">
-        <img id="navBrandImg" src="WhatsApp Image 2026-10-28 at 3.02.03 AM.jpeg" onerror="this.src='https://placehold.co/32x32/1e293b/38bdf8?text=MV'">
-        <span class="desktop-only">MAXIMAL VENTURES</span>
+      <!-- Added a back button specifically for mobile view when in sub-pages -->
+      <div class="nav-brand">
+        <button id="navBackBtn" class="btn btn-secondary btn-sm hidden" style="margin-right: 0.5rem; padding: 0.3rem 0.6rem;" onclick="switchPage('menu')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div onclick="openCompanyDetailsModal()" style="display: flex; align-items: center; gap: 0.6rem;">
+          <img id="navBrandImg" src="WhatsApp Image 2026-10-28 at 3.02.03 AM.jpeg" onerror="this.src='https://placehold.co/32x32/1e293b/38bdf8?text=MV'">
+          <span class="desktop-only">MAXIMAL VENTURES</span>
+        </div>
       </div>
       
-      <div class="admin-contact-badge" onclick="openAdminContactModal()">
+      <div class="admin-contact-badge desktop-only" onclick="openAdminContactModal()">
         <img id="adminNavAvatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==" alt="Admin">
         <span>Admin - VIJAY BAMBHAVA</span>
       </div>
@@ -250,8 +239,8 @@
         <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;" class="desktop-only">
           <span class="live-dot"></span> LIVE
         </span>
-        <button id="adminPullSheetBtn" class="btn btn-success btn-sm" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> <span class="desktop-only" data-lang="sync_btn">Sync</span></button>
-        <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only" data-lang="save_btn">Save</span></button>
+        <button id="adminPullSheetBtn" class="btn btn-success btn-sm desktop-only" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> <span data-lang="sync_btn">Sync</span></button>
+        <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm desktop-only" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> <span data-lang="save_btn">Save</span></button>
         <div class="user-pill" onclick="switchPage('settings')">
           <div class="user-avatar" id="avatarDisplay">V</div>
           <div class="desktop-only">
@@ -263,56 +252,42 @@
       </div>
     </nav>
 
-    <div class="page-nav">
-      <button class="page-tab-btn" id="tabHomeMenu" onclick="switchPage('menu')"><i class="fa-solid fa-grip"></i></button>
-      <button class="page-tab-btn" id="tabStatusReport" onclick="switchPage('report')"><i class="fa-solid fa-table-list"></i> <span data-lang="tab_report">EP Status Report</span></button>
-      <button class="page-tab-btn" id="tabEpEntry" onclick="switchPage('entry')"><i class="fa-solid fa-file-circle-plus"></i> <span data-lang="tab_entry">EP Entry</span></button>
-      <button class="page-tab-btn" id="tabContractorFine" onclick="switchPage('fine')"><i class="fa-solid fa-receipt"></i> <span data-lang="tab_fine">Contractor Fine</span></button>
-      <button class="page-tab-btn" id="tabContractorOverview" onclick="switchPage('overview')"><i class="fa-solid fa-chart-pie"></i> <span data-lang="tab_overview">Contractor Overview</span></button>
-      <button class="page-tab-btn" id="tabContractorMgmt" onclick="switchPage('contractors')"><i class="fa-solid fa-users-gear"></i> <span data-lang="tab_users">User Control</span></button>
-      <button class="page-tab-btn" id="tabSettings" onclick="switchPage('settings')"><i class="fa-solid fa-user-gear"></i> <span data-lang="tab_settings">Settings</span></button>
-    </div>
+    <!-- The Top Page Tabs are completely REMOVED as requested for a cleaner Single-Page UI -->
 
     <div class="container">
       
       <!-- PAGE 0: DASHBOARD MENU TILES -->
       <div id="pageMenuDashboard">
+        <!-- Floating Sync/Save buttons for mobile view in Menu -->
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-bottom: 1rem; flex-wrap: wrap;" class="mobile-sync-bar">
+          <button class="btn btn-success btn-sm" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> <span data-lang="sync_btn">Sync Data</span></button>
+          <button class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> <span data-lang="save_btn">Save Data</span></button>
+        </div>
+
         <div class="menu-grid">
           <div class="menu-tile glass-card" id="menuTileReport" onclick="switchPage('report')">
-            <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #1e3a8a, #38bdf8);"><i class="fa-solid fa-table-list"></i></div>
-              <h3 data-lang="tab_report" style="font-size: 1.1rem;">EP Status Report</h3>
-            </div>
+            <div class="menu-icon-box" style="background: linear-gradient(135deg, #1e3a8a, #38bdf8);"><i class="fa-solid fa-table-list"></i></div>
+            <h3 data-lang="tab_report" style="font-size: 1.1rem;">EP Status Report</h3>
           </div>
           <div class="menu-tile glass-card" id="menuTileEntry" onclick="switchPage('entry')">
-            <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #059669, #10b981);"><i class="fa-solid fa-file-circle-plus"></i></div>
-              <h3 data-lang="tab_entry" style="font-size: 1.1rem;">EP Entry</h3>
-            </div>
+            <div class="menu-icon-box" style="background: linear-gradient(135deg, #059669, #10b981);"><i class="fa-solid fa-file-circle-plus"></i></div>
+            <h3 data-lang="tab_entry" style="font-size: 1.1rem;">EP Entry</h3>
           </div>
           <div class="menu-tile glass-card" id="menuTileFine" onclick="switchPage('fine')">
-            <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #d97706, #fbbf24);"><i class="fa-solid fa-receipt"></i></div>
-              <h3 data-lang="tab_fine" style="font-size: 1.1rem;">Contractor Fine</h3>
-            </div>
+            <div class="menu-icon-box" style="background: linear-gradient(135deg, #d97706, #fbbf24);"><i class="fa-solid fa-receipt"></i></div>
+            <h3 data-lang="tab_fine" style="font-size: 1.1rem;">Contractor Fine</h3>
           </div>
           <div class="menu-tile glass-card" id="menuTileOverview" onclick="switchPage('overview')">
-            <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"><i class="fa-solid fa-chart-pie"></i></div>
-              <h3 data-lang="tab_overview" style="font-size: 1.1rem;">Contractor Overview</h3>
-            </div>
+            <div class="menu-icon-box" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"><i class="fa-solid fa-chart-pie"></i></div>
+            <h3 data-lang="tab_overview" style="font-size: 1.1rem;">Contractor Overview</h3>
           </div>
           <div class="menu-tile glass-card" id="menuTileContractors" onclick="switchPage('contractors')">
-            <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #7c3aed, #a855f7);"><i class="fa-solid fa-users-gear"></i></div>
-              <h3 data-lang="tab_users" style="font-size: 1.1rem;">User Control</h3>
-            </div>
+            <div class="menu-icon-box" style="background: linear-gradient(135deg, #7c3aed, #a855f7);"><i class="fa-solid fa-users-gear"></i></div>
+            <h3 data-lang="tab_users" style="font-size: 1.1rem;">User Control</h3>
           </div>
           <div class="menu-tile glass-card" id="menuTileSettings" onclick="switchPage('settings')">
-            <div>
-              <div class="menu-icon-box" style="background: linear-gradient(135deg, #0284c7, #38bdf8);"><i class="fa-solid fa-user-gear"></i></div>
-              <h3 data-lang="tab_settings" style="font-size: 1.1rem;">Settings & Profile</h3>
-            </div>
+            <div class="menu-icon-box" style="background: linear-gradient(135deg, #0284c7, #38bdf8);"><i class="fa-solid fa-user-gear"></i></div>
+            <h3 data-lang="tab_settings" style="font-size: 1.1rem;">Settings & Profile</h3>
           </div>
         </div>
       </div>
@@ -324,7 +299,7 @@
             <h3 style="font-weight: 800; color: #38bdf8;" data-lang="tab_report">EP Status Report</h3>
             <button class="btn btn-excel btn-sm" onclick="downloadReportExcel()"><i class="fa-solid fa-file-excel"></i> <span data-lang="export_btn">Export</span></button>
           </div>
-          <div class="filter-panel">
+          <div class="filter-panel" style="position: sticky; top: 57px; z-index: 20;">
             <div style="min-width: 140px;">
               <select id="reportStatusFilter" class="form-input" onchange="applyStatusReportFilter()">
                 <option value="ALL" data-lang="all_passes">All Passes</option>
@@ -367,7 +342,7 @@
       <!-- PAGE 2: EP ENTRY -->
       <div id="pageEpEntry" class="hidden">
         <div class="glass-card" style="padding: 1.5rem;">
-          <div class="filter-panel">
+          <div class="filter-panel" style="position: sticky; top: 57px; z-index: 20;">
             <div style="flex: 1; min-width: 150px;">
               <select id="epEntryContractorFilter" class="form-input" onchange="renderEpEntryTable()"></select>
             </div>
@@ -426,7 +401,7 @@
               <button class="btn btn-excel btn-sm" onclick="downloadFineExcel()"><i class="fa-solid fa-file-excel"></i> <span data-lang="export_btn">Export</span></button>
             </div>
           </div>
-          <div class="filter-panel">
+          <div class="filter-panel" style="position: sticky; top: 57px; z-index: 20;">
             <div style="min-width: 140px;">
               <select id="fineStatusFilter" class="form-input" onchange="applyFineFilter()">
                 <option value="ALL" data-lang="all_fines">All Fines</option>
@@ -926,10 +901,12 @@
       });
     });
 
+    // 🔴 Mobile Back Button Integration for Single-Page UX 🔴
     window.addEventListener('popstate', function(e) {
       if (currentUser && e.state && e.state.page) {
-        // Prevent recursive pushing
         switchPage(e.state.page, false);
+      } else if (currentUser) {
+        switchPage('menu', false);
       }
     });
 
@@ -971,7 +948,12 @@
       return null;
     }
 
-    function handleLogout() { currentUser = null; document.getElementById('appContainer').classList.add('hidden'); document.getElementById('loginPage').classList.remove('hidden'); }
+    function handleLogout() { 
+      currentUser = null; 
+      document.getElementById('appContainer').classList.add('hidden'); 
+      document.getElementById('loginPage').classList.remove('hidden'); 
+      history.pushState(null, '', window.location.pathname);
+    }
 
     function applyUserAvatar(user) {
       if (user.avatar && user.avatar.length > 5) {
@@ -999,40 +981,51 @@
       document.getElementById('prefAvatarInput').value = currentUser.avatar || '';
 
       const views = ['tabStatusReport', 'tabEpEntry', 'tabContractorFine', 'tabContractorOverview', 'tabContractorMgmt', 'menuTileReport', 'menuTileEntry', 'menuTileFine', 'menuTileOverview', 'menuTileContractors'];
-      views.forEach(v => document.getElementById(v).style.display = 'none');
+      views.forEach(v => {
+        let el = document.getElementById(v);
+        if(el) el.style.display = 'none';
+      });
 
-      if(isAdmin || isContractor || (isStaff && currentUser.reportPerm !== 'NONE')) { document.getElementById('tabStatusReport').style.display = 'inline-flex'; document.getElementById('menuTileReport').style.display = 'flex'; }
-      if(isAdmin || (isStaff && currentUser.entryPerm !== 'NONE')) { document.getElementById('tabEpEntry').style.display = 'inline-flex'; document.getElementById('menuTileEntry').style.display = 'flex'; }
-      if(isAdmin || isContractor || (isStaff && currentUser.finePerm !== 'NONE')) { document.getElementById('tabContractorFine').style.display = 'inline-flex'; document.getElementById('menuTileFine').style.display = 'flex'; }
-      if(isAdmin || (isStaff && currentUser.overviewPerm !== 'NONE')) { document.getElementById('tabContractorOverview').style.display = 'inline-flex'; document.getElementById('menuTileOverview').style.display = 'flex'; }
-      if(isAdmin) { document.getElementById('tabContractorMgmt').style.display = 'inline-flex'; document.getElementById('menuTileContractors').style.display = 'flex'; }
+      if(isAdmin || isContractor || (isStaff && currentUser.reportPerm !== 'NONE')) { document.getElementById('menuTileReport').style.display = 'flex'; }
+      if(isAdmin || (isStaff && currentUser.entryPerm !== 'NONE')) { document.getElementById('menuTileEntry').style.display = 'flex'; }
+      if(isAdmin || isContractor || (isStaff && currentUser.finePerm !== 'NONE')) { document.getElementById('menuTileFine').style.display = 'flex'; }
+      if(isAdmin || (isStaff && currentUser.overviewPerm !== 'NONE')) { document.getElementById('menuTileOverview').style.display = 'flex'; }
+      if(isAdmin) { document.getElementById('menuTileContractors').style.display = 'flex'; }
+      document.getElementById('menuTileSettings').style.display = 'flex';
 
       populateContractorDropdown();
-      if (isContractor) switchPage('report'); else switchPage('menu');
+      if (isContractor) switchPage('report', true); else switchPage('menu', true);
     }
 
-    // 🔴 BUG FIX: RESTORED ORIGINAL RELIABLE PAGES MAPPING + BACK BUTTON LOGIC 🔴
+    // 🔴 SINGLE PAGE UX WITH BACK BUTTON LOGIC 🔴
     function switchPage(pageKey, pushToHistory = true) {
       if (!currentUser) return;
       
       const pages = {
-        menu: { btn: 'tabHomeMenu', view: 'pageMenuDashboard' },
-        report: { btn: 'tabStatusReport', view: 'pageStatusReport' },
-        entry: { btn: 'tabEpEntry', view: 'pageEpEntry' },
-        fine: { btn: 'tabContractorFine', view: 'pageContractorFine' },
-        overview: { btn: 'tabContractorOverview', view: 'pageContractorOverview' },
-        contractors: { btn: 'tabContractorMgmt', view: 'pageContractors' },
-        settings: { btn: 'tabSettings', view: 'pageSettings' }
+        menu: { view: 'pageMenuDashboard' },
+        report: { view: 'pageStatusReport' },
+        entry: { view: 'pageEpEntry' },
+        fine: { view: 'pageContractorFine' },
+        overview: { view: 'pageContractorOverview' },
+        contractors: { view: 'pageContractors' },
+        settings: { view: 'pageSettings' }
       };
 
       Object.keys(pages).forEach(k => {
-        const btn = document.getElementById(pages[k].btn);
         const view = document.getElementById(pages[k].view);
-        if (btn) btn.classList.toggle('active', k === pageKey);
         if (view) view.classList.toggle('hidden', k !== pageKey);
       });
 
-      // Browser history logic for back button
+      // Show/Hide back button based on whether we are on the main menu or a subpage
+      const backBtn = document.getElementById('navBackBtn');
+      if(backBtn) {
+        if(pageKey === 'menu') {
+          backBtn.classList.add('hidden');
+        } else {
+          backBtn.classList.remove('hidden');
+        }
+      }
+
       if (pushToHistory) {
         history.pushState({ page: pageKey }, '', `#${pageKey}`);
       }
@@ -1093,12 +1086,19 @@
       
       tbody.innerHTML = filtered.map((r, idx) => {
         const isCancel = normStr(r.status) === 'cancel';
+        // 🔴 FIX: Show Join date AND Cancel date for cancelled passes
+        let dateHtml = '';
+        if (isCancel) {
+          dateHtml = `<div style="font-size:0.75rem; color: #38bdf8;">Join: ${escHtml(cleanDateString(r.entryDate))}</div>
+                      <div style="font-size:0.75rem; color: #f87171; font-weight:bold;">Cancel: ${escHtml(cleanDateString(r.cancelDate))}</div>`;
+        } else {
+          dateHtml = `<span style="font-weight: 700; color: #38bdf8;">${escHtml(cleanDateString(r.entryDate))}</span>`;
+        }
+
         return `<tr>
           <td><strong>${idx + 1}</strong></td><td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td>
           <td><strong>${escHtml(r.epNo)}</strong></td><td>${escHtml(r.epName)}</td><td>${escHtml(r.plant)}</td>
-          <td style="font-weight: 700; color: ${isCancel ? '#f87171' : '#38bdf8'};">
-            ${isCancel ? 'Cancelled on: ' + escHtml(cleanDateString(r.cancelDate)) : 'Entry: ' + escHtml(cleanDateString(r.entryDate))}
-          </td>
+          <td>${dateHtml}</td>
           <td><span class="badge ${isCancel ? 'badge-cancel' : 'badge-active'}">${escHtml(r.status)}</span></td>
         </tr>`;
       }).join('');
@@ -1445,14 +1445,20 @@
           populateContractorDropdown();
           
           if (currentUser) {
-            const curTab = document.querySelector('.page-tab-btn.active');
-            if (curTab) {
-              if (curTab.id === 'tabStatusReport') applyStatusReportFilter();
-              else if (curTab.id === 'tabContractorFine') applyFineFilter();
-              else if (curTab.id === 'tabContractorOverview') renderContractorOverview();
-              else if (curTab.id === 'tabContractorMgmt') { renderContractorsTable(); renderStaffTable(); }
-              else if (curTab.id === 'tabEpEntry' && !isEpEditMode) renderEpEntryTable();
-            }
+            // Find current visible page
+            let activeView = 'menu';
+            const pages = ['pageMenuDashboard', 'pageStatusReport', 'pageEpEntry', 'pageContractorFine', 'pageContractorOverview', 'pageContractors', 'pageSettings'];
+            pages.forEach(p => {
+               if(!document.getElementById(p).classList.contains('hidden')) {
+                  activeView = p.replace('pageMenuDashboard', 'menu').replace('pageStatusReport', 'report').replace('pageEpEntry', 'entry').replace('pageContractorFine', 'fine').replace('pageContractorOverview', 'overview').replace('pageContractors', 'contractors').replace('pageSettings', 'settings');
+               }
+            });
+
+            if (activeView === 'report') applyStatusReportFilter();
+            else if (activeView === 'fine') applyFineFilter();
+            else if (activeView === 'overview') renderContractorOverview();
+            else if (activeView === 'contractors') { renderContractorsTable(); renderStaffTable(); }
+            else if (activeView === 'entry' && !isEpEditMode) renderEpEntryTable();
           }
           return true;
         }
