@@ -122,7 +122,7 @@
     body.theme-light .form-input { background: rgba(255, 255, 255, 0.4); }
     .form-input:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.3); box-shadow: 0 0 10px rgba(56,189,248,0.2); }
 
-    /* New Search Box Layout with Arrows */
+    /* Search Box Layout */
     .search-box-wrapper { position: relative; flex: 1; min-width: 280px; }
     .search-box-wrapper i.fa-search { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
     .search-box-wrapper input { width: 100%; padding: 0.6rem 85px 0.6rem 2.2rem; }
@@ -700,7 +700,7 @@
         alert_cancel_success: "Passes cancelled successfully!", alert_fill_details: "Please fill all required details!", alert_ep_exists: "EP Number already exists in Active list!",
         alert_ep_added: "New pass added successfully!", alert_select_fine: "Select at least 1 fine to mark as done!", alert_fine_confirm: "Mark selected fines as done?",
         alert_fine_success: "Fines updated successfully!", alert_fine_added: "New fine added successfully!", alert_cont_added: "Contractor added!", alert_del_cont: "Delete this contractor?",
-        alert_prof_upd: "Profile Updated!", alert_wrong_pass: "Incorrect current password!", alert_short_pass: "Password must be at least 3 characters!", alert_pass_upd: "Password updated!"
+        alert_prof_upd: "Profile Updated!", alert_wrong_pass: "Incorrect current password!", alert_short_pass: "Password must be at least 3 characters!", alert_pass_upd: "Password updated!", alert_sync: "Data sync complete!"
       },
       'gu': {
         brand_desc: "કૉન્ટ્રેક્ટર પાસ અને દંડની નોંધ માટે વિજય ભામ્ભવા દ્વારા બનાવાયેલ.", login_title: "એકાઉન્ટ લૉગિન", login_desc: "પોતાના Username અને Password થી લૉગિન કરો:", 
@@ -719,7 +719,7 @@
         alert_cancel_success: "પાસ સફળતાપૂર્વક કેન્સલ થઈ ગયા!", alert_fill_details: "કૃપા કરીને બધી જરૂરી વિગતો ભરો!", alert_ep_exists: "આ EP નંબર પહેલેથી જ એક્ટિવ લિસ્ટમાં છે!",
         alert_ep_added: "નવો પાસ સફળતાપૂર્વક ઉમેરાઈ ગયો!", alert_select_fine: "Done કરવા ઓછામાં ઓછો ૧ દંડ સિલેક્ટ કરો!", alert_fine_confirm: "શું તમે સિલેક્ટ કરેલા દંડ Done કરવા માંગો છો?",
         alert_fine_success: "દંડ સફળતાપૂર્વક અપડેટ થઈ ગયા!", alert_fine_added: "નવો દંડ સફળતાપૂર્વક ઉમેરાઈ ગયો!", alert_cont_added: "કૉન્ટ્રેક્ટર ઉમેરાઈ ગયો!", alert_del_cont: "આ કૉન્ટ્રેક્ટરને ડિલીટ કરવો છે?",
-        alert_prof_upd: "પ્રોફાઈલ સેવ થઈ ગઈ!", alert_wrong_pass: "હાલનો પાસવર્ડ ખોટો છે!", alert_short_pass: "પાસવર્ડ ઓછામાં ઓછો ૩ અક્ષરનો હોવો જોઈએ!", alert_pass_upd: "પાસવર્ડ બદલાઈ ગયો!"
+        alert_prof_upd: "પ્રોફાઈલ સેવ થઈ ગઈ!", alert_wrong_pass: "હાલનો પાસવર્ડ ખોટો છે!", alert_short_pass: "પાસવર્ડ ઓછામાં ઓછો ૩ અક્ષરનો હોવો જોઈએ!", alert_pass_upd: "પાસવર્ડ બદલાઈ ગયો!", alert_sync: "Master Sheet માંથી તાજો ડેટા લોડ થઈ ગયો!"
       },
       'hi': {
         brand_desc: "ठेकेदार पास और जुर्माने के लिए विजय भामभवा द्वारा निर्मित।", login_title: "अकाउंट लॉगिन", login_desc: "अपना Username और Password दर्ज करें:", 
@@ -738,7 +738,7 @@
         alert_cancel_success: "पास सफलतापूर्वक रद्द हो गए!", alert_fill_details: "कृपया सभी विवरण भरें!", alert_ep_exists: "EP नंबर पहले से मौजूद है!",
         alert_ep_added: "नया पास जुड़ गया!", alert_select_fine: "Done करने के लिए जुर्माना चुनें!", alert_fine_confirm: "चयनित जुर्माने Done करें?",
         alert_fine_success: "जुर्माने अपडेट हो गए!", alert_fine_added: "नया जुर्माना जुड़ गया!", alert_cont_added: "ठेकेदार जुड़ गया!", alert_del_cont: "क्या इसे डिलीट करना है?",
-        alert_prof_upd: "प्रोफाइल अपडेट हो गई!", alert_wrong_pass: "वर्तमान पासवर्ड गलत है!", alert_short_pass: "पासवर्ड कम से कम 3 अक्षर का होना चाहिए!", alert_pass_upd: "पासवर्ड बदल गया!"
+        alert_prof_upd: "प्रोफाइल अपडेट हो गई!", alert_wrong_pass: "वर्तमान पासवर्ड गलत है!", alert_short_pass: "पासवर्ड कम से कम 3 अक्षर का होना चाहिए!", alert_pass_upd: "पासवर्ड बदल गया!", alert_sync: "सिंक पूरा हो गया!"
       }
     };
     function t(key) { const l = localStorage.getItem('mv_lang') || 'gu'; return dict[l][key] || key; }
@@ -747,10 +747,8 @@
       localStorage.setItem('mv_lang', lang);
       document.querySelectorAll('[data-lang]').forEach(el => { el.innerText = dict[lang][el.getAttribute('data-lang')] || el.innerText; });
       document.querySelectorAll('[data-lang-placeholder]').forEach(el => { el.placeholder = dict[lang][el.getAttribute('data-lang-placeholder')] || el.placeholder; });
-      populateContractorDropdown(); // Re-render dropdown texts
-      if(currentUser) {
-        renderEpEntryTable(); applyStatusReportFilter(); applyFineFilter(); renderContractorOverview();
-      }
+      populateContractorDropdown();
+      if(currentUser) { renderEpEntryTable(); applyStatusReportFilter(); applyFineFilter(); renderContractorOverview(); }
     }
 
     // ----------------------------------------------------
@@ -764,21 +762,16 @@
       const container = document.getElementById(containerId);
       const query = document.getElementById(inputId).value.trim().toLowerCase();
 
-      // Clear old highlights properly by resetting HTML
       if (pageKey === 'report') applyStatusReportFilter(true);
       if (pageKey === 'entry') renderEpEntryTable(true);
       if (pageKey === 'fine') applyFineFilter(true);
       if (pageKey === 'contractor') renderContractorsTable(true);
 
-      searchStates[pageKey].matches = [];
-      searchStates[pageKey].idx = -1;
-
+      searchStates[pageKey].matches = []; searchStates[pageKey].idx = -1;
       if (!query) { updateSearchNavUI(pageKey); return; }
 
-      // Apply new highlights
       const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
-      const nodes = [];
-      let node;
+      const nodes = []; let node;
       while (node = walker.nextNode()) {
         if (node.nodeValue.toLowerCase().includes(query)) {
           let p = node.parentNode, skip = false;
@@ -799,34 +792,17 @@
     }
 
     function navSearch(pageKey, dir) {
-      let st = searchStates[pageKey];
-      if (st.matches.length === 0) return;
-      st.idx += dir;
-      if (st.idx >= st.matches.length) st.idx = 0;
-      if (st.idx < 0) st.idx = st.matches.length - 1;
-      highlightActiveSearch(pageKey);
-      updateSearchNavUI(pageKey);
+      let st = searchStates[pageKey]; if (st.matches.length === 0) return;
+      st.idx += dir; if (st.idx >= st.matches.length) st.idx = 0; if (st.idx < 0) st.idx = st.matches.length - 1;
+      highlightActiveSearch(pageKey); updateSearchNavUI(pageKey);
     }
-
     function highlightActiveSearch(pageKey) {
-      let st = searchStates[pageKey];
-      st.matches.forEach(el => el.classList.remove('active-search-highlight'));
-      if (st.matches[st.idx]) {
-        st.matches[st.idx].classList.add('active-search-highlight');
-        st.matches[st.idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      let st = searchStates[pageKey]; st.matches.forEach(el => el.classList.remove('active-search-highlight'));
+      if (st.matches[st.idx]) { st.matches[st.idx].classList.add('active-search-highlight'); st.matches[st.idx].scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     }
-
     function updateSearchNavUI(pageKey) {
-      let st = searchStates[pageKey];
-      let navBox = document.getElementById('searchNav_' + pageKey);
-      if (!navBox) return;
-      if (st.matches.length > 0) {
-        navBox.style.display = 'flex';
-        navBox.querySelector('.count-text').innerText = `${st.idx + 1}/${st.matches.length}`;
-      } else {
-        navBox.style.display = 'none';
-      }
+      let st = searchStates[pageKey]; let navBox = document.getElementById('searchNav_' + pageKey); if (!navBox) return;
+      if (st.matches.length > 0) { navBox.style.display = 'flex'; navBox.querySelector('.count-text').innerText = `${st.idx + 1}/${st.matches.length}`; } else { navBox.style.display = 'none'; }
     }
 
     // ----------------------------------------------------
@@ -850,6 +826,13 @@
     function getToday() { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getMonth()]} ${d.getFullYear()}`; }
     function getSortTime(dateStr) { if (!dateStr) return 0; let d = new Date(dateStr); return isNaN(d.getTime()) ? 0 : d.getTime(); }
 
+    function ensureUniqueIds() {
+      let mod = false; const sEp = new Set(), sFn = new Set();
+      epList.forEach((i, idx) => { if(!i.id || sEp.has(String(i.id))){ i.id='ep_'+Date.now()+'_'+idx; mod=true; } sEp.add(String(i.id)); });
+      fineList.forEach((i, idx) => { if(!i.id || sFn.has(String(i.id))){ i.id='fn_'+Date.now()+'_'+idx; mod=true; } sFn.add(String(i.id)); });
+      if (mod) saveState();
+    }
+
     function saveState() {
       localStorage.setItem('mv_ep_data', JSON.stringify(epList)); localStorage.setItem('mv_fine_data', JSON.stringify(fineList));
       localStorage.setItem('mv_contractors', JSON.stringify(contractors)); localStorage.setItem('mv_users', JSON.stringify(users)); localStorage.setItem('mv_staff_list', JSON.stringify(staffList));
@@ -862,9 +845,8 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       setTheme(localStorage.getItem('mv_theme') || 'system');
-      const savedLang = localStorage.getItem('mv_lang') || 'gu'; // Default to Gujarati as requested
-      document.getElementById('appLanguageSelect').value = savedLang;
-      changeAppLanguage(savedLang);
+      const savedLang = localStorage.getItem('mv_lang') || 'gu';
+      document.getElementById('appLanguageSelect').value = savedLang; changeAppLanguage(savedLang);
       populateContractorDropdown(); autoFetchMasterData(); setupFineAutocomplete();
     });
 
@@ -1151,18 +1133,99 @@
       currentUser.password = nxt; saveState(); alert(t('alert_pass_upd')); syncWithGoogleSheet();
     }
 
-    async function syncWithGoogleSheet(showNotif = false) {
-      document.getElementById('adminSaveSheetBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-      try { await fetch(MASTER_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ epList, contractors, fineList, staffList, adminProfile: users.vijay }) }); if(showNotif) alert('Saved!'); } catch(e){} finally { document.getElementById('adminSaveSheetBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only">Save</span>'; }
-    }
-    async function autoFetchMasterData() {
+    // ----------------------------------------------------
+    // FULL FETCH & RENDER LOGIC RESTORED
+    // ----------------------------------------------------
+    async function autoFetchMasterData(showError = false, isPolling = false) {
+      if (isFetchingLive) return false;
+      isFetchingLive = true;
       try {
-        const res = await fetch(MASTER_SCRIPT_URL); const data = await res.json();
-        if (data.epList) epList = data.epList; if (data.fineList) fineList = data.fineList; if(data.contractors) contractors = data.contractors; if(data.staffList) staffList = data.staffList;
-        ensureUniqueIds(); populateContractorDropdown();
-      } catch(e){}
+        const res = await fetch(MASTER_SCRIPT_URL);
+        const data = await res.json();
+        if (data && data.success) {
+          if (Array.isArray(data.epList) && data.epList.length > 0) {
+            epList = data.epList.map((item, idx) => ({
+              id: item.id || ('ep_' + idx + '_' + String(item.epNo || '').trim()),
+              contractor: String(item.contractor || '').trim(),
+              epNo: String(item.epNo || '').trim(),
+              epName: String(item.epName || '').trim(),
+              plant: String(item.plant || 'CHO (A) KC2').trim(),
+              entryDate: cleanDateString(item.entryDate),
+              status: String(item.status || 'Active').trim(),
+              cancelDate: cleanDateString(item.cancelDate)
+            }));
+          }
+          if (Array.isArray(data.fineList) && data.fineList.length > 0) {
+            fineList = data.fineList.map((item, idx) => ({
+              id: item.id || ('fn_' + idx + '_' + String(item.epNo || '').trim()),
+              contractor: String(item.contractor || '').trim(),
+              epNo: String(item.epNo || '').trim(),
+              epName: String(item.epName || '-').trim(),
+              debit: String(item.debit || '0').trim(),
+              reason: String(item.reason || '').trim(),
+              date: cleanDateString(item.date),
+              status: String(item.status || 'Pending').trim(),
+              doneDate: cleanDateString(item.doneDate)
+            }));
+          }
+          if (Array.isArray(data.contractors) && data.contractors.length > 0) {
+            data.contractors.forEach(c => {
+              const existingIdx = contractors.findIndex(x => normStr(x.username) === normStr(c.username));
+              if (existingIdx >= 0) contractors[existingIdx] = c; else contractors.push(c);
+              users[normStr(c.username)] = { password: c.password, role: 'contractor', name: c.name, contractorName: c.name, phone: c.phone || '' };
+            });
+          }
+          if (Array.isArray(data.staffList) && data.staffList.length > 0) {
+            staffList = data.staffList;
+          }
+
+          ensureUniqueIds();
+          saveState();
+          populateContractorDropdown();
+          
+          const curTab = document.querySelector('.page-tab-btn.active');
+          if (curTab) {
+            if (curTab.id === 'tabStatusReport') applyStatusReportFilter();
+            else if (curTab.id === 'tabContractorFine') applyFineFilter();
+            else if (curTab.id === 'tabContractorOverview') renderContractorOverview();
+            else if (curTab.id === 'tabContractorMgmt') { renderContractorsTable(); renderStaffTable(); }
+            else if (curTab.id === 'tabEpEntry' && !isEpEditMode) renderEpEntryTable();
+          }
+          return true;
+        }
+      } catch (err) {
+        if (showError) alert('Sync Error!');
+      } finally {
+        isFetchingLive = false;
+      }
+      return false;
     }
-    async function manualPullData() { document.getElementById('adminPullSheetBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; await autoFetchMasterData(); document.getElementById('adminPullSheetBtn').innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="desktop-only">Sync</span>'; }
+
+    async function syncWithGoogleSheet(showNotification = false) {
+      const btn = document.getElementById('adminSaveSheetBtn');
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      try {
+        await fetch(MASTER_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ epList, contractors, fineList, staffList, adminProfile: users.vijay })
+        });
+        if (showNotification) alert(t('alert_prof_upd').replace('Profile Updated', 'Data Saved!') || 'Data Saved!');
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only" data-lang="save_btn">Save</span>';
+      }
+    }
+
+    async function manualPullData() {
+      const btn = document.getElementById('adminPullSheetBtn');
+      if(btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      await autoFetchMasterData(true);
+      if(btn) btn.innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="desktop-only" data-lang="sync_btn">Sync</span>';
+      alert(t('alert_sync'));
+    }
   </script>
 </body>
 </html>
