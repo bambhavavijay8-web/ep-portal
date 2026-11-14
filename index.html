@@ -562,6 +562,18 @@
           <h4 style="margin-bottom: 1rem; color: var(--text-main);" data-lang="my_profile">My Profile</h4>
           <div class="form-group"><label class="form-label" data-lang="th_name">Name</label><input type="text" id="prefDisplayNameInput" class="form-input"></div>
           <div class="form-group"><label class="form-label" data-lang="th_contact">Contact</label><input type="text" id="prefContactInput" class="form-input"></div>
+                    <div class="form-group">
+            <label class="form-label">Profile Avatar (Upload Picture)</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <input type="text" id="prefAvatarInput" class="form-input hidden" style="flex:1;">
+              <div id="settingsAvatarPreview" style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: var(--glass-bg); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold;"></div>
+              <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+                <i class="fa-solid fa-upload"></i> Upload Photo
+                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'prefAvatarInput')">
+              </label>
+            </div>
+                    </div>
+          
           <button class="btn btn-success btn-sm" onclick="savePersonalPreferences()"><i class="fa-solid fa-floppy-disk"></i> <span data-lang="update_profile">Update Profile</span></button>
           
           <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
