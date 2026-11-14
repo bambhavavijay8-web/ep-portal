@@ -677,7 +677,43 @@
   </div>
 
   <script>
+    // ----------------------------------------------------
+    // STATE & CONFIG
+    // ----------------------------------------------------
     const MASTER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2swgsXYhTRAoxN3xd_Thd15VhoGv-JhUTxRmBD_kmvlGgJQapN43HGETuG9ONkxnG/exec";
+
+    let users = JSON.parse(localStorage.getItem('mv_users')) || { vijay: { password: '2008', role: 'admin', name: 'VIJAY BAMBHAVA', phone: '+91 9510039457', email: 'bambhavavijay8@gmail.com', avatar: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==' } };
+    let staffList = JSON.parse(localStorage.getItem('mv_staff_list')) || [];
+    let contractors = JSON.parse(localStorage.getItem('mv_contractors')) || [];
+    let epList = JSON.parse(localStorage.getItem('mv_ep_data')) || [];
+    let fineList = JSON.parse(localStorage.getItem('mv_fine_data')) || [];
+    
+    let currentFilteredRecords = [];
+    let currentFilteredFines = [];
+    let currentUser = null, isFetchingLive = false, isEpEditMode = false;
+
+    function normStr(v) { return (v == null) ? '' : String(v).trim().toLowerCase(); }
+    function escHtml(str) { return str == null ? '' : String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+    function cleanDateString(dateVal) {
+      if (!dateVal) return ''; let str = String(dateVal).trim(), d = new Date(str);
+      if (isNaN(d.getTime()) && /^\d{1,2}[-/]\d{1,2}[-/]\d{4}/.test(str)) { const parts = str.split(/[-/]/); d = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`); }
+      return isNaN(d.getTime()) ? str : `${String(d.getDate()).padStart(2, '0')} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getMonth()]} ${d.getFullYear()}`;
+    }
+    function getToday() { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getMonth()]} ${d.getFullYear()}`; }
+    function getSortTime(dateStr) { if (!dateStr) return 0; let d = new Date(dateStr); return isNaN(d.getTime()) ? 0 : d.getTime(); }
+
+    function ensureUniqueIds() {
+      let mod = false; const sEp = new Set(), sFn = new Set();
+      epList.forEach((i, idx) => { if(!i.id || sEp.has(String(i.id))){ i.id='ep_'+Date.now()+'_'+idx; mod=true; } sEp.add(String(i.id)); });
+      fineList.forEach((i, idx) => { if(!i.id || sFn.has(String(i.id))){ i.id='fn_'+Date.now()+'_'+idx; mod=true; } sFn.add(String(i.id)); });
+      if (mod) saveState();
+    }
+
+    function saveState() {
+      localStorage.setItem('mv_ep_data', JSON.stringify(epList)); localStorage.setItem('mv_fine_data', JSON.stringify(fineList));
+      localStorage.setItem('mv_contractors', JSON.stringify(contractors)); localStorage.setItem('mv_users', JSON.stringify(users)); localStorage.setItem('mv_staff_list', JSON.stringify(staffList));
+    }
 
     // ----------------------------------------------------
     // STRICT LANGUAGE DICTIONARY SYSTEM
@@ -806,38 +842,8 @@
     }
 
     // ----------------------------------------------------
-    // INITIALIZATION & STATE
+    // SYSTEM INITIALIZATION
     // ----------------------------------------------------
-    let users = JSON.parse(localStorage.getItem('mv_users')) || { vijay: { password: '2008', role: 'admin', name: 'VIJAY BAMBHAVA', phone: '+91 9510039457', email: 'bambhavavijay8@gmail.com', avatar: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==' } };
-    let staffList = JSON.parse(localStorage.getItem('mv_staff_list')) || [];
-    let contractors = JSON.parse(localStorage.getItem('mv_contractors')) || [];
-    let epList = JSON.parse(localStorage.getItem('mv_ep_data')) || [];
-    let fineList = JSON.parse(localStorage.getItem('mv_fine_data')) || [];
-    let currentUser = null, isFetchingLive = false, isEpEditMode = false;
-
-    function normStr(v) { return (v == null) ? '' : String(v).trim().toLowerCase(); }
-    function escHtml(str) { return str == null ? '' : String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-
-    function cleanDateString(dateVal) {
-      if (!dateVal) return ''; let str = String(dateVal).trim(), d = new Date(str);
-      if (isNaN(d.getTime()) && /^\d{1,2}[-/]\d{1,2}[-/]\d{4}/.test(str)) { const parts = str.split(/[-/]/); d = new Date(`${parts[1]}/${parts[0]}/${parts[2]}`); }
-      return isNaN(d.getTime()) ? str : `${String(d.getDate()).padStart(2, '0')} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getMonth()]} ${d.getFullYear()}`;
-    }
-    function getToday() { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getMonth()]} ${d.getFullYear()}`; }
-    function getSortTime(dateStr) { if (!dateStr) return 0; let d = new Date(dateStr); return isNaN(d.getTime()) ? 0 : d.getTime(); }
-
-    function ensureUniqueIds() {
-      let mod = false; const sEp = new Set(), sFn = new Set();
-      epList.forEach((i, idx) => { if(!i.id || sEp.has(String(i.id))){ i.id='ep_'+Date.now()+'_'+idx; mod=true; } sEp.add(String(i.id)); });
-      fineList.forEach((i, idx) => { if(!i.id || sFn.has(String(i.id))){ i.id='fn_'+Date.now()+'_'+idx; mod=true; } sFn.add(String(i.id)); });
-      if (mod) saveState();
-    }
-
-    function saveState() {
-      localStorage.setItem('mv_ep_data', JSON.stringify(epList)); localStorage.setItem('mv_fine_data', JSON.stringify(fineList));
-      localStorage.setItem('mv_contractors', JSON.stringify(contractors)); localStorage.setItem('mv_users', JSON.stringify(users)); localStorage.setItem('mv_staff_list', JSON.stringify(staffList));
-    }
-
     function setTheme(mode) {
       if (mode === 'system') mode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       if (mode === 'light') { document.body.classList.add('theme-light'); localStorage.setItem('mv_theme', 'light'); } else { document.body.classList.remove('theme-light'); localStorage.setItem('mv_theme', 'dark'); }
@@ -848,6 +854,14 @@
       const savedLang = localStorage.getItem('mv_lang') || 'gu';
       document.getElementById('appLanguageSelect').value = savedLang; changeAppLanguage(savedLang);
       populateContractorDropdown(); autoFetchMasterData(); setupFineAutocomplete();
+      
+      document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+          e.preventDefault();
+          const visibleSearchBox = document.querySelector('.search-box-wrapper input:not([disabled])');
+          if (visibleSearchBox && visibleSearchBox.offsetParent !== null) visibleSearchBox.focus();
+        }
+      });
     });
 
     function getAllContractorNames() {
@@ -863,7 +877,16 @@
     async function handleLogin() {
       const u = normStr(document.getElementById('loginUsername').value), p = String(document.getElementById('loginPassword').value).trim();
       if (!u || !p) { document.getElementById('loginError').style.display = 'block'; return; }
+      
       let matched = checkCredentials(u, p);
+      if (!matched && u !== 'vijay') {
+        const btn = document.getElementById('loginSubmitBtn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
+        await autoFetchMasterData();
+        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> <span data-lang="login_btn">' + t('login_btn') + '</span>';
+        matched = checkCredentials(u, p);
+      }
+
       if (matched) {
         currentUser = matched; isEpEditMode = false; document.getElementById('loginError').style.display = 'none';
         document.getElementById('loginPage').classList.add('hidden'); document.getElementById('appContainer').classList.remove('hidden');
@@ -882,6 +905,7 @@
     function handleLogout() { currentUser = null; document.getElementById('appContainer').classList.add('hidden'); document.getElementById('loginPage').classList.remove('hidden'); }
 
     function setupPortalSession() {
+      if (!currentUser) return;
       const isAdmin = currentUser.role === 'admin', isStaff = currentUser.role === 'staff', isContractor = currentUser.role === 'contractor';
       document.getElementById('navUserName').innerText = currentUser.name || (isContractor ? currentUser.contractorName : 'USER');
       document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : (isStaff ? 'STAFF' : 'CONTRACTOR');
@@ -899,15 +923,34 @@
       if (isContractor) switchPage('report'); else switchPage('menu');
     }
 
+    // 🔴 BUG FIX: RESTORED ORIGINAL RELIABLE PAGES MAPPING 🔴
     function switchPage(pageKey) {
-      ['menu', 'report', 'entry', 'fine', 'overview', 'contractors', 'settings'].forEach(k => {
-        const btn = document.getElementById(k === 'menu' ? 'tabHomeMenu' : 'tab' + k.charAt(0).toUpperCase() + k.slice(1).replace('contractors', 'ContractorMgmt').replace('report','StatusReport').replace('entry','EpEntry'));
-        const view = document.getElementById(k === 'menu' ? 'pageMenuDashboard' : 'page' + k.charAt(0).toUpperCase() + k.slice(1).replace('report','StatusReport').replace('entry','EpEntry').replace('fine','ContractorFine').replace('overview','ContractorOverview'));
+      if (!currentUser) return;
+      
+      const pages = {
+        menu: { btn: 'tabHomeMenu', view: 'pageMenuDashboard' },
+        report: { btn: 'tabStatusReport', view: 'pageStatusReport' },
+        entry: { btn: 'tabEpEntry', view: 'pageEpEntry' },
+        fine: { btn: 'tabContractorFine', view: 'pageContractorFine' },
+        overview: { btn: 'tabContractorOverview', view: 'pageContractorOverview' },
+        contractors: { btn: 'tabContractorMgmt', view: 'pageContractors' },
+        settings: { btn: 'tabSettings', view: 'pageSettings' }
+      };
+
+      Object.keys(pages).forEach(k => {
+        const btn = document.getElementById(pages[k].btn);
+        const view = document.getElementById(pages[k].view);
         if (btn) btn.classList.toggle('active', k === pageKey);
         if (view) view.classList.toggle('hidden', k !== pageKey);
       });
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (pageKey === 'report') applyStatusReportFilter(); if (pageKey === 'fine') applyFineFilter(); if (pageKey === 'entry') renderEpEntryTable(); if (pageKey === 'overview') renderContractorOverview(); if (pageKey === 'contractors') { renderContractorsTable(); renderStaffTable(); }
+      
+      if (pageKey === 'report') applyStatusReportFilter(); 
+      if (pageKey === 'fine') applyFineFilter(); 
+      if (pageKey === 'entry') renderEpEntryTable(); 
+      if (pageKey === 'overview') renderContractorOverview(); 
+      if (pageKey === 'contractors') { renderContractorsTable(); renderStaffTable(); }
     }
 
     function isContractorInScope(contName, scopeStr) { return (!scopeStr || scopeStr === 'ALL') ? true : scopeStr.split(',').map(s => normStr(s)).includes(normStr(contName)); }
@@ -936,6 +979,7 @@
     // TABLE RENDERERS (Data + UI)
     // ----------------------------------------------------
     function applyStatusReportFilter(skipSearch = false) {
+      if (!currentUser) return;
       const statusFilter = normStr(document.getElementById('reportStatusFilter').value);
       const searchBox = document.getElementById('reportSearchKeyword');
       const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
@@ -949,7 +993,9 @@
         return !search || normStr(item.epNo).includes(search) || normStr(item.epName).includes(search) || normStr(item.contractor).includes(search);
       }).sort((a, b) => getSortTime(b.entryDate) - getSortTime(a.entryDate));
 
+      currentFilteredRecords = filtered; // UPDATE GLOBALS FOR EXCEL EXPORT
       const tbody = document.getElementById('statusReportTableBody');
+      
       if (filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">${t('alert_no_data')}</td></tr>`; return; }
       
       tbody.innerHTML = filtered.map((r, idx) => `<tr>
@@ -961,6 +1007,7 @@
     }
 
     function renderEpEntryTable(skipSearch = false) {
+      if (!currentUser) return;
       const searchBox = document.getElementById('epSearchKeyword');
       const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
       let baseScope = currentUser.role === 'contractor' ? currentUser.contractorName : (currentUser.scope || 'ALL');
@@ -1023,6 +1070,7 @@
     }
 
     function applyFineFilter(skipSearch = false) {
+      if (!currentUser) return;
       const statusFilter = normStr(document.getElementById('fineStatusFilter').value);
       const searchBox = document.getElementById('fineSearchKeyword');
       const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
@@ -1037,7 +1085,9 @@
         return !search || normStr(item.epNo).includes(search) || normStr(item.epName).includes(search) || normStr(item.contractor).includes(search);
       }).sort((a, b) => getSortTime(b.date) - getSortTime(a.date));
 
+      currentFilteredFines = filtered; // UPDATE GLOBALS FOR EXCEL EXPORT
       const tbody = document.getElementById('contractorFineTableBody');
+      
       if (filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="${canEdit ? 10 : 8}" style="text-align: center; padding: 2rem; color: var(--text-muted);">${t('alert_no_data')}</td></tr>`; document.getElementById('fineTotalAmountTd').innerText = '₹0'; return; }
       
       let tot = 0;
@@ -1076,6 +1126,7 @@
     }
 
     function renderContractorOverview() {
+      if (!currentUser) return;
       const sel = document.getElementById('overviewContSelect'); if (currentUser.role === 'contractor') { sel.value = currentUser.contractorName; sel.disabled = true; }
       if (!sel.value) return;
       const cName = normStr(sel.value), p = epList.filter(x => normStr(x.contractor) === cName), f = fineList.filter(x => normStr(x.contractor) === cName && normStr(x.status) !== 'done');
@@ -1086,6 +1137,7 @@
     }
 
     function renderContractorsTable(skipSearch = false) {
+      if (!currentUser) return;
       const searchBox = document.getElementById('contractorSearchInput');
       const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
       const list = search ? contractors.filter(c => normStr(c.name).includes(search) || normStr(c.username).includes(search)) : contractors;
@@ -1104,6 +1156,7 @@
     function delCont(i) { if(confirm(t('alert_del_cont'))){ contractors.splice(i, 1); saveState(); renderContractorsTable(); syncWithGoogleSheet(); } }
 
     function renderStaffTable() {
+      if (!currentUser) return;
       const tbody = document.getElementById('staffTableBody');
       if (!staffList.length) { tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:1.5rem; color:var(--text-muted);">${t('alert_no_data')}</td></tr>`; return; }
       tbody.innerHTML = staffList.map((s, i) => `<tr><td><strong>${i+1}</strong></td><td><strong>${escHtml(s.name)}</strong></td><td>${escHtml(s.username)}</td><td>${escHtml(s.password)}</td><td>${s.finePerm}</td><td>${s.reportPerm}</td><td>${s.entryPerm}</td><td>${s.overviewPerm}</td><td>${s.scope==='ALL'?'ALL':'Custom'}</td><td><button class="btn btn-danger btn-sm" onclick="delStaff('${s.id}')"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('');
@@ -1117,8 +1170,14 @@
     }
     function delStaff(id) { if(confirm('Delete Staff?')){ staffList = staffList.filter(s=>s.id!==id); saveState(); renderStaffTable(); syncWithGoogleSheet(); } }
 
-    function downloadReportExcel() { const ws = XLSX.utils.json_to_sheet(epList); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Report"); XLSX.writeFile(wb, `EP_Report_${getToday()}.xlsx`); }
-    function downloadFineExcel() { const ws = XLSX.utils.json_to_sheet(fineList); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Fines"); XLSX.writeFile(wb, `Fines_${getToday()}.xlsx`); }
+    function downloadReportExcel() { 
+      if(!currentFilteredRecords || currentFilteredRecords.length === 0) return alert(t('alert_no_data'));
+      const ws = XLSX.utils.json_to_sheet(currentFilteredRecords); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Report"); XLSX.writeFile(wb, `EP_Report_${getToday()}.xlsx`); 
+    }
+    function downloadFineExcel() { 
+      if(!currentFilteredFines || currentFilteredFines.length === 0) return alert(t('alert_no_data'));
+      const ws = XLSX.utils.json_to_sheet(currentFilteredFines); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Fines"); XLSX.writeFile(wb, `Fines_${getToday()}.xlsx`); 
+    }
 
     async function savePersonalPreferences() {
       const dName = document.getElementById('prefDisplayNameInput').value.trim();
@@ -1134,8 +1193,23 @@
     }
 
     // ----------------------------------------------------
-    // FULL FETCH & RENDER LOGIC RESTORED
+    // API SYNC & FETCH
     // ----------------------------------------------------
+    async function syncWithGoogleSheet(showNotification = false) {
+      const btn = document.getElementById('adminSaveSheetBtn');
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      try {
+        await fetch(MASTER_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ epList, contractors, fineList, staffList, adminProfile: users.vijay })
+        });
+        if (showNotification) alert(t('alert_prof_upd').replace('પ્રોફાઈલ સેવ થઈ ગઈ', 'ડેટા સેવ થઈ ગયો!'));
+      } catch (e) {
+      } finally {
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only" data-lang="save_btn">' + t('save_btn') + '</span>';
+      }
+    }
+
     async function autoFetchMasterData(showError = false, isPolling = false) {
       if (isFetchingLive) return false;
       isFetchingLive = true;
@@ -1183,13 +1257,15 @@
           saveState();
           populateContractorDropdown();
           
-          const curTab = document.querySelector('.page-tab-btn.active');
-          if (curTab) {
-            if (curTab.id === 'tabStatusReport') applyStatusReportFilter();
-            else if (curTab.id === 'tabContractorFine') applyFineFilter();
-            else if (curTab.id === 'tabContractorOverview') renderContractorOverview();
-            else if (curTab.id === 'tabContractorMgmt') { renderContractorsTable(); renderStaffTable(); }
-            else if (curTab.id === 'tabEpEntry' && !isEpEditMode) renderEpEntryTable();
+          if (currentUser) {
+            const curTab = document.querySelector('.page-tab-btn.active');
+            if (curTab) {
+              if (curTab.id === 'tabStatusReport') applyStatusReportFilter();
+              else if (curTab.id === 'tabContractorFine') applyFineFilter();
+              else if (curTab.id === 'tabContractorOverview') renderContractorOverview();
+              else if (curTab.id === 'tabContractorMgmt') { renderContractorsTable(); renderStaffTable(); }
+              else if (curTab.id === 'tabEpEntry' && !isEpEditMode) renderEpEntryTable();
+            }
           }
           return true;
         }
@@ -1201,29 +1277,11 @@
       return false;
     }
 
-    async function syncWithGoogleSheet(showNotification = false) {
-      const btn = document.getElementById('adminSaveSheetBtn');
-      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-      try {
-        await fetch(MASTER_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ epList, contractors, fineList, staffList, adminProfile: users.vijay })
-        });
-        if (showNotification) alert(t('alert_prof_upd').replace('Profile Updated', 'Data Saved!') || 'Data Saved!');
-      } catch (e) {
-        console.error(e);
-      } finally {
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only" data-lang="save_btn">Save</span>';
-      }
-    }
-
     async function manualPullData() {
       const btn = document.getElementById('adminPullSheetBtn');
       if(btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
       await autoFetchMasterData(true);
-      if(btn) btn.innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="desktop-only" data-lang="sync_btn">Sync</span>';
+      if(btn) btn.innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="desktop-only" data-lang="sync_btn">' + t('sync_btn') + '</span>';
       alert(t('alert_sync'));
     }
   </script>
