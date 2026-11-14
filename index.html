@@ -129,7 +129,7 @@
 
     /* Proper Sticky Table Header - No Double Scrollbars */
     .table-container { 
-      overflow-x: auto; /* Only allow horizontal scrolling for wide tables */
+      overflow-x: auto; 
       border: 1px solid var(--glass-border); 
       border-radius: 0.75rem; 
       background: var(--glass-bg-card); 
@@ -146,7 +146,7 @@
       border-bottom: 1px solid var(--glass-border); 
       white-space: nowrap; 
       position: sticky; 
-      top: 57px; /* Stick exactly below the navbar */
+      top: 57px; 
       z-index: 10; 
     }
     body.theme-light th { background: #f8fafc; }
@@ -200,11 +200,11 @@
 
         <div class="form-group">
           <label class="form-label" data-lang="username_label">Username</label>
-          <input type="text" id="loginUsername" class="form-input glass-card" placeholder="Username" data-lang-placeholder="username_label">
+          <input type="text" id="loginUsername" class="form-input glass-card" placeholder="Username" data-lang-placeholder="username_label" onkeypress="if(event.key === 'Enter') handleLogin()">
         </div>
         <div class="form-group">
           <label class="form-label" data-lang="password_label">Password</label>
-          <input type="password" id="loginPassword" class="form-input glass-card" placeholder="Password" data-lang-placeholder="password_label">
+          <input type="password" id="loginPassword" class="form-input glass-card" placeholder="Password" data-lang-placeholder="password_label" onkeypress="if(event.key === 'Enter') handleLogin()">
         </div>
         <div id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-bottom: 1rem; display: none; font-weight: 600;">
           <i class="fa-solid fa-circle-exclamation"></i> <span data-lang="login_error">Invalid Username or Password!</span>
@@ -622,6 +622,7 @@
     </div>
   </div>
 
+  <!-- ADD EP MODAL WITH PRE-FILLED DATE FIX -->
   <div id="epModal" class="modal-overlay hidden">
     <div class="modal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -631,7 +632,7 @@
       <div class="form-group"><label class="form-label" data-lang="th_contractor">Contractor Name</label><select id="epContSelect" class="form-input"></select></div>
       <div class="form-group"><label class="form-label" data-lang="th_ep_no">EP Number</label><input type="text" id="epNoInput" class="form-input" placeholder="e.g. 10612345"></div>
       <div class="form-group"><label class="form-label" data-lang="th_name">EP Name</label><input type="text" id="epNameInput" class="form-input"></div>
-      <div class="form-group"><label class="form-label" data-lang="th_plant">Plant</label><input type="text" id="epPlantInput" class="form-input" value="CHO (A) KC2"></div>
+      <div class="form-group"><label class="form-label" data-lang="th_plant">Plant</label><input type="text" id="epPlantInput" class="form-input"></div>
       <div class="form-group"><label class="form-label" data-lang="th_date">Entry Date</label><input type="text" id="epDateInput" class="form-input"></div>
       <button class="btn btn-primary" style="width: 100%;" onclick="saveNewEpRecord()" data-lang="save_btn">Save</button>
     </div>
@@ -711,7 +712,7 @@
     let currentFilteredRecords = [];
     let currentFilteredFines = [];
     let currentUser = null, isFetchingLive = false, isEpEditMode = false;
-    let navHistory = []; // Browser Back Button History
+    let navHistory = []; 
 
     function normStr(v) { return (v == null) ? '' : String(v).trim().toLowerCase(); }
     function escHtml(str) { return str == null ? '' : String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -901,7 +902,6 @@
       });
     });
 
-    // 🔴 Mobile Back Button Integration for Single-Page UX 🔴
     window.addEventListener('popstate', function(e) {
       if (currentUser && e.state && e.state.page) {
         switchPage(e.state.page, false);
@@ -997,7 +997,6 @@
       if (isContractor) switchPage('report', true); else switchPage('menu', true);
     }
 
-    // 🔴 SINGLE PAGE UX WITH BACK BUTTON LOGIC 🔴
     function switchPage(pageKey, pushToHistory = true) {
       if (!currentUser) return;
       
@@ -1016,7 +1015,6 @@
         if (view) view.classList.toggle('hidden', k !== pageKey);
       });
 
-      // Show/Hide back button based on whether we are on the main menu or a subpage
       const backBtn = document.getElementById('navBackBtn');
       if(backBtn) {
         if(pageKey === 'menu') {
@@ -1039,27 +1037,41 @@
       if (pageKey === 'contractors') { renderContractorsTable(); renderStaffTable(); }
     }
 
-    function isContractorInScope(contName, scopeStr) { return (!scopeStr || scopeStr === 'ALL') ? true : scopeStr.split(',').map(s => normStr(s)).includes(normStr(contName)); }
-
-    function populateContractorDropdown() {
-      const allNames = getAllContractorNames();
-      let scope = (currentUser && currentUser.role === 'staff' && currentUser.scope) ? currentUser.scope : 'ALL';
-      let allowedNames = scope !== 'ALL' ? allNames.filter(n => scope.split(',').map(s=>normStr(s)).includes(normStr(n))) : allNames;
-
-      ['reportContractorDropdown', 'fineContractorDropdown', 'epEntryContractorFilter'].forEach(id => {
-        const dd = document.getElementById(id); if (!dd) return;
-        const cur = dd.value || 'ALL';
-        dd.innerHTML = `<option value="ALL">${t('all_opt')}</option>` + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
-        dd.value = allowedNames.includes(cur) ? cur : 'ALL';
-      });
-
-      ['epContSelect', 'overviewContSelect'].forEach(id => {
-        const dd = document.getElementById(id); if (!dd) return;
-        const cur = dd.value;
-        dd.innerHTML = `<option value="" disabled selected>${t('select_opt')}</option>` + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
-        if (cur && allowedNames.includes(cur)) dd.value = cur;
-      });
+    // ----------------------------------------------------
+    // ADD NEW EP MODAL FIXES (Pre-fill Date)
+    // ----------------------------------------------------
+    function openAddEpModal() { 
+      document.getElementById('epNoInput').value = '';
+      document.getElementById('epNameInput').value = '';
+      document.getElementById('epPlantInput').value = 'CHO (A) KC2';
+      // AUTOMATIC PRE-FILLED TODAY'S DATE
+      document.getElementById('epDateInput').value = getToday(); 
+      document.getElementById('epModal').classList.remove('hidden'); 
     }
+    
+    function closeAddEpModal() { document.getElementById('epModal').classList.add('hidden'); }
+    
+    async function saveNewEpRecord() {
+      const c = document.getElementById('epContSelect').value, no = document.getElementById('epNoInput').value.trim(), nm = document.getElementById('epNameInput').value.trim();
+      if (!c || !no || !nm) return alert(t('alert_fill_details'));
+      if (epList.find(x => normStr(x.status) === 'active' && normStr(x.epNo) === normStr(no))) return alert(t('alert_ep_exists'));
+      epList.unshift({ id: 'ep_'+Date.now(), contractor:c, epNo:no, epName:nm, plant: document.getElementById('epPlantInput').value||'-', entryDate: document.getElementById('epDateInput').value||getToday(), status:'Active' });
+      
+      saveState(); 
+      closeAddEpModal(); 
+      
+      // RESET SEARCH SO NEW PASS SHOWS AT THE VERY TOP
+      document.getElementById('epSearchKeyword').value = ''; 
+      document.getElementById('epEntryContractorFilter').value = 'ALL'; 
+      
+      renderEpEntryTable(); 
+      applyStatusReportFilter();
+      
+      await syncWithGoogleSheet(); 
+      alert(t('alert_ep_added'));
+    }
+
+    function isContractorInScope(contName, scopeStr) { return (!scopeStr || scopeStr === 'ALL') ? true : scopeStr.split(',').map(s => normStr(s)).includes(normStr(contName)); }
 
     // ----------------------------------------------------
     // TABLE RENDERERS (Data + UI)
@@ -1086,7 +1098,7 @@
       
       tbody.innerHTML = filtered.map((r, idx) => {
         const isCancel = normStr(r.status) === 'cancel';
-        // 🔴 FIX: Show Join date AND Cancel date for cancelled passes
+        // SHOW BOTH DATES IF CANCELLED
         let dateHtml = '';
         if (isCancel) {
           dateHtml = `<div style="font-size:0.75rem; color: #38bdf8;">Join: ${escHtml(cleanDateString(r.entryDate))}</div>
@@ -1153,7 +1165,6 @@
       saveState(); renderEpEntryTable(); await syncWithGoogleSheet(); alert(t('alert_cancel_success'));
     }
     
-    // Fixed Action Button Function for EP Entry
     window.cancelSinglePass = async function(id) {
       if (!confirm(t('alert_cancel_confirm'))) return;
       const target = epList.find(x => String(x.id) === String(id)); 
@@ -1165,16 +1176,6 @@
         await syncWithGoogleSheet(); 
         alert(t('alert_cancel_success'));
       }
-    }
-
-    function openAddEpModal() { document.getElementById('epModal').classList.remove('hidden'); }
-    function closeAddEpModal() { document.getElementById('epModal').classList.add('hidden'); }
-    async function saveNewEpRecord() {
-      const c = document.getElementById('epContSelect').value, no = document.getElementById('epNoInput').value.trim(), nm = document.getElementById('epNameInput').value.trim();
-      if (!c || !no || !nm) return alert(t('alert_fill_details'));
-      if (epList.find(x => normStr(x.status) === 'active' && normStr(x.epNo) === normStr(no))) return alert(t('alert_ep_exists'));
-      epList.unshift({ id: 'ep_'+Date.now(), contractor:c, epNo:no, epName:nm, plant: document.getElementById('epPlantInput').value||'-', entryDate: document.getElementById('epDateInput').value||getToday(), status:'Active' });
-      saveState(); closeAddEpModal(); renderEpEntryTable(); await syncWithGoogleSheet(); alert(t('alert_ep_added'));
     }
 
     function applyFineFilter(skipSearch = false) {
@@ -1220,7 +1221,6 @@
       saveState(); applyFineFilter(); await syncWithGoogleSheet(); alert(t('alert_fine_success'));
     }
     
-    // Fixed Single Fine Button Function
     window.markFineDone = async function(id) {
       if (!confirm(t('alert_fine_confirm'))) return;
       const target = fineList.find(x => String(x.id) === String(id)); 
@@ -1445,7 +1445,6 @@
           populateContractorDropdown();
           
           if (currentUser) {
-            // Find current visible page
             let activeView = 'menu';
             const pages = ['pageMenuDashboard', 'pageStatusReport', 'pageEpEntry', 'pageContractorFine', 'pageContractorOverview', 'pageContractors', 'pageSettings'];
             pages.forEach(p => {
