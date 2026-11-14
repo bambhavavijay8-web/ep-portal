@@ -219,7 +219,6 @@
   <!-- MAIN APP -->
   <div id="appContainer" class="hidden">
     <nav class="navbar">
-      <!-- Added a back button specifically for mobile view when in sub-pages -->
       <div class="nav-brand">
         <button id="navBackBtn" class="btn btn-secondary btn-sm hidden" style="margin-right: 0.5rem; padding: 0.3rem 0.6rem;" onclick="switchPage('menu')">
           <i class="fa-solid fa-arrow-left"></i>
@@ -252,13 +251,10 @@
       </div>
     </nav>
 
-    <!-- The Top Page Tabs are completely REMOVED as requested for a cleaner Single-Page UI -->
-
     <div class="container">
       
       <!-- PAGE 0: DASHBOARD MENU TILES -->
       <div id="pageMenuDashboard">
-        <!-- Floating Sync/Save buttons for mobile view in Menu -->
         <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-bottom: 1rem; flex-wrap: wrap;" class="mobile-sync-bar">
           <button class="btn btn-success btn-sm" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> <span data-lang="sync_btn">Sync Data</span></button>
           <button class="btn btn-primary btn-sm" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> <span data-lang="save_btn">Save Data</span></button>
@@ -299,7 +295,7 @@
             <h3 style="font-weight: 800; color: #38bdf8;" data-lang="tab_report">EP Status Report</h3>
             <button class="btn btn-excel btn-sm" onclick="downloadReportExcel()"><i class="fa-solid fa-file-excel"></i> <span data-lang="export_btn">Export</span></button>
           </div>
-          <div class="filter-panel" style="position: sticky; top: 57px; z-index: 20;">
+          <div class="filter-panel">
             <div style="min-width: 140px;">
               <select id="reportStatusFilter" class="form-input" onchange="applyStatusReportFilter()">
                 <option value="ALL" data-lang="all_passes">All Passes</option>
@@ -342,7 +338,7 @@
       <!-- PAGE 2: EP ENTRY -->
       <div id="pageEpEntry" class="hidden">
         <div class="glass-card" style="padding: 1.5rem;">
-          <div class="filter-panel" style="position: sticky; top: 57px; z-index: 20;">
+          <div class="filter-panel">
             <div style="flex: 1; min-width: 150px;">
               <select id="epEntryContractorFilter" class="form-input" onchange="renderEpEntryTable()"></select>
             </div>
@@ -401,7 +397,7 @@
               <button class="btn btn-excel btn-sm" onclick="downloadFineExcel()"><i class="fa-solid fa-file-excel"></i> <span data-lang="export_btn">Export</span></button>
             </div>
           </div>
-          <div class="filter-panel" style="position: sticky; top: 57px; z-index: 20;">
+          <div class="filter-panel">
             <div style="min-width: 140px;">
               <select id="fineStatusFilter" class="form-input" onchange="applyFineFilter()">
                 <option value="ALL" data-lang="all_fines">All Fines</option>
@@ -569,7 +565,6 @@
           <div class="form-group"><label class="form-label" data-lang="th_name">Name</label><input type="text" id="prefDisplayNameInput" class="form-input"></div>
           <div class="form-group"><label class="form-label" data-lang="th_contact">Contact</label><input type="text" id="prefContactInput" class="form-input"></div>
           
-          <!-- Avatar Upload -->
           <div class="form-group">
             <label class="form-label">Profile Avatar (Upload Picture)</label>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
@@ -622,7 +617,6 @@
     </div>
   </div>
 
-  <!-- ADD EP MODAL WITH PRE-FILLED DATE FIX -->
   <div id="epModal" class="modal-overlay hidden">
     <div class="modal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -632,7 +626,7 @@
       <div class="form-group"><label class="form-label" data-lang="th_contractor">Contractor Name</label><select id="epContSelect" class="form-input"></select></div>
       <div class="form-group"><label class="form-label" data-lang="th_ep_no">EP Number</label><input type="text" id="epNoInput" class="form-input" placeholder="e.g. 10612345"></div>
       <div class="form-group"><label class="form-label" data-lang="th_name">EP Name</label><input type="text" id="epNameInput" class="form-input"></div>
-      <div class="form-group"><label class="form-label" data-lang="th_plant">Plant</label><input type="text" id="epPlantInput" class="form-input"></div>
+      <div class="form-group"><label class="form-label" data-lang="th_plant">Plant</label><input type="text" id="epPlantInput" class="form-input" value="CHO (A) KC2"></div>
       <div class="form-group"><label class="form-label" data-lang="th_date">Entry Date</label><input type="text" id="epDateInput" class="form-input"></div>
       <button class="btn btn-primary" style="width: 100%;" onclick="saveNewEpRecord()" data-lang="save_btn">Save</button>
     </div>
@@ -712,7 +706,12 @@
     let currentFilteredRecords = [];
     let currentFilteredFines = [];
     let currentUser = null, isFetchingLive = false, isEpEditMode = false;
-    let navHistory = []; 
+
+    // MODAL FUNCTIONS 
+    window.openCompanyDetailsModal = function() { document.getElementById('companyDetailsModal').classList.remove('hidden'); }
+    window.closeCompanyDetailsModal = function() { document.getElementById('companyDetailsModal').classList.add('hidden'); }
+    window.openAdminContactModal = function() { document.getElementById('adminContactModal').classList.remove('hidden'); }
+    window.closeAdminContactModal = function() { document.getElementById('adminContactModal').classList.add('hidden'); }
 
     function normStr(v) { return (v == null) ? '' : String(v).trim().toLowerCase(); }
     function escHtml(str) { return str == null ? '' : String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -737,67 +736,10 @@
       localStorage.setItem('mv_contractors', JSON.stringify(contractors)); localStorage.setItem('mv_users', JSON.stringify(users)); localStorage.setItem('mv_staff_list', JSON.stringify(staffList));
     }
 
-    // ----------------------------------------------------
-    // STRICT LANGUAGE DICTIONARY SYSTEM
-    // ----------------------------------------------------
     const dict = {
-      'en': {
-        brand_desc: "Made by VIJAY BAMBHAVA for contractor pass and debit note.", login_title: "Login Account", login_desc: "Enter your Username and Password:", 
-        username_label: "Username", password_label: "Password", login_error: "Invalid Username or Password!", login_btn: "Login",
-        sync_btn: "Sync", save_btn: "Save", tab_report: "EP Status Report", tab_entry: "EP Entry", tab_fine: "Contractor Fine", tab_overview: "Contractor Overview", 
-        tab_users: "User Control", tab_settings: "Settings & Profile", export_btn: "Export", search_ph: "Search data...",
-        all_passes: "All Passes", active_passes: "Active Passes", cancel_passes: "Cancel Passes", edit_banner: "Edit Mode is ON. You can directly edit the table cells.", 
-        save_lock: "Save & Lock", edit_mode: "Edit Mode", cancel_selected: "Cancel Selected", add_new: "Add New", mark_done: "Mark Done", add_fine: "Add Fine", 
-        all_fines: "All Fines", pending: "Pending", done: "Done", select_cont_label: "Select Contractor:", pending_fines: "PENDING FINES", fine_amount: "PENDING AMOUNT", 
-        staff_accounts: "Staff Accounts", add_staff: "Add Staff", contractor_accounts: "Contractor Accounts", add_contractor: "Add Contractor",
-        theme_mode: "Theme Mode", language: "Language", my_profile: "My Profile", update_profile: "Update Profile", change_pass: "Change Password", 
-        current_pass: "Current Password", new_pass: "New Password", update_pass: "Update Password", th_sr: "Sr. No.", th_contractor: "Contractor", 
-        th_ep_no: "EP No", th_name: "Name", th_plant: "Plant", th_date: "Date", th_status: "Status", th_action: "Action", th_amount: "Amount(₹)", 
-        th_reason: "Reason", th_contact: "Contact", total_amount: "Total Amount:", all_opt: "-- All --", select_opt: "-- Select --", 
-        alert_no_data: "No data found.", alert_select_pass: "Select at least 1 pass to cancel!", alert_cancel_confirm: "Are you sure you want to cancel these passes?", 
-        alert_cancel_success: "Passes cancelled successfully!", alert_fill_details: "Please fill all required details!", alert_ep_exists: "EP Number already exists in Active list!",
-        alert_ep_added: "New pass added successfully!", alert_select_fine: "Select at least 1 fine to mark as done!", alert_fine_confirm: "Mark selected fines as done?",
-        alert_fine_success: "Fines updated successfully!", alert_fine_added: "New fine added successfully!", alert_cont_added: "Contractor added!", alert_del_cont: "Delete this contractor?",
-        alert_prof_upd: "Profile Updated!", alert_wrong_pass: "Incorrect current password!", alert_short_pass: "Password must be at least 3 characters!", alert_pass_upd: "Password updated!", alert_sync: "Data sync complete!"
-      },
-      'gu': {
-        brand_desc: "કૉન્ટ્રેક્ટર પાસ અને દંડની નોંધ માટે વિજય ભામ્ભવા દ્વારા બનાવાયેલ.", login_title: "એકાઉન્ટ લૉગિન", login_desc: "પોતાના Username અને Password થી લૉગિન કરો:", 
-        username_label: "યુઝરનેમ (Username)", password_label: "પાસવર્ડ (Password)", login_error: "ખોટું યુઝરનેમ અથવા પાસવર્ડ!", login_btn: "લૉગિન કરો",
-        sync_btn: "રિફ્રેશ", save_btn: "સેવ", tab_report: "EP સ્ટેટસ રિપોર્ટ", tab_entry: "EP એન્ટ્રી", tab_fine: "કૉન્ટ્રેક્ટર દંડ", tab_overview: "કૉન્ટ્રેક્ટર ઓવરવ્યૂ", 
-        tab_users: "યુઝર કંટ્રોલ", tab_settings: "સેટિંગ્સ અને પ્રોફાઈલ", export_btn: "એક્સપોર્ટ (Excel)", search_ph: "માહિતી સર્ચ કરો...",
-        all_passes: "તમામ પાસ", active_passes: "એક્ટિવ પાસ", cancel_passes: "કેન્સલ પાસ", edit_banner: "એડિટ મોડ ચાલુ છે. તમે સીધો ટેબલમાં ફેરફાર કરી શકો છો.", 
-        save_lock: "સેવ અને લોક", edit_mode: "એડિટ મોડ", cancel_selected: "સિલેક્ટ કરેલા કેન્સલ કરો", add_new: "નવો પાસ ઉમેરો", mark_done: "Done કરો", add_fine: "દંડ ઉમેરો", 
-        all_fines: "તમામ દંડ", pending: "બાકી (Pending)", done: "ભરાઈ ગયેલ (Done)", select_cont_label: "કૉન્ટ્રેક્ટર પસંદ કરો:", pending_fines: "બાકી દંડની સંખ્યા", fine_amount: "બાકી દંડની રકમ", 
-        staff_accounts: "સ્ટાફ એકાઉન્ટ્સ", add_staff: "સ્ટાફ ઉમેરો", contractor_accounts: "કૉન્ટ્રેક્ટર એકાઉન્ટ્સ", add_contractor: "કૉન્ટ્રેક્ટર ઉમેરો",
-        theme_mode: "થીમ (Theme)", language: "ભાષા (Language)", my_profile: "મારી પ્રોફાઈલ", update_profile: "પ્રોફાઈલ સેવ કરો", change_pass: "પાસવર્ડ બદલો", 
-        current_pass: "હાલનો પાસવર્ડ", new_pass: "નવો પાસવર્ડ", update_pass: "પાસવર્ડ સેવ કરો", th_sr: "ક્રમ", th_contractor: "કૉન્ટ્રેક્ટર", 
-        th_ep_no: "EP નંબર", th_name: "નામ", th_plant: "પ્લાન્ટ", th_date: "તારીખ", th_status: "સ્ટેટસ", th_action: "એક્શન", th_amount: "રકમ (₹)", 
-        th_reason: "કારણ", th_contact: "સંપર્ક", total_amount: "કુલ રકમ:", all_opt: "-- તમામ --", select_opt: "-- પસંદ કરો --", 
-        alert_no_data: "કોઈ માહિતી મળી નથી.", alert_select_pass: "કેન્સલ કરવા ઓછામાં ઓછો ૧ પાસ સિલેક્ટ કરો!", alert_cancel_confirm: "શું તમે સિલેક્ટ કરેલા પાસ કેન્સલ કરવા માંગો છો?", 
-        alert_cancel_success: "પાસ સફળતાપૂર્વક કેન્સલ થઈ ગયા!", alert_fill_details: "કૃપા કરીને બધી જરૂરી વિગતો ભરો!", alert_ep_exists: "આ EP નંબર પહેલેથી જ એક્ટિવ લિસ્ટમાં છે!",
-        alert_ep_added: "નવો પાસ સફળતાપૂર્વક ઉમેરાઈ ગયો!", alert_select_fine: "Done કરવા ઓછામાં ઓછો ૧ દંડ સિલેક્ટ કરો!", alert_fine_confirm: "શું તમે સિલેક્ટ કરેલા દંડ Done કરવા માંગો છો?",
-        alert_fine_success: "દંડ સફળતાપૂર્વક અપડેટ થઈ ગયા!", alert_fine_added: "નવો દંડ સફળતાપૂર્વક ઉમેરાઈ ગયો!", alert_cont_added: "કૉન્ટ્રેક્ટર ઉમેરાઈ ગયો!", alert_del_cont: "આ કૉન્ટ્રેક્ટરને ડિલીટ કરવો છે?",
-        alert_prof_upd: "પ્રોફાઈલ સેવ થઈ ગઈ!", alert_wrong_pass: "હાલનો પાસવર્ડ ખોટો છે!", alert_short_pass: "પાસવર્ડ ઓછામાં ઓછો ૩ અક્ષરનો હોવો જોઈએ!", alert_pass_upd: "પાસવર્ડ બદલાઈ ગયો!", alert_sync: "Master Sheet માંથી તાજો ડેટા લોડ થઈ ગયો!"
-      },
-      'hi': {
-        brand_desc: "ठेकेदार पास और जुर्माने के लिए विजय भामभवा द्वारा निर्मित।", login_title: "अकाउंट लॉगिन", login_desc: "अपना Username और Password दर्ज करें:", 
-        username_label: "यूज़रनेम", password_label: "पासवर्ड", login_error: "गलत यूज़रनेम या पासवर्ड!", login_btn: "लॉगिन करें",
-        sync_btn: "सिंक", save_btn: "सेव", tab_report: "EP स्टेटस रिपोर्ट", tab_entry: "EP एंट्री", tab_fine: "ठेकेदार जुर्माना", tab_overview: "ठेकेदार अवलोकन", 
-        tab_users: "यूज़र कंट्रोल", tab_settings: "सेटिंग्स", export_btn: "एक्सपोर्ट", search_ph: "डेटा खोजें...",
-        all_passes: "सभी पास", active_passes: "सक्रिय पास", cancel_passes: "रद्द पास", edit_banner: "एडिट मोड चालू है। आप सीधे बदलाव कर सकते हैं।", 
-        save_lock: "सेव और लॉक", edit_mode: "एडिट मोड", cancel_selected: "चयनित रद्द करें", add_new: "नया जोड़ें", mark_done: "Done करें", add_fine: "जुर्माना जोड़ें", 
-        all_fines: "सभी जुर्माने", pending: "बाकी (Pending)", done: "पूरा (Done)", select_cont_label: "ठेकेदार चुनें:", pending_fines: "बाकी जुर्माने", fine_amount: "बाकी राशि", 
-        staff_accounts: "स्टाफ अकाउंट", add_staff: "स्टाफ जोड़ें", contractor_accounts: "ठेकेदार अकाउंट", add_contractor: "ठेकेदार जोड़ें",
-        theme_mode: "थीम मोड", language: "भाषा", my_profile: "मेरी प्रोफाइल", update_profile: "प्रोफाइल अपडेट करें", change_pass: "पासवर्ड बदलें", 
-        current_pass: "वर्तमान पासवर्ड", new_pass: "नया पासवर्ड", update_pass: "पासवर्ड अपडेट करें", th_sr: "क्र.", th_contractor: "ठेकेदार", 
-        th_ep_no: "EP नंबर", th_name: "नाम", th_plant: "प्लांट", th_date: "तारीख", th_status: "स्थिति", th_action: "एक्शन", th_amount: "राशि (₹)", 
-        th_reason: "कारण", th_contact: "संपर्क", total_amount: "कुल राशि:", all_opt: "-- सभी --", select_opt: "-- चुनें --", 
-        alert_no_data: "कोई डेटा नहीं मिला।", alert_select_pass: "रद्द करने के लिए पास चुनें!", alert_cancel_confirm: "क्या आप इन पास को रद्द करना चाहते हैं?", 
-        alert_cancel_success: "पास सफलतापूर्वक रद्द हो गए!", alert_fill_details: "कृपया सभी विवरण भरें!", alert_ep_exists: "EP नंबर पहले से मौजूद है!",
-        alert_ep_added: "नया पास जुड़ गया!", alert_select_fine: "Done करने के लिए जुर्माना चुनें!", alert_fine_confirm: "चयनित जुर्माने Done करें?",
-        alert_fine_success: "जुर्माने अपडेट हो गए!", alert_fine_added: "नया जुर्माना जुड़ गया!", alert_cont_added: "ठेकेदार जुड़ गया!", alert_del_cont: "क्या इसे डिलीट करना है?",
-        alert_prof_upd: "प्रोफाइल अपडेट हो गई!", alert_wrong_pass: "वर्तमान पासवर्ड गलत है!", alert_short_pass: "पासवर्ड कम से कम 3 अक्षर का होना चाहिए!", alert_pass_upd: "पासवर्ड बदल गया!", alert_sync: "सिंक पूरा हो गया!"
-      }
+      'en': { brand_desc: "Made by VIJAY BAMBHAVA for contractor pass and debit note.", login_title: "Login Account", login_desc: "Enter your Username and Password:", username_label: "Username", password_label: "Password", login_error: "Invalid Username or Password!", login_btn: "Login", sync_btn: "Sync", save_btn: "Save", tab_report: "EP Status Report", tab_entry: "EP Entry", tab_fine: "Contractor Fine", tab_overview: "Contractor Overview", tab_users: "User Control", tab_settings: "Settings & Profile", export_btn: "Export", search_ph: "Search data...", all_passes: "All Passes", active_passes: "Active Passes", cancel_passes: "Cancel Passes", edit_banner: "Edit Mode is ON.", save_lock: "Save & Lock", edit_mode: "Edit Mode", cancel_selected: "Cancel Selected", add_new: "Add New", mark_done: "Mark Done", add_fine: "Add Fine", all_fines: "All Fines", pending: "Pending", done: "Done", select_cont_label: "Select Contractor:", pending_fines: "PENDING FINES", fine_amount: "PENDING AMOUNT", staff_accounts: "Staff Accounts", add_staff: "Add Staff", contractor_accounts: "Contractor Accounts", add_contractor: "Add Contractor", theme_mode: "Theme Mode", language: "Language", my_profile: "My Profile", update_profile: "Update Profile", change_pass: "Change Password", current_pass: "Current Password", new_pass: "New Password", update_pass: "Update Password", th_sr: "Sr. No.", th_contractor: "Contractor", th_ep_no: "EP No", th_name: "Name", th_plant: "Plant", th_date: "Date", th_status: "Status", th_action: "Action", th_amount: "Amount(₹)", th_reason: "Reason", th_contact: "Contact", total_amount: "Total Amount:", all_opt: "-- All --", select_opt: "-- Select --", alert_no_data: "No data found.", alert_select_pass: "Select at least 1 pass to cancel!", alert_cancel_confirm: "Are you sure you want to cancel these passes?", alert_cancel_success: "Passes cancelled successfully!", alert_fill_details: "Please fill all required details!", alert_ep_exists: "EP Number already exists!", alert_ep_added: "New pass added successfully!", alert_select_fine: "Select at least 1 fine!", alert_fine_confirm: "Mark selected fines as done?", alert_fine_success: "Fines updated!", alert_fine_added: "New fine added!", alert_cont_added: "Contractor added!", alert_del_cont: "Delete this contractor?", alert_prof_upd: "Profile Updated!", alert_wrong_pass: "Incorrect current password!", alert_short_pass: "Password must be at least 3 characters!", alert_pass_upd: "Password updated!", alert_sync: "Data sync complete!" },
+      'gu': { brand_desc: "કૉન્ટ્રેક્ટર પાસ અને દંડની નોંધ માટે વિજય ભામ્ભવા દ્વારા બનાવાયેલ.", login_title: "એકાઉન્ટ લૉગિન", login_desc: "પોતાના Username અને Password થી લૉગિન કરો:", username_label: "યુઝરનેમ (Username)", password_label: "પાસવર્ડ (Password)", login_error: "ખોટું યુઝરનેમ અથવા પાસવર્ડ!", login_btn: "લૉગિન કરો", sync_btn: "રિફ્રેશ", save_btn: "સેવ", tab_report: "EP સ્ટેટસ રિપોર્ટ", tab_entry: "EP એન્ટ્રી", tab_fine: "કૉન્ટ્રેક્ટર દંડ", tab_overview: "કૉન્ટ્રેક્ટર ઓવરવ્યૂ", tab_users: "યુઝર કંટ્રોલ", tab_settings: "સેટિંગ્સ અને પ્રોફાઈલ", export_btn: "એક્સપોર્ટ (Excel)", search_ph: "માહિતી સર્ચ કરો...", all_passes: "તમામ પાસ", active_passes: "એક્ટિવ પાસ", cancel_passes: "કેન્સલ પાસ", edit_banner: "એડિટ મોડ ચાલુ છે.", save_lock: "સેવ અને લોક", edit_mode: "એડિટ મોડ", cancel_selected: "સિલેક્ટ કરેલા કેન્સલ કરો", add_new: "નવો પાસ ઉમેરો", mark_done: "Done કરો", add_fine: "દંડ ઉમેરો", all_fines: "તમામ દંડ", pending: "બાકી (Pending)", done: "ભરાઈ ગયેલ (Done)", select_cont_label: "કૉન્ટ્રેક્ટર પસંદ કરો:", pending_fines: "બાકી દંડની સંખ્યા", fine_amount: "બાકી દંડની રકમ", staff_accounts: "સ્ટાફ એકાઉન્ટ્સ", add_staff: "સ્ટાફ ઉમેરો", contractor_accounts: "કૉન્ટ્રેક્ટર એકાઉન્ટ્સ", add_contractor: "કૉન્ટ્રેક્ટર ઉમેરો", theme_mode: "થીમ (Theme)", language: "ભાષા (Language)", my_profile: "મારી પ્રોફાઈલ", update_profile: "પ્રોફાઈલ સેવ કરો", change_pass: "પાસવર્ડ બદલો", current_pass: "હાલનો પાસવર્ડ", new_pass: "નવો પાસવર્ડ", update_pass: "પાસવર્ડ સેવ કરો", th_sr: "ક્રમ", th_contractor: "કૉન્ટ્રેક્ટર", th_ep_no: "EP નંબર", th_name: "નામ", th_plant: "પ્લાન્ટ", th_date: "તારીખ", th_status: "સ્ટેટસ", th_action: "એક્શન", th_amount: "રકમ (₹)", th_reason: "કારણ", th_contact: "સંપર્ક", total_amount: "કુલ રકમ:", all_opt: "-- તમામ --", select_opt: "-- પસંદ કરો --", alert_no_data: "કોઈ માહિતી મળી નથી.", alert_select_pass: "કેન્સલ કરવા માટે પાસ સિલેક્ટ કરો!", alert_cancel_confirm: "શું તમે પાસ કેન્સલ કરવા માંગો છો?", alert_cancel_success: "પાસ કેન્સલ થઈ ગયા!", alert_fill_details: "કૃપા કરીને બધી વિગતો ભરો!", alert_ep_exists: "આ EP નંબર પહેલેથી જ છે!", alert_ep_added: "નવો પાસ ઉમેરાઈ ગયો!", alert_select_fine: "Done કરવા દંડ સિલેક્ટ કરો!", alert_fine_confirm: "શું તમે દંડ Done કરવા માંગો છો?", alert_fine_success: "દંડ અપડેટ થઈ ગયા!", alert_fine_added: "નવો દંડ ઉમેરાઈ ગયો!", alert_cont_added: "કૉન્ટ્રેક્ટર ઉમેરાઈ ગયો!", alert_del_cont: "આ કૉન્ટ્રેક્ટરને ડિલીટ કરવો છે?", alert_prof_upd: "પ્રોફાઈલ સેવ થઈ ગઈ!", alert_wrong_pass: "હાલનો પાસવર્ડ ખોટો છે!", alert_short_pass: "પાસવર્ડ ઓછામાં ઓછો ૩ અક્ષરનો હોવો જોઈએ!", alert_pass_upd: "પાસવર્ડ બદલાઈ ગયો!", alert_sync: "તાજો ડેટા લોડ થઈ ગયો!" },
+      'hi': { brand_desc: "ठेकेदार पास और जुर्माने के लिए विजय भामभवा द्वारा निर्मित।", login_title: "अकाउंट लॉगिन", login_desc: "अपना Username और Password दर्ज करें:", username_label: "यूज़रनेम", password_label: "पासवर्ड", login_error: "गलत यूज़रनेम या पासवर्ड!", login_btn: "लॉगिन करें", sync_btn: "सिंक", save_btn: "सेव", tab_report: "EP स्टेटस रिपोर्ट", tab_entry: "EP एंट्री", tab_fine: "ठेकेदार जुर्माना", tab_overview: "ठेकेदार अवलोकन", tab_users: "यूज़र कंट्रोल", tab_settings: "सेटिंग्स", export_btn: "एक्सपोर्ट", search_ph: "डेटा खोजें...", all_passes: "सभी पास", active_passes: "सक्रिय पास", cancel_passes: "रद्द पास", edit_banner: "एडिट मोड चालू है।", save_lock: "सेव और लॉक", edit_mode: "एडिट मोड", cancel_selected: "चयनित रद्द करें", add_new: "नया जोड़ें", mark_done: "Done करें", add_fine: "जुर्माना जोड़ें", all_fines: "सभी जुर्माने", pending: "बाकी (Pending)", done: "पूरा (Done)", select_cont_label: "ठेकेदार चुनें:", pending_fines: "बाकी जुर्माने", fine_amount: "बाकी राशि", staff_accounts: "स्टाफ अकाउंट", add_staff: "स्टाफ जोड़ें", contractor_accounts: "ठेकेदार अकाउंट", add_contractor: "ठेकेदार जोड़ें", theme_mode: "थीम मोड", language: "भाषा", my_profile: "मेरी प्रोफाइल", update_profile: "प्रोफाइल अपडेट करें", change_pass: "पासवर्ड बदलें", current_pass: "वर्तमान पासवर्ड", new_pass: "नया पासवर्ड", update_pass: "पासवर्ड अपडेट करें", th_sr: "क्र.", th_contractor: "ठेकेदार", th_ep_no: "EP नंबर", th_name: "नाम", th_plant: "प्लांट", th_date: "तारीख", th_status: "स्थिति", th_action: "एक्शन", th_amount: "राशि (₹)", th_reason: "कारण", th_contact: "संपर्क", total_amount: "कुल राशि:", all_opt: "-- सभी --", select_opt: "-- चुनें --", alert_no_data: "कोई डेटा नहीं मिला।", alert_select_pass: "रद्द करने के लिए पास चुनें!", alert_cancel_confirm: "क्या आप इन पास को रद्द करना चाहते हैं?", alert_cancel_success: "पास रद्द हो गए!", alert_fill_details: "कृपया सभी विवरण भरें!", alert_ep_exists: "EP नंबर पहले से मौजूद है!", alert_ep_added: "नया पास जुड़ गया!", alert_select_fine: "Done करने के लिए जुर्माना चुनें!", alert_fine_confirm: "चयनित जुर्माने Done करें?", alert_fine_success: "जुर्माने अपडेट हो गए!", alert_fine_added: "नया जुर्माना जुड़ गया!", alert_cont_added: "ठेकेदार जुड़ गया!", alert_del_cont: "क्या इसे डिलीट करना है?", alert_prof_upd: "प्रोफाइल अपडेट हो गई!", alert_wrong_pass: "वर्तमान पासवर्ड गलत है!", alert_short_pass: "पासवर्ड कम से कम 3 अक्षर का होना चाहिए!", alert_pass_upd: "पासवर्ड बदल गया!", alert_sync: "सिंक पूरा हो गया!" }
     };
     function t(key) { const l = localStorage.getItem('mv_lang') || 'gu'; return dict[l][key] || key; }
 
@@ -809,9 +751,6 @@
       if(currentUser) { renderEpEntryTable(); applyStatusReportFilter(); applyFineFilter(); renderContractorOverview(); }
     }
 
-    // ----------------------------------------------------
-    // AVATAR UPLOAD LOGIC
-    // ----------------------------------------------------
     function handleImageUpload(event, inputId) {
       const file = event.target.files[0];
       if (file) {
@@ -825,11 +764,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // ADVANCED SEARCH NAVIGATION (ARROWS)
-    // ----------------------------------------------------
     let searchStates = { report: { idx: -1, matches: [] }, entry: { idx: -1, matches: [] }, fine: { idx: -1, matches: [] }, contractor: { idx: -1, matches: [] } };
-
     function triggerSearch(pageKey) {
       const containerId = pageKey === 'report' ? 'statusReportTableBody' : pageKey === 'entry' ? 'epEntryTableBody' : pageKey === 'fine' ? 'contractorFineTableBody' : 'contractorTableBody';
       const inputId = pageKey === 'report' ? 'reportSearchKeyword' : pageKey === 'entry' ? 'epSearchKeyword' : pageKey === 'fine' ? 'fineSearchKeyword' : 'contractorSearchInput';
@@ -879,9 +814,6 @@
       if (st.matches.length > 0) { navBox.style.display = 'flex'; navBox.querySelector('.count-text').innerText = `${st.idx + 1}/${st.matches.length}`; } else { navBox.style.display = 'none'; }
     }
 
-    // ----------------------------------------------------
-    // SYSTEM INITIALIZATION
-    // ----------------------------------------------------
     function setTheme(mode) {
       if (mode === 'system') mode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       if (mode === 'light') { document.body.classList.add('theme-light'); localStorage.setItem('mv_theme', 'light'); } else { document.body.classList.remove('theme-light'); localStorage.setItem('mv_theme', 'dark'); }
@@ -917,9 +849,6 @@
       return Array.from(set).sort();
     }
 
-    // ----------------------------------------------------
-    // AUTH & NAVIGATION
-    // ----------------------------------------------------
     async function handleLogin() {
       const u = normStr(document.getElementById('loginUsername').value), p = String(document.getElementById('loginPassword').value).trim();
       if (!u || !p) { document.getElementById('loginError').style.display = 'block'; return; }
@@ -1037,30 +966,24 @@
       if (pageKey === 'contractors') { renderContractorsTable(); renderStaffTable(); }
     }
 
-    // ----------------------------------------------------
-    // ADD NEW EP MODAL FIXES (Pre-fill Date)
-    // ----------------------------------------------------
     function openAddEpModal() { 
       document.getElementById('epNoInput').value = '';
       document.getElementById('epNameInput').value = '';
       document.getElementById('epPlantInput').value = 'CHO (A) KC2';
-      // AUTOMATIC PRE-FILLED TODAY'S DATE
       document.getElementById('epDateInput').value = getToday(); 
       document.getElementById('epModal').classList.remove('hidden'); 
     }
-    
     function closeAddEpModal() { document.getElementById('epModal').classList.add('hidden'); }
     
     async function saveNewEpRecord() {
       const c = document.getElementById('epContSelect').value, no = document.getElementById('epNoInput').value.trim(), nm = document.getElementById('epNameInput').value.trim();
       if (!c || !no || !nm) return alert(t('alert_fill_details'));
       if (epList.find(x => normStr(x.status) === 'active' && normStr(x.epNo) === normStr(no))) return alert(t('alert_ep_exists'));
-      epList.unshift({ id: 'ep_'+Date.now(), contractor:c, epNo:no, epName:nm, plant: document.getElementById('epPlantInput').value||'-', entryDate: document.getElementById('epDateInput').value||getToday(), status:'Active' });
       
+      epList.unshift({ id: 'ep_'+Date.now(), contractor:c, epNo:no, epName:nm, plant: document.getElementById('epPlantInput').value||'-', entryDate: document.getElementById('epDateInput').value||getToday(), status:'Active' });
       saveState(); 
       closeAddEpModal(); 
       
-      // RESET SEARCH SO NEW PASS SHOWS AT THE VERY TOP
       document.getElementById('epSearchKeyword').value = ''; 
       document.getElementById('epEntryContractorFilter').value = 'ALL'; 
       
@@ -1073,9 +996,26 @@
 
     function isContractorInScope(contName, scopeStr) { return (!scopeStr || scopeStr === 'ALL') ? true : scopeStr.split(',').map(s => normStr(s)).includes(normStr(contName)); }
 
-    // ----------------------------------------------------
-    // TABLE RENDERERS (Data + UI)
-    // ----------------------------------------------------
+    function populateContractorDropdown() {
+      const allNames = getAllContractorNames();
+      let scope = (currentUser && currentUser.role === 'staff' && currentUser.scope) ? currentUser.scope : 'ALL';
+      let allowedNames = scope !== 'ALL' ? allNames.filter(n => scope.split(',').map(s=>normStr(s)).includes(normStr(n))) : allNames;
+
+      ['reportContractorDropdown', 'fineContractorDropdown', 'epEntryContractorFilter'].forEach(id => {
+        const dd = document.getElementById(id); if (!dd) return;
+        const cur = dd.value || 'ALL';
+        dd.innerHTML = `<option value="ALL">${t('all_opt')}</option>` + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+        dd.value = allowedNames.includes(cur) ? cur : 'ALL';
+      });
+
+      ['epContSelect', 'overviewContSelect'].forEach(id => {
+        const dd = document.getElementById(id); if (!dd) return;
+        const cur = dd.value;
+        dd.innerHTML = `<option value="" disabled selected>${t('select_opt')}</option>` + allowedNames.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+        if (cur && allowedNames.includes(cur)) dd.value = cur;
+      });
+    }
+
     function applyStatusReportFilter(skipSearch = false) {
       if (!currentUser) return;
       const statusFilter = normStr(document.getElementById('reportStatusFilter').value);
@@ -1098,7 +1038,6 @@
       
       tbody.innerHTML = filtered.map((r, idx) => {
         const isCancel = normStr(r.status) === 'cancel';
-        // SHOW BOTH DATES IF CANCELLED
         let dateHtml = '';
         if (isCancel) {
           dateHtml = `<div style="font-size:0.75rem; color: #38bdf8;">Join: ${escHtml(cleanDateString(r.entryDate))}</div>
