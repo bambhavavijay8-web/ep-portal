@@ -1,0 +1,16 @@
+{
+  "name": "MAXIMAL VENTURES",
+  "short_name": "MAXIMAL",
+  "description": "EP & Contractor Portal",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "WhatsApp Image 2026-10-28 at 3.02.03 AM.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
