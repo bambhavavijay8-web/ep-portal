@@ -562,7 +562,9 @@
           <h4 style="margin-bottom: 1rem; color: var(--text-main);" data-lang="my_profile">My Profile</h4>
           <div class="form-group"><label class="form-label" data-lang="th_name">Name</label><input type="text" id="prefDisplayNameInput" class="form-input"></div>
           <div class="form-group"><label class="form-label" data-lang="th_contact">Contact</label><input type="text" id="prefContactInput" class="form-input"></div>
-                    <div class="form-group">
+          
+          <!-- Avatar Upload -->
+          <div class="form-group">
             <label class="form-label">Profile Avatar (Upload Picture)</label>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
               <input type="text" id="prefAvatarInput" class="form-input hidden" style="flex:1;">
@@ -572,8 +574,8 @@
                 <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'prefAvatarInput')">
               </label>
             </div>
-                    </div>
-          
+          </div>
+
           <button class="btn btn-success btn-sm" onclick="savePersonalPreferences()"><i class="fa-solid fa-floppy-disk"></i> <span data-lang="update_profile">Update Profile</span></button>
           
           <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
@@ -606,7 +608,7 @@
       <button class="btn btn-secondary btn-sm" style="position:absolute; top: 10px; right: 10px;" onclick="closeAdminContactModal()"><i class="fa-solid fa-xmark"></i></button>
       <img id="adminModalPic" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==" onerror="this.src='https://placehold.co/90x90/1e293b/38bdf8?text=Admin'" alt="Admin">
       <h3 style="font-size: 1.4rem; font-weight: 800; color: #38bdf8;" id="adminModalName">VIJAY BAMBHAVA</h3>
-      <div class="badge badge-active" style="margin-bottom: 1.5rem;">PASS SECTION ADMIN</div>
+      <div class="badge badge-active" style="margin-bottom: 1.5rem;">DESIGNATION: PASS SECTION ADMIN</div>
       <div style="text-align: left; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.8rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
         <div><strong style="color:var(--text-muted);">Phone:</strong> <span id="adminModalPhone">+91 9510039457</span></div>
         <div><strong style="color:var(--text-muted);">Email:</strong> <span id="adminModalEmail">bambhavavijay8@gmail.com</span></div>
@@ -800,6 +802,22 @@
     }
 
     // ----------------------------------------------------
+    // AVATAR UPLOAD LOGIC
+    // ----------------------------------------------------
+    function handleImageUpload(event, inputId) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const b64 = e.target.result;
+          document.getElementById(inputId).value = b64;
+          document.getElementById('settingsAvatarPreview').innerHTML = `<img src="${b64}" style="width:100%;height:100%;object-fit:cover;">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // ----------------------------------------------------
     // ADVANCED SEARCH NAVIGATION (ARROWS)
     // ----------------------------------------------------
     let searchStates = { report: { idx: -1, matches: [] }, entry: { idx: -1, matches: [] }, fine: { idx: -1, matches: [] }, contractor: { idx: -1, matches: [] } };
@@ -916,12 +934,31 @@
 
     function handleLogout() { currentUser = null; document.getElementById('appContainer').classList.add('hidden'); document.getElementById('loginPage').classList.remove('hidden'); }
 
+    function applyUserAvatar(user) {
+      if (user.avatar && user.avatar.length > 5) {
+        document.getElementById('avatarDisplay').innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+        document.getElementById('settingsAvatarPreview').innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        const initial = (user.name || user.username || 'U').charAt(0).toUpperCase();
+        document.getElementById('avatarDisplay').innerText = initial;
+        document.getElementById('settingsAvatarPreview').innerText = initial;
+      }
+      const adminPic = users.vijay.avatar && users.vijay.avatar.length > 5 ? users.vijay.avatar : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+      const adminNavImg = document.querySelector('.admin-contact-badge img');
+      if (adminNavImg) adminNavImg.src = adminPic;
+    }
+
     function setupPortalSession() {
       if (!currentUser) return;
       const isAdmin = currentUser.role === 'admin', isStaff = currentUser.role === 'staff', isContractor = currentUser.role === 'contractor';
       document.getElementById('navUserName').innerText = currentUser.name || (isContractor ? currentUser.contractorName : 'USER');
       document.getElementById('navUserRole').innerText = isAdmin ? 'ADMIN' : (isStaff ? 'STAFF' : 'CONTRACTOR');
+      applyUserAvatar(currentUser);
       
+      document.getElementById('prefDisplayNameInput').value = currentUser.name || '';
+      document.getElementById('prefContactInput').value = currentUser.phone || '';
+      document.getElementById('prefAvatarInput').value = currentUser.avatar || '';
+
       const views = ['tabStatusReport', 'tabEpEntry', 'tabContractorFine', 'tabContractorOverview', 'tabContractorMgmt', 'menuTileReport', 'menuTileEntry', 'menuTileFine', 'menuTileOverview', 'menuTileContractors'];
       views.forEach(v => document.getElementById(v).style.display = 'none');
 
@@ -935,7 +972,6 @@
       if (isContractor) switchPage('report'); else switchPage('menu');
     }
 
-    // 🔴 BUG FIX: RESTORED ORIGINAL RELIABLE PAGES MAPPING 🔴
     function switchPage(pageKey) {
       if (!currentUser) return;
       
@@ -1005,7 +1041,7 @@
         return !search || normStr(item.epNo).includes(search) || normStr(item.epName).includes(search) || normStr(item.contractor).includes(search);
       }).sort((a, b) => getSortTime(b.entryDate) - getSortTime(a.entryDate));
 
-      currentFilteredRecords = filtered; // UPDATE GLOBALS FOR EXCEL EXPORT
+      currentFilteredRecords = filtered;
       const tbody = document.getElementById('statusReportTableBody');
       
       if (filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">${t('alert_no_data')}</td></tr>`; return; }
@@ -1097,7 +1133,7 @@
         return !search || normStr(item.epNo).includes(search) || normStr(item.epName).includes(search) || normStr(item.contractor).includes(search);
       }).sort((a, b) => getSortTime(b.date) - getSortTime(a.date));
 
-      currentFilteredFines = filtered; // UPDATE GLOBALS FOR EXCEL EXPORT
+      currentFilteredFines = filtered;
       const tbody = document.getElementById('contractorFineTableBody');
       
       if (filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="${canEdit ? 10 : 8}" style="text-align: center; padding: 2rem; color: var(--text-muted);">${t('alert_no_data')}</td></tr>`; document.getElementById('fineTotalAmountTd').innerText = '₹0'; return; }
@@ -1126,6 +1162,42 @@
     async function markFineDone(id) {
       if (!confirm(t('alert_fine_confirm'))) return;
       const target = fineList.find(x => String(x.id) === String(id)); if(target){ target.status='Done'; target.doneDate = getToday(); saveState(); applyFineFilter(); await syncWithGoogleSheet(); }
+    }
+
+    function setupFineAutocomplete() {
+      const epInput = document.getElementById('fineEpNoInput');
+      const listDiv = document.getElementById('epAutocompleteList');
+      if (!epInput || !listDiv) return;
+
+      epInput.addEventListener('input', function() {
+        const q = normStr(this.value);
+        document.getElementById('fineInfoDisplay').value = '';
+        document.getElementById('fineEpNameInput').value = '';
+        document.getElementById('fineContSelect').value = '';
+        if (!q) { listDiv.style.display = 'none'; return; }
+        
+        const matches = epList.filter(e => normStr(e.status) === 'active' && (normStr(e.epNo).includes(q) || normStr(e.epName).includes(q) || normStr(e.contractor).includes(q))).slice(0, 10);
+        if (matches.length === 0) { listDiv.style.display = 'none'; return; }
+        
+        listDiv.innerHTML = matches.map(m => `
+          <div style="padding:0.5rem 0.75rem; cursor:pointer; border-bottom:1px solid rgba(255,255,255,0.05);" onclick="selectEpForFine('${escHtml(m.epNo)}')">
+            <strong>${escHtml(m.epNo)}</strong> - ${escHtml(m.epName)} <span style="font-size:0.7rem; color:#38bdf8;">(${escHtml(m.contractor)})</span>
+          </div>
+        `).join('');
+        listDiv.style.display = 'block';
+      });
+      document.addEventListener('click', function(e) { if (!epInput.contains(e.target) && !listDiv.contains(e.target)) listDiv.style.display = 'none'; });
+    }
+
+    function selectEpForFine(epNo) {
+      const found = epList.find(e => normStr(e.status) === 'active' && normStr(e.epNo) === normStr(epNo));
+      if (found) {
+        document.getElementById('fineEpNoInput').value = found.epNo;
+        document.getElementById('fineInfoDisplay').value = `${found.epName} [${found.contractor}]`;
+        document.getElementById('fineEpNameInput').value = found.epName;
+        document.getElementById('fineContSelect').value = found.contractor;
+        document.getElementById('epAutocompleteList').style.display = 'none';
+      }
     }
 
     function openAddFineModal() { document.getElementById('fineModal').classList.remove('hidden'); }
@@ -1193,15 +1265,43 @@
 
     async function savePersonalPreferences() {
       const dName = document.getElementById('prefDisplayNameInput').value.trim();
+      const phone = document.getElementById('prefContactInput').value.trim();
+      const avatar = document.getElementById('prefAvatarInput').value.trim();
+
       if (dName) currentUser.name = dName;
-      document.getElementById('navUserName').innerText = currentUser.name; saveState(); alert(t('alert_prof_upd')); await syncWithGoogleSheet();
+      if (phone) currentUser.phone = phone;
+      if (avatar) currentUser.avatar = avatar;
+
+      if (users[currentUser.username]) {
+        users[currentUser.username].name = currentUser.name;
+        users[currentUser.username].phone = currentUser.phone;
+        users[currentUser.username].avatar = currentUser.avatar;
+      }
+
+      if (currentUser.username === 'vijay' || currentUser.role === 'admin') {
+        users.vijay.name = currentUser.name;
+        users.vijay.phone = currentUser.phone;
+        if (avatar) users.vijay.avatar = avatar;
+      }
+
+      applyUserAvatar(currentUser);
+      document.getElementById('navUserName').innerText = currentUser.name;
+      saveState();
+      alert(t('alert_prof_upd'));
+      await syncWithGoogleSheet();
     }
 
     async function handlePasswordChange() {
       const cur = document.getElementById('curPassInput').value.trim(), nxt = document.getElementById('newPassInput').value.trim();
       if (cur !== currentUser.password) return alert(t('alert_wrong_pass'));
       if (nxt.length < 3) return alert(t('alert_short_pass'));
-      currentUser.password = nxt; saveState(); alert(t('alert_pass_upd')); syncWithGoogleSheet();
+      currentUser.password = nxt; 
+      
+      if (users[currentUser.username]) users[currentUser.username].password = nxt;
+      if (currentUser.role === 'staff') { const s = staffList.find(x => normStr(x.username) === normStr(currentUser.username)); if (s) s.password = nxt; }
+      if (currentUser.role === 'contractor') { const c = contractors.find(x => normStr(x.username) === normStr(currentUser.username)); if (c) c.password = nxt; }
+      
+      saveState(); alert(t('alert_pass_upd')); syncWithGoogleSheet();
     }
 
     // ----------------------------------------------------
@@ -1215,7 +1315,7 @@
           method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ epList, contractors, fineList, staffList, adminProfile: users.vijay })
         });
-        if (showNotification) alert(t('alert_prof_upd').replace('પ્રોફાઈલ સેવ થઈ ગઈ', 'ડેટા સેવ થઈ ગયો!'));
+        if (showNotification) alert(t('alert_prof_upd').replace('પ્રોફાઈલ સેવ થઈ ગઈ', 'ડેટા સેવ થઈ ગયો!').replace('Profile Updated', 'Data Saved!'));
       } catch (e) {
       } finally {
         if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> <span class="desktop-only" data-lang="save_btn">' + t('save_btn') + '</span>';
@@ -1264,6 +1364,12 @@
           if (Array.isArray(data.staffList) && data.staffList.length > 0) {
             staffList = data.staffList;
           }
+          if (data.adminProfile) {
+            users.vijay.name = data.adminProfile.name || users.vijay.name;
+            users.vijay.phone = data.adminProfile.phone || users.vijay.phone;
+            users.vijay.email = data.adminProfile.email || users.vijay.email;
+            if (data.adminProfile.avatar) users.vijay.avatar = data.adminProfile.avatar;
+          }
 
           ensureUniqueIds();
           saveState();
@@ -1296,19 +1402,6 @@
       if(btn) btn.innerHTML = '<i class="fa-solid fa-rotate"></i> <span class="desktop-only" data-lang="sync_btn">' + t('sync_btn') + '</span>';
       alert(t('alert_sync'));
     }
-        function handleImageUpload(event, inputId) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const b64 = e.target.result;
-          document.getElementById(inputId).value = b64;
-          document.getElementById('settingsAvatarPreview').innerHTML = `<img src="${b64}" style="width:100%;height:100%;object-fit:cover;">`;
-        };
-        reader.readAsDataURL(file);
-      }
-        }
-    
   </script>
 </body>
 </html>
