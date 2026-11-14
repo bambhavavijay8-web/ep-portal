@@ -85,7 +85,7 @@
       .login-right-form { padding: 2rem 1.5rem; }
     }
 
-    /* NAVBAR & TOP CONTROLS */
+    /* NAVBAR */
     .navbar { background: var(--glass-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-bottom: 1px solid var(--glass-border); padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .nav-brand { font-size: 1.2rem; font-weight: 800; color: #38bdf8; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; }
     .nav-brand img { width: 32px; height: 32px; object-fit: contain; border-radius: 6px; background: rgba(255,255,255,0.9); padding: 2px; }
@@ -115,29 +115,23 @@
     body.theme-light .form-input { background: rgba(255, 255, 255, 0.4); }
     .form-input:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.3); box-shadow: 0 0 10px rgba(56,189,248,0.2); }
 
-    /* Search Box Layout */
+    /* SEARCH BOX - OLD STYLE (Filters Table Automatically) */
     .search-box-wrapper { position: relative; flex: 1; min-width: 280px; }
     .search-box-wrapper i.fa-search { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    .search-box-wrapper input { width: 100%; padding: 0.6rem 85px 0.6rem 2.2rem; }
-    .search-nav-controls { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); display: none; gap: 4px; align-items: center; }
-    .search-nav-controls .count-text { font-size: 0.75rem; color: var(--text-main); font-weight: 700; margin-right: 4px; }
-    .search-nav-controls button { background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 4px; padding: 2px 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .search-nav-controls button:hover { background: var(--primary); border-color: var(--primary); }
+    .search-box-wrapper input { width: 100%; padding: 0.6rem 2.2rem; }
 
-    .search-highlight { background-color: #fef08a; color: #854d0e; font-weight: 800; padding: 0 2px; border-radius: 3px; }
-    .active-search-highlight { background-color: #f97316; color: white; box-shadow: 0 0 8px #f97316; }
-
-    /* Proper Sticky Table Header - No Double Scrollbars */
+    /* STICKY TABLE HEADER FIX */
     .table-container { 
+      max-height: 65vh; /* This sets the height of the table area */
+      overflow-y: auto; /* Allows scrolling vertically inside the table */
       overflow-x: auto; 
       border: 1px solid var(--glass-border); 
       border-radius: 0.75rem; 
       background: var(--glass-bg-card); 
       backdrop-filter: var(--blur); 
     }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; font-size: 0.85rem; }
     
-    /* Sticky Header Magic */
     th { 
       background: #0f172a; 
       padding: 0.85rem 1rem; 
@@ -146,13 +140,21 @@
       border-bottom: 1px solid var(--glass-border); 
       white-space: nowrap; 
       position: sticky; 
-      top: 57px; 
+      top: 0; /* Sticks to the top of the table container */
       z-index: 10; 
     }
     body.theme-light th { background: #f8fafc; }
     
     td { padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-    tfoot td { background: rgba(0,0,0,0.3); font-weight: 800; border-top: 1px solid var(--glass-border); color: #34d399; }
+    tfoot td { 
+      background: rgba(0,0,0,0.3); 
+      font-weight: 800; 
+      border-top: 1px solid var(--glass-border); 
+      color: #34d399; 
+      position: sticky; 
+      bottom: 0; 
+      z-index: 10; 
+    }
     tr:hover { background: rgba(255,255,255,0.05); }
 
     .chk-lg { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); vertical-align: middle; }
@@ -176,9 +178,6 @@
     body.theme-light .multi-select-box { background: rgba(255,255,255,0.4); }
     .multi-select-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem; font-size: 0.85rem; cursor: pointer; border-radius: 4px; }
     .multi-select-item:hover { background: rgba(255,255,255,0.1); }
-
-    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 4px; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
     .edit-mode-banner { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; padding: 0.6rem 1rem; border-radius: 0.6rem; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(4px); }
   </style>
@@ -235,9 +234,6 @@
       </div>
 
       <div class="nav-actions">
-        <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;" class="desktop-only">
-          <span class="live-dot"></span> LIVE
-        </span>
         <button id="adminPullSheetBtn" class="btn btn-success btn-sm desktop-only" onclick="manualPullData()"><i class="fa-solid fa-rotate"></i> <span data-lang="sync_btn">Sync</span></button>
         <button id="adminSaveSheetBtn" class="btn btn-primary btn-sm desktop-only" onclick="syncWithGoogleSheet(true)"><i class="fa-solid fa-cloud-arrow-up"></i> <span data-lang="save_btn">Save</span></button>
         <div class="user-pill" onclick="switchPage('settings')">
@@ -308,12 +304,7 @@
             </div>
             <div class="search-box-wrapper">
               <i class="fa-solid fa-search"></i>
-              <input type="text" id="reportSearchKeyword" class="form-input" data-lang-placeholder="search_ph" placeholder="Search data..." oninput="triggerSearch('report')">
-              <div class="search-nav-controls" id="searchNav_report">
-                <span class="count-text">0/0</span>
-                <button onclick="navSearch('report', -1)"><i class="fa-solid fa-chevron-up"></i></button>
-                <button onclick="navSearch('report', 1)"><i class="fa-solid fa-chevron-down"></i></button>
-              </div>
+              <input type="text" id="reportSearchKeyword" class="form-input" data-lang-placeholder="search_ph" placeholder="Search data..." oninput="applyStatusReportFilter()">
             </div>
           </div>
           <div class="table-container">
@@ -344,12 +335,7 @@
             </div>
             <div class="search-box-wrapper">
               <i class="fa-solid fa-search"></i>
-              <input type="text" id="epSearchKeyword" class="form-input" data-lang-placeholder="search_ph" placeholder="Search data..." oninput="triggerSearch('entry')">
-              <div class="search-nav-controls" id="searchNav_entry">
-                <span class="count-text">0/0</span>
-                <button onclick="navSearch('entry', -1)"><i class="fa-solid fa-chevron-up"></i></button>
-                <button onclick="navSearch('entry', 1)"><i class="fa-solid fa-chevron-down"></i></button>
-              </div>
+              <input type="text" id="epSearchKeyword" class="form-input" data-lang-placeholder="search_ph" placeholder="Search data..." oninput="renderEpEntryTable()">
             </div>
           </div>
           
@@ -410,12 +396,7 @@
             </div>
             <div class="search-box-wrapper">
               <i class="fa-solid fa-search"></i>
-              <input type="text" id="fineSearchKeyword" class="form-input" data-lang-placeholder="search_ph" placeholder="Search data..." oninput="triggerSearch('fine')">
-              <div class="search-nav-controls" id="searchNav_fine">
-                <span class="count-text">0/0</span>
-                <button onclick="navSearch('fine', -1)"><i class="fa-solid fa-chevron-up"></i></button>
-                <button onclick="navSearch('fine', 1)"><i class="fa-solid fa-chevron-down"></i></button>
-              </div>
+              <input type="text" id="fineSearchKeyword" class="form-input" data-lang-placeholder="search_ph" placeholder="Search data..." oninput="applyFineFilter()">
             </div>
           </div>
           <div class="table-container">
@@ -511,12 +492,7 @@
           </div>
           <div class="search-box-wrapper" style="margin-bottom: 1rem;">
             <i class="fa-solid fa-search"></i>
-            <input type="text" id="contractorSearchInput" class="form-input" data-lang-placeholder="search_ph" placeholder="Search..." oninput="triggerSearch('contractor')">
-            <div class="search-nav-controls" id="searchNav_contractor">
-              <span class="count-text">0/0</span>
-              <button onclick="navSearch('contractor', -1)"><i class="fa-solid fa-chevron-up"></i></button>
-              <button onclick="navSearch('contractor', 1)"><i class="fa-solid fa-chevron-down"></i></button>
-            </div>
+            <input type="text" id="contractorSearchInput" class="form-input" data-lang-placeholder="search_ph" placeholder="Search..." oninput="renderContractorsTable()">
           </div>
           <div class="table-container">
             <table>
@@ -565,6 +541,7 @@
           <div class="form-group"><label class="form-label" data-lang="th_name">Name</label><input type="text" id="prefDisplayNameInput" class="form-input"></div>
           <div class="form-group"><label class="form-label" data-lang="th_contact">Contact</label><input type="text" id="prefContactInput" class="form-input"></div>
           
+          <!-- Avatar Upload -->
           <div class="form-group">
             <label class="form-label">Profile Avatar (Upload Picture)</label>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
@@ -764,56 +741,6 @@
       }
     }
 
-    let searchStates = { report: { idx: -1, matches: [] }, entry: { idx: -1, matches: [] }, fine: { idx: -1, matches: [] }, contractor: { idx: -1, matches: [] } };
-    function triggerSearch(pageKey) {
-      const containerId = pageKey === 'report' ? 'statusReportTableBody' : pageKey === 'entry' ? 'epEntryTableBody' : pageKey === 'fine' ? 'contractorFineTableBody' : 'contractorTableBody';
-      const inputId = pageKey === 'report' ? 'reportSearchKeyword' : pageKey === 'entry' ? 'epSearchKeyword' : pageKey === 'fine' ? 'fineSearchKeyword' : 'contractorSearchInput';
-      const container = document.getElementById(containerId);
-      const query = document.getElementById(inputId).value.trim().toLowerCase();
-
-      if (pageKey === 'report') applyStatusReportFilter(true);
-      if (pageKey === 'entry') renderEpEntryTable(true);
-      if (pageKey === 'fine') applyFineFilter(true);
-      if (pageKey === 'contractor') renderContractorsTable(true);
-
-      searchStates[pageKey].matches = []; searchStates[pageKey].idx = -1;
-      if (!query) { updateSearchNavUI(pageKey); return; }
-
-      const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
-      const nodes = []; let node;
-      while (node = walker.nextNode()) {
-        if (node.nodeValue.toLowerCase().includes(query)) {
-          let p = node.parentNode, skip = false;
-          while(p && p !== container) { if(p.tagName === 'BUTTON' || p.tagName === 'INPUT' || p.tagName === 'SELECT') { skip = true; break; } p = p.parentNode; }
-          if(!skip) nodes.push(node);
-        }
-      }
-      nodes.forEach(n => {
-        const regex = new RegExp(`(${query})`, 'gi');
-        const span = document.createElement('span');
-        span.innerHTML = n.nodeValue.replace(regex, '<span class="search-highlight">$1</span>');
-        n.parentNode.replaceChild(span, n);
-      });
-
-      searchStates[pageKey].matches = Array.from(container.querySelectorAll('.search-highlight'));
-      if(searchStates[pageKey].matches.length > 0) { searchStates[pageKey].idx = 0; highlightActiveSearch(pageKey); }
-      updateSearchNavUI(pageKey);
-    }
-
-    function navSearch(pageKey, dir) {
-      let st = searchStates[pageKey]; if (st.matches.length === 0) return;
-      st.idx += dir; if (st.idx >= st.matches.length) st.idx = 0; if (st.idx < 0) st.idx = st.matches.length - 1;
-      highlightActiveSearch(pageKey); updateSearchNavUI(pageKey);
-    }
-    function highlightActiveSearch(pageKey) {
-      let st = searchStates[pageKey]; st.matches.forEach(el => el.classList.remove('active-search-highlight'));
-      if (st.matches[st.idx]) { st.matches[st.idx].classList.add('active-search-highlight'); st.matches[st.idx].scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-    }
-    function updateSearchNavUI(pageKey) {
-      let st = searchStates[pageKey]; let navBox = document.getElementById('searchNav_' + pageKey); if (!navBox) return;
-      if (st.matches.length > 0) { navBox.style.display = 'flex'; navBox.querySelector('.count-text').innerText = `${st.idx + 1}/${st.matches.length}`; } else { navBox.style.display = 'none'; }
-    }
-
     function setTheme(mode) {
       if (mode === 'system') mode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       if (mode === 'light') { document.body.classList.add('theme-light'); localStorage.setItem('mv_theme', 'light'); } else { document.body.classList.remove('theme-light'); localStorage.setItem('mv_theme', 'dark'); }
@@ -824,14 +751,6 @@
       const savedLang = localStorage.getItem('mv_lang') || 'gu';
       document.getElementById('appLanguageSelect').value = savedLang; changeAppLanguage(savedLang);
       populateContractorDropdown(); autoFetchMasterData(); setupFineAutocomplete();
-      
-      document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-          e.preventDefault();
-          const visibleSearchBox = document.querySelector('.search-box-wrapper input:not([disabled])');
-          if (visibleSearchBox && visibleSearchBox.offsetParent !== null) visibleSearchBox.focus();
-        }
-      });
     });
 
     window.addEventListener('popstate', function(e) {
@@ -1016,11 +935,10 @@
       });
     }
 
-    function applyStatusReportFilter(skipSearch = false) {
+    function applyStatusReportFilter() {
       if (!currentUser) return;
       const statusFilter = normStr(document.getElementById('reportStatusFilter').value);
-      const searchBox = document.getElementById('reportSearchKeyword');
-      const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
+      const search = normStr(document.getElementById('reportSearchKeyword').value);
       let baseScope = currentUser.role === 'contractor' ? currentUser.contractorName : (currentUser.scope || 'ALL');
       let ddVal = document.getElementById('reportContractorDropdown')?.value || 'ALL';
 
@@ -1055,10 +973,9 @@
       }).join('');
     }
 
-    function renderEpEntryTable(skipSearch = false) {
+    function renderEpEntryTable() {
       if (!currentUser) return;
-      const searchBox = document.getElementById('epSearchKeyword');
-      const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
+      const search = normStr(document.getElementById('epSearchKeyword').value);
       let baseScope = currentUser.role === 'contractor' ? currentUser.contractorName : (currentUser.scope || 'ALL');
       let ddVal = document.getElementById('epEntryContractorFilter')?.value || 'ALL';
 
@@ -1117,11 +1034,10 @@
       }
     }
 
-    function applyFineFilter(skipSearch = false) {
+    function applyFineFilter() {
       if (!currentUser) return;
       const statusFilter = normStr(document.getElementById('fineStatusFilter').value);
-      const searchBox = document.getElementById('fineSearchKeyword');
-      const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
+      const search = normStr(document.getElementById('fineSearchKeyword').value);
       let baseScope = currentUser.role === 'contractor' ? currentUser.contractorName : (currentUser.scope || 'ALL');
       let ddVal = document.getElementById('fineContractorDropdown')?.value || 'ALL';
       const canEdit = currentUser.role === 'admin' || currentUser.finePerm === 'VIEW_EDIT';
@@ -1228,10 +1144,9 @@
       document.getElementById('ovPendingAmount').innerText = `₹${f.reduce((s, x) => s + (parseFloat(x.debit)||0), 0).toLocaleString('en-IN')}`;
     }
 
-    function renderContractorsTable(skipSearch = false) {
+    function renderContractorsTable() {
       if (!currentUser) return;
-      const searchBox = document.getElementById('contractorSearchInput');
-      const search = skipSearch ? '' : normStr(searchBox ? searchBox.value : '');
+      const search = normStr(document.getElementById('contractorSearchInput').value);
       const list = search ? contractors.filter(c => normStr(c.name).includes(search) || normStr(c.username).includes(search)) : contractors;
       const tbody = document.getElementById('contractorTableBody');
       if (!list.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:var(--text-muted);">${t('alert_no_data')}</td></tr>`; return; }
