@@ -134,11 +134,42 @@
     .search-highlight { background-color: #fef08a; color: #854d0e; font-weight: 800; padding: 0 2px; border-radius: 3px; }
     .active-search-highlight { background-color: #f97316; color: white; box-shadow: 0 0 8px #f97316; }
 
-    .table-container { overflow-x: auto; border: 1px solid var(--glass-border); border-radius: 0.75rem; background: var(--glass-bg-card); backdrop-filter: var(--blur); -webkit-overflow-scrolling: touch; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
-    th { background: rgba(0,0,0,0.2); padding: 0.85rem 1rem; font-weight: 700; color: var(--accent); border-bottom: 1px solid var(--glass-border); white-space: nowrap; }
+    /* Sticky Header Table Layout */
+    .table-container { 
+      max-height: 60vh; /* Limits table height to allow scrolling within table */
+      overflow-y: auto; 
+      overflow-x: auto; 
+      border: 1px solid var(--glass-border); 
+      border-radius: 0.75rem; 
+      background: var(--glass-bg-card); 
+      backdrop-filter: var(--blur); 
+      -webkit-overflow-scrolling: touch; 
+    }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; font-size: 0.85rem; }
+    th { 
+      background: #1e293b; /* Solid color for sticky header */
+      padding: 0.85rem 1rem; 
+      font-weight: 700; 
+      color: var(--accent); 
+      border-bottom: 1px solid var(--glass-border); 
+      white-space: nowrap; 
+      position: sticky; 
+      top: 0; 
+      z-index: 10; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Shadow for depth */
+    }
+    body.theme-light th { background: #cbd5e1; }
+    
     td { padding: 0.85rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-    tfoot td { background: rgba(0,0,0,0.3); font-weight: 800; border-top: 1px solid var(--glass-border); color: #34d399; }
+    tfoot td { 
+      background: rgba(0,0,0,0.3); 
+      font-weight: 800; 
+      border-top: 1px solid var(--glass-border); 
+      color: #34d399; 
+      position: sticky; 
+      bottom: 0; 
+      z-index: 10; 
+    }
     tr:hover { background: rgba(255,255,255,0.05); }
 
     .chk-lg { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); vertical-align: middle; }
@@ -323,7 +354,7 @@
                   <th data-lang="th_ep_no">EP No</th>
                   <th data-lang="th_name">Name</th>
                   <th data-lang="th_plant">Plant</th>
-                  <th data-lang="th_date">Entry Date</th>
+                  <th data-lang="th_date">Date</th>
                   <th data-lang="th_status">Status</th>
                 </tr>
               </thead>
@@ -705,6 +736,7 @@
     let currentFilteredRecords = [];
     let currentFilteredFines = [];
     let currentUser = null, isFetchingLive = false, isEpEditMode = false;
+    let navHistory = []; // Browser Back Button History
 
     function normStr(v) { return (v == null) ? '' : String(v).trim().toLowerCase(); }
     function escHtml(str) { return str == null ? '' : String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -894,6 +926,13 @@
       });
     });
 
+    window.addEventListener('popstate', function(e) {
+      if (currentUser && e.state && e.state.page) {
+        // Prevent recursive pushing
+        switchPage(e.state.page, false);
+      }
+    });
+
     function getAllContractorNames() {
       const set = new Set();
       contractors.forEach(c => { if (c.name && c.name.trim()) set.add(c.name.trim()); });
@@ -972,7 +1011,8 @@
       if (isContractor) switchPage('report'); else switchPage('menu');
     }
 
-    function switchPage(pageKey) {
+    // 🔴 BUG FIX: RESTORED ORIGINAL RELIABLE PAGES MAPPING + BACK BUTTON LOGIC 🔴
+    function switchPage(pageKey, pushToHistory = true) {
       if (!currentUser) return;
       
       const pages = {
@@ -991,6 +1031,11 @@
         if (btn) btn.classList.toggle('active', k === pageKey);
         if (view) view.classList.toggle('hidden', k !== pageKey);
       });
+
+      // Browser history logic for back button
+      if (pushToHistory) {
+        history.pushState({ page: pageKey }, '', `#${pageKey}`);
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
@@ -1046,12 +1091,17 @@
       
       if (filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">${t('alert_no_data')}</td></tr>`; return; }
       
-      tbody.innerHTML = filtered.map((r, idx) => `<tr>
-        <td><strong>${idx + 1}</strong></td><td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td>
-        <td><strong>${escHtml(r.epNo)}</strong></td><td>${escHtml(r.epName)}</td><td>${escHtml(r.plant)}</td>
-        <td style="font-weight: 700; color: #38bdf8;">${escHtml(cleanDateString(r.entryDate))}</td>
-        <td><span class="badge ${normStr(r.status) === 'active' ? 'badge-active' : 'badge-cancel'}">${escHtml(r.status)}</span></td>
-      </tr>`).join('');
+      tbody.innerHTML = filtered.map((r, idx) => {
+        const isCancel = normStr(r.status) === 'cancel';
+        return `<tr>
+          <td><strong>${idx + 1}</strong></td><td><span class="badge badge-contractor">${escHtml(r.contractor)}</span></td>
+          <td><strong>${escHtml(r.epNo)}</strong></td><td>${escHtml(r.epName)}</td><td>${escHtml(r.plant)}</td>
+          <td style="font-weight: 700; color: ${isCancel ? '#f87171' : '#38bdf8'};">
+            ${isCancel ? 'Cancelled on: ' + escHtml(cleanDateString(r.cancelDate)) : 'Entry: ' + escHtml(cleanDateString(r.entryDate))}
+          </td>
+          <td><span class="badge ${isCancel ? 'badge-cancel' : 'badge-active'}">${escHtml(r.status)}</span></td>
+        </tr>`;
+      }).join('');
     }
 
     function renderEpEntryTable(skipSearch = false) {
@@ -1102,9 +1152,19 @@
       sel.forEach(id => { const t = epList.find(x => String(x.id) === id); if(t){ t.status='Cancel'; t.cancelDate = getToday(); }});
       saveState(); renderEpEntryTable(); await syncWithGoogleSheet(); alert(t('alert_cancel_success'));
     }
-    async function cancelSinglePass(id) {
+    
+    // Fixed Action Button Function for EP Entry
+    window.cancelSinglePass = async function(id) {
       if (!confirm(t('alert_cancel_confirm'))) return;
-      const t = epList.find(x => String(x.id) === String(id)); if(t){ t.status='Cancel'; t.cancelDate = getToday(); saveState(); renderEpEntryTable(); await syncWithGoogleSheet(); }
+      const target = epList.find(x => String(x.id) === String(id)); 
+      if(target){ 
+        target.status='Cancel'; 
+        target.cancelDate = getToday(); 
+        saveState(); 
+        renderEpEntryTable(); 
+        await syncWithGoogleSheet(); 
+        alert(t('alert_cancel_success'));
+      }
     }
 
     function openAddEpModal() { document.getElementById('epModal').classList.remove('hidden'); }
@@ -1159,9 +1219,18 @@
       sel.forEach(id => { const t = fineList.find(x => String(x.id) === id); if(t){ t.status='Done'; t.doneDate = getToday(); }});
       saveState(); applyFineFilter(); await syncWithGoogleSheet(); alert(t('alert_fine_success'));
     }
-    async function markFineDone(id) {
+    
+    // Fixed Single Fine Button Function
+    window.markFineDone = async function(id) {
       if (!confirm(t('alert_fine_confirm'))) return;
-      const target = fineList.find(x => String(x.id) === String(id)); if(target){ target.status='Done'; target.doneDate = getToday(); saveState(); applyFineFilter(); await syncWithGoogleSheet(); }
+      const target = fineList.find(x => String(x.id) === String(id)); 
+      if(target){ 
+        target.status='Done'; 
+        target.doneDate = getToday(); 
+        saveState(); 
+        applyFineFilter(); 
+        await syncWithGoogleSheet(); 
+      }
     }
 
     function setupFineAutocomplete() {
@@ -1189,7 +1258,7 @@
       document.addEventListener('click', function(e) { if (!epInput.contains(e.target) && !listDiv.contains(e.target)) listDiv.style.display = 'none'; });
     }
 
-    function selectEpForFine(epNo) {
+    window.selectEpForFine = function(epNo) {
       const found = epList.find(e => normStr(e.status) === 'active' && normStr(e.epNo) === normStr(epNo));
       if (found) {
         document.getElementById('fineEpNoInput').value = found.epNo;
@@ -1237,7 +1306,7 @@
       if(!n || !u || !p) return alert(t('alert_fill_details'));
       contractors.push({name:n, username:u, password:p, phone:document.getElementById('newContPhone').value}); saveState(); closeAddContractorModal(); renderContractorsTable(); await syncWithGoogleSheet(); alert(t('alert_cont_added'));
     }
-    function delCont(i) { if(confirm(t('alert_del_cont'))){ contractors.splice(i, 1); saveState(); renderContractorsTable(); syncWithGoogleSheet(); } }
+    window.delCont = function(i) { if(confirm(t('alert_del_cont'))){ contractors.splice(i, 1); saveState(); renderContractorsTable(); syncWithGoogleSheet(); } }
 
     function renderStaffTable() {
       if (!currentUser) return;
@@ -1252,7 +1321,7 @@
       if(!n||!u||!p) return alert(t('alert_fill_details'));
       staffList.push({ id:'st_'+Date.now(), name:n, username:u, password:p, finePerm:'VIEW_EDIT', reportPerm:'VIEW_ONLY', entryPerm:'VIEW_EDIT', overviewPerm:'VIEW_ONLY', scope:'ALL' }); saveState(); closeAddStaffModal(); renderStaffTable(); await syncWithGoogleSheet();
     }
-    function delStaff(id) { if(confirm('Delete Staff?')){ staffList = staffList.filter(s=>s.id!==id); saveState(); renderStaffTable(); syncWithGoogleSheet(); } }
+    window.delStaff = function(id) { if(confirm('Delete Staff?')){ staffList = staffList.filter(s=>s.id!==id); saveState(); renderStaffTable(); syncWithGoogleSheet(); } }
 
     function downloadReportExcel() { 
       if(!currentFilteredRecords || currentFilteredRecords.length === 0) return alert(t('alert_no_data'));
